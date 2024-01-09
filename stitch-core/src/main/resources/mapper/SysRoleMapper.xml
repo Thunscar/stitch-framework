@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.stitchcodes.core.mapper.SysRoleMapper">
+
+    <resultMap id="roleResultMap" type="com.stitchcodes.core.domain.SysRole">
+        <id property="roleId" column="role_id" jdbcType="BIGINT"/>
+        <result property="roleName" column="role_name" jdbcType="VARCHAR"/>
+        <result property="roleKey" column="role_key" jdbcType="VARCHAR"/>
+        <result property="roleSort" column="role_sort" jdbcType="INTEGER"/>
+        <result property="dataScope" column="data_scope" jdbcType="CHAR"/>
+        <result property="status" column="status" jdbcType="CHAR"/>
+        <result property="isDelete" column="is_delete" jdbcType="CHAR"/>
+        <result property="createUser" column="create_user" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateUser" column="update_user" jdbcType="VARCHAR"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="selectRoleInfo">
+        select role_id,
+               role_name,
+               role_key,
+               role_sort,
+               data_scope,
+               status,
+               create_user,
+               create_time,
+               update_user,
+               update_time
+        from sys_role
+    </sql>
+    <sql id="selectRoleVo">
+        select r.role_id,
+               r.role_name,
+               r.role_key,
+               r.role_sort,
+               r.data_scope,
+               r.status,
+               r.create_user,
+               r.create_time,
+               r.update_user,
+               r.update_time,
+               r.remark
+        from sys_role r
+                 left join sys_user_role ur on r.role_id = ur.role_id
+                 left join sys_user u on u.user_id = ur.user_id
+                 left join sys_dept d on d.dept_id = u.dept_id
+    </sql>
+    <insert id="insertRole">
+        insert into sys_role (
+        <if test="roleName != null and roleName != ''">role_name,</if>
+        <if test="roleKey != null and roleKey != ''">role_key,</if>
+        <if test="roleSort != null and roleSort != ''">role_sort,</if>
+        <if test="dataScope != null and dataScope != ''">data_scope,</if>
+        <if test="status != null and status != ''">status,</if>
+        <if test="remark != null">remark,</if>
+        <if test="createUser != null and createUser != ''">create_user,</if>
+        create_time
+        )values (
+        <if test="roleName != null and roleName != ''">#{roleName},</if>
+        <if test="roleKey != null and roleKey != ''">#{roleKey},</if>
+        <if test="roleSort != null and roleSort != ''">#{roleSort},</if>
+        <if test="dataScope != null and dataScope != ''">#{dataScope},</if>
+        <if test="status != null and status != ''">#{status},</if>
+        <if test="remark != null">#{remark},</if>
+        <if test="createUser != null and createUser != ''">#{createUser},</if>
+        sysdate()
+        )
+    </insert>
+    <update id="removeRoleById" parameterType="Long">
+        update sys_role
+        set is_delete = '0'
+        where role_id = #{roleId}
+    </update>
+    <update id="removeRoleBatch">
+        update sys_role
+        set is_delete = '0'
+        where role_id in
+        <foreach collection="array" item="userId" open="(" close=")" separator=",">
+            #{userId}
+        </foreach>
+    </update>
+    <update id="updateRole">
+        update sys_role set
+        <if test="roleName != null and roleName != ''">role_name = #{roleName},</if>
+        <if test="roleKey != null and roleKey != ''">role_key = #{roleKey},</if>
+        <if test="roleSort != null and roleSort != ''">role_sort = #{roleSort},</if>
+        <if test="dataScope != null and dataScope != ''">data_scope = #{dataScope},</if>
+        <if test="status != null and status != ''">status = #{status},</if>
+        <if test="remark != null">remark = #{remark},</if>
+        <if test="updateUser != null and updateUser != ''">update_user = #{updateUser},</if>
+        update_time = sysdate()
+        where role_id = #{roleId} and is_delete = '0'
+    </update>
+
+    <select id="selectRoleByUserId" parameterType="Long" resultMap="roleResultMap">
+        select r.role_id,
+               r.role_name,
+               r.role_key,
+               r.role_sort,
+               r.data_scope,
+               r.status,
+               r.is_delete,
+               r.create_user,
+               r.create_time,
+               r.update_user,
+               r.update_time,
+               r.remark
+        from sys_role r,
+             sys_user_role ur
+        where ur.user_id = #{userId}
+          and r.role_id = ur.role_id
+          and r.is_delete = '0'
+    </select>
+    <select id="selectRoleList" parameterType="SysRole" resultMap="roleResultMap">
+        <include refid="selectRoleVo"/>
+        <where>
+            <if test="roleName != null and roleName != ''">
+                and r.role_name like concat('%',#{roleName},'%')
+            </if>
+            <if test="status != null and status != ''">
+                and r.status = #{status}
+            </if>
+            and r.is_delete = '0'
+            and u.is_delete = '0'
+            and d.is_delete = '0'
+        </where>
+        #{params.dataScope}
+        order by r.role_sort
+    </select>
+    <select id="selectRoleById" parameterType="Long" resultMap="roleResultMap">
+        <include refid="selectRoleInfo"/>
+        where role_id = #{roleId} and is_delete = '0'
+    </select>
+    <select id="selectSysRoleByKey" resultType="SysRole">
+        <include refid="selectRoleInfo"/>
+        from sys_role
+        where role_key = #{roleKey}
+        and is_delete = '0' limit 1
+    </select>
+
+</mapper>

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.stitchcodes</groupId>
+    <artifactId>stitch-framework</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+    <modules>
+        <module>stitch-launcher</module>
+        <module>stitch-common</module>
+        <module>stitch-core</module>
+        <module>stitch-system</module>
+        <module>stitch-web</module>
+    </modules>
+
+    <properties>
+        <stitch.version>1.0.0</stitch.version>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <springboot.version>2.7.6</springboot.version>
+        <druid.version>1.2.16</druid.version>
+        <fastjson.version>2.0.25</fastjson.version>
+        <dynamic.datasource.version>3.5.2</dynamic.datasource.version>
+        <mybatis.version>3.0.0</mybatis.version>
+        <pagehelper.version>1.4.6</pagehelper.version>
+        <kaptcha.version>2.3.3</kaptcha.version>
+        <poi.version>4.1.2</poi.version>
+        <oshi.version>6.4.0</oshi.version>
+        <user.agent.version>1.21</user.agent.version>
+        <jjwt.version>0.9.1</jjwt.version>
+        <jaxb.version>2.3.1</jaxb.version>
+        <hutools.verison>5.8.11</hutools.verison>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!--springboot-->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${springboot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!--alibaba druid-->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-starter</artifactId>
+                <version>${druid.version}</version>
+            </dependency>
+            <!--alibaba json util-->
+            <dependency>
+                <groupId>com.alibaba.fastjson2</groupId>
+                <artifactId>fastjson2</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+            <!-- 验证码 -->
+            <dependency>
+                <groupId>pro.fessional</groupId>
+                <artifactId>kaptcha</artifactId>
+                <version>${kaptcha.version}</version>
+            </dependency>
+            <!-- pageHelper -->
+            <dependency>
+                <groupId>com.github.pagehelper</groupId>
+                <artifactId>pagehelper-spring-boot-starter</artifactId>
+                <version>${pagehelper.version}</version>
+            </dependency>
+            <!-- mybatis -->
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>${mybatis.version}</version>
+            </dependency>
+            <!-- excel工具 -->
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml</artifactId>
+                <version>${poi.version}</version>
+            </dependency>
+            <!-- 解析客户端操作系统、浏览器等 -->
+            <dependency>
+                <groupId>eu.bitwalker</groupId>
+                <artifactId>UserAgentUtils</artifactId>
+                <version>${user.agent.version}</version>
+            </dependency>
+            <!-- 获取系统信息 -->
+            <dependency>
+                <groupId>com.github.oshi</groupId>
+                <artifactId>oshi-core</artifactId>
+                <version>${oshi.version}</version>
+            </dependency>
+            <!-- jwt工具包 用于生成token -->
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt</artifactId>
+                <version>${jjwt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.xml.bind</groupId>
+                <artifactId>jaxb-api</artifactId>
+                <version>${jaxb.version}</version>
+            </dependency>
+            <!-- hutool -->
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutools.verison}</version>
+            </dependency>
+
+            <!-- stitch framework modules -->
+            <!-- common utils module -->
+            <dependency>
+                <groupId>com.stitchcodes</groupId>
+                <artifactId>stitch-common</artifactId>
+                <version>${stitch.version}</version>
+            </dependency>
+            <!-- stitch core module -->
+            <dependency>
+                <groupId>com.stitchcodes</groupId>
+                <artifactId>stitch-core</artifactId>
+                <version>${stitch.version}</version>
+            </dependency>
+            <!-- stitch system module -->
+            <dependency>
+                <groupId>com.stitchcodes</groupId>
+                <artifactId>stitch-system</artifactId>
+                <version>${stitch.version}</version>
+            </dependency>
+            <!-- stitch web interface module -->
+            <dependency>
+                <groupId>com.stitchcodes</groupId>
+                <artifactId>stitch-web</artifactId>
+                <version>${stitch.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+</project>

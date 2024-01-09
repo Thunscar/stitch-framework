@@ -1,0 +1,42 @@
+# 应用程序配置
+stitch:
+  # 应用程序名称
+  name: Stitch
+  # 版本
+  version: 1.0.0
+  # 版权年份
+  copyrightYear: 2023
+  # 演示模式开关
+  demoEnabled: false
+  # 验证码类型 math数学类型 char字符串类型
+  verifyCodeType: char
+  # 获取用户ip地址开关
+  addressEnabled: true
+  # 文件存储路径
+  profile: static/uploadPath
+
+# token配置
+token:
+  header: Authorization
+  # 自定义秘钥
+  secret: stitch-token-secret
+  # 令牌有效期 (默认30分钟)
+  expire: 30
+
+
+# Spring配置
+spring:
+  devtools:
+    restart:
+      # Hot deployment switch
+      enabled: true
+  profiles:
+    active: druid
+server:
+  port: 6666
+
+mybatis:
+  type-aliases-package: com.stitchcodes.**.domain
+  mapper-locations: classpath*:mapper/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

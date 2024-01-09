@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.stitchcodes.core.mapper.SysLoginInfoMapper">
+    <resultMap id="SysLoginInfoMap" type="com.stitchcodes.core.domain.SysLoginInfo">
+        <id property="infoId" column="info_id" jdbcType="BIGINT"/>
+        <result property="userName" column="user_name" jdbcType="VARCHAR"/>
+        <result property="ipaddr" column="ipaddr" jdbcType="VARCHAR"/>
+        <result property="loginLocation" column="login_location" jdbcType="VARCHAR"/>
+        <result property="browser" column="browser" jdbcType="VARCHAR"/>
+        <result property="os" column="os" jdbcType="VARCHAR"/>
+        <result property="operation" column="operation" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="CHAR"/>
+        <result property="msg" column="msg" jdbcType="VARCHAR"/>
+        <result property="loginTime" column="login_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="selectSysLoginInfoVo">
+        select
+        info_id,
+        user_name,
+        ipaddr,
+        login_location,
+        browser,
+        os,
+        operation,
+        status,
+        msg,
+        login_time
+        from sys_login_info
+    </sql>
+
+    <insert id="insertSysLoginInfo" parameterType="com.stitchcodes.core.domain.SysLoginInfo">
+        insert into sys_login_info (
+        <if test="userName != null and userName != ''">user_name,</if>
+        <if test="ipaddr != null and ipaddr != ''">ipaddr,</if>
+        <if test="loginLocation != null and loginLocation != ''">login_location,</if>
+        <if test="browser != null and browser != ''">browser,</if>
+        <if test="os != null and os != ''">os,</if>
+        <if test="operation != null and operation != ''">operation,</if>
+        <if test="status != null and status != ''">status,</if>
+        <if test="msg != null and msg != ''">msg,</if>
+        login_time
+        )values (
+        <if test="userName != null and userName != ''">#{userName},</if>
+        <if test="ipaddr != null and ipaddr != ''">#{ipaddr},</if>
+        <if test="loginLocation != null and loginLocation != ''">#{loginLocation},</if>
+        <if test="browser != null and browser != ''">#{browser},</if>
+        <if test="os != null and os != ''">#{os},</if>
+        <if test="operation != null and operation != ''">#{operation},</if>
+        <if test="status != null and status != ''">#{status},</if>
+        <if test="msg != null and msg != ''">#{msg},</if>
+        sysdate()
+        )
+    </insert>
+
+    <select id="selectSysLoginInfoList" parameterType="com.stitchcodes.core.domain.SysLoginInfo" resultMap="SysLoginInfoMap">
+        <include refid="selectSysLoginInfoVo"/>
+        <where>
+            <if test="userName != null and userName != ''">
+                and user_name = #{userName},
+            </if>
+            <if test="ipaddr != null and ipaddr != ''">
+                and ipaddr = #{ipaddr},
+            </if>
+            <if test="loginLocation != null and loginLocation != ''">
+                and login_location like concat('%',#{loginLocation},'%'),
+            </if>
+            <if test="browser != null and browser != ''">
+                and browser like concat('%',#{browser},'%'),
+            </if>
+            <if test="os != null and os != ''">
+                and os like concat('%',#{os},'%'),
+            </if>
+        </where>
+        order by login_time DESC
+    </select>
+
+
+</mapper>

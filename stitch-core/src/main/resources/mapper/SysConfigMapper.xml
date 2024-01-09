@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.stitchcodes.core.mapper.SysConfigMapper">
+    <resultMap id="SysConfigResult" type="com.stitchcodes.core.domain.SysConfig">
+        <id property="configId" column="config_id" jdbcType="BIGINT"/>
+        <result property="configName" column="config_name" jdbcType="VARCHAR"/>
+        <result property="configKey" column="config_key" jdbcType="VARCHAR"/>
+        <result property="configValue" column="config_value" jdbcType="VARCHAR"/>
+        <result property="configType" column="config_type" jdbcType="CHAR"/>
+        <result property="createUser" column="create_user" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateUser" column="update_user" jdbcType="VARCHAR"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="isDelete" column="is_delete" jdbcType="CHAR"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!-- 基础查询语句 -->
+    <sql id="selectConfigVo">
+        select config_id,
+               config_name,
+               config_key,
+               config_value,
+               config_type,
+               create_user,
+               create_time,
+               update_user,
+               update_time,
+               remark
+        from sys_config
+    </sql>
+
+    <!-- 查询条件 -->
+    <sql id="sqlWhereSearch">
+        <where>
+            <if test="configId != null and configId != ''">
+                and config_id = #{configId}
+            </if>
+            <if test="configKey != null and configKey != ''">
+                and config_key = #{configKey}
+            </if>
+            and is_delete = '0'
+        </where>
+    </sql>
+
+    <!-- 模糊查询条件 -->
+    <sql id="sqlWhereQuery">
+        <where>
+            <if test="configName != null and configName != ''">
+                and config_name like concat('%',#{configName},'%')
+            </if>
+            <if test="configKey != null and configKey != ''">
+                and config_key like concat('%',#{configKey},'%')
+            </if>
+            <if test="configType != null and configType != ''">
+                and config_type = #{configType}
+            </if>
+            <if test="params.startTime != null and params.startTime != ''">
+                and date_format(create_time,'%y%m%d') &gt;= date_format(#{params.startTime},'%y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''">
+                and date_format(create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+            </if>
+            and is_delete = '0'
+        </where>
+    </sql>
+
+    <!-- 查询系统参数 -->
+    <select id="selectSysConfig" parameterType="com.stitchcodes.core.domain.SysConfig" resultMap="SysConfigResult">
+        <include refid="selectConfigVo">
+        </include>
+        <include refid="sqlWhereSearch">
+        </include>
+    </select>
+
+    <!--通过ID查询系统参数-->
+    <select id="selectSysConfigById" parameterType="Long" resultMap="SysConfigResult">
+        <include refid="selectConfigVo"/>
+        where config_id = #{configId} and is_delete = '0'
+    </select>
+
+    <!-- 查询系统参数(模糊查询) -->
+    <select id="selectSysConfigList" parameterType="com.stitchcodes.core.domain.SysConfig" resultMap="SysConfigResult">
+        <include refid="selectConfigVo"/>
+        <include refid="sqlWhereQuery"/>
+    </select>
+
+    <!-- 更新系统参数 -->
+    <update id="updateSysConfig" parameterType="com.stitchcodes.core.domain.SysConfig">
+        update sys_config
+        <set>
+            <if test="configName != null and configName != ''">
+                config_name = #{configName},
+            </if>
+            <if test="configType != null and configType != ''">
+                config_type = #{configType},
+            </if>
+            <if test="configKey != null and configKey != ''">
+                config_key = #{configKey},
+            </if>
+            <if test="configValue != null and configValue != ''">
+                config_value = #{configValue},
+            </if>
+            <if test="updateUser != null and updateUser != ''">
+                update_user = #{updateUser},
+            </if>
+            <if test="remark != null and remark != ''">
+                remark = #{remark},
+            </if>
+            update_time = sysdate()
+        </set>
+        where sys_config.config_id = #{configId}
+    </update>
+
+    <!-- 新增参数信息 -->
+    <insert id="insertSysConfig" parameterType="com.stitchcodes.core.domain.SysConfig">
+        insert into sys_config
+        (
+        <if test="configName != null and configName != ''">
+            config_name,
+        </if>
+        <if test="configKey != null and configKey != ''">
+            config_key,
+        </if>
+        <if test="configValue != null and configValue != ''">
+            config_value,
+        </if>
+        <if test="configType != null and configType != ''">
+            config_type,
+        </if>
+        <if test="createUser != null and createUser != ''">
+            create_user,
+        </if>
+        <if test="remark != null and remark != ''">
+            remark,
+        </if>
+        create_time)
+        values
+        (
+        <if test="configName != null and configName != ''">
+            #{configName},
+        </if>
+        <if test="configKey != null and configKey != ''">
+            #{configKey},
+        </if>
+        <if test="configValue != null and configValue != ''">
+            #{configValue},
+        </if>
+        <if test="configType != null and configType != ''">
+            #{configType},
+        </if>
+        <if test="createUser != null and createUser != ''">
+            #{createUser},
+        </if>
+        <if test="remark != null and remark != ''">
+            #{remark},
+        </if>
+        sysdate()
+        )
+    </insert>
+
+    <!-- 删除系统参数 -->
+    <update id="deleteSysConfig" parameterType="Long">
+        update sys_config
+        set is_delete = '1'
+        where config_id = #{configId}
+    </update>
+
+    <select id="checkSysConfigKeyUnique" resultMap="SysConfigResult">
+        <include refid="selectConfigVo"/>
+        where config_key = #{configKey} and is_delete = '0' limit 1
+    </select>
+</mapper>
