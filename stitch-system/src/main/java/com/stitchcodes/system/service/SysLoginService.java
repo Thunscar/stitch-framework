@@ -95,18 +95,18 @@ public class SysLoginService {
             AsyncManager.me().execute(AsyncFactory.recordLoginInfo(userName, UserConstants.LOGIN_FAIL, OperateConstants.LOGIN_OPERATION, message));
             throw new StitchException(message);
         }
-        //用户名长度校验
-        if (userName.length() < UserConstants.USERNAME_MIN_LENGTH || userName.length() > UserConstants.USERNAME_MAX_LENGTH) {
-            String message = "The Username Length Does not Comply With The Rule";
-            AsyncManager.me().execute(AsyncFactory.recordLoginInfo(userName, UserConstants.LOGIN_FAIL, OperateConstants.LOGIN_OPERATION, message));
-            throw new StitchException(message);
-        }
-        //密码长度校验
-        if (password.length() < UserConstants.PASSWORD_MIN_LENGTH || password.length() > UserConstants.PASSWORD_MAX_LENGTH) {
-            String message = "The Password Length Does Not Comply With The Rule";
-            AsyncManager.me().execute(AsyncFactory.recordLoginInfo(userName, UserConstants.LOGIN_FAIL, OperateConstants.LOGIN_OPERATION, message));
-            throw new StitchException(message);
-        }
+//        //用户名长度校验
+//        if (userName.length() < UserConstants.USERNAME_MIN_LENGTH || userName.length() > UserConstants.USERNAME_MAX_LENGTH) {
+//            String message = "The Username Length Does not Comply With The Rule";
+//            AsyncManager.me().execute(AsyncFactory.recordLoginInfo(userName, UserConstants.LOGIN_FAIL, OperateConstants.LOGIN_OPERATION, message));
+//            throw new StitchException(message);
+//        }
+//        //密码长度校验
+//        if (password.length() < UserConstants.PASSWORD_MIN_LENGTH || password.length() > UserConstants.PASSWORD_MAX_LENGTH) {
+//            String message = "The Password Length Does Not Comply With The Rule";
+//            AsyncManager.me().execute(AsyncFactory.recordLoginInfo(userName, UserConstants.LOGIN_FAIL, OperateConstants.LOGIN_OPERATION, message));
+//            throw new StitchException(message);
+//        }
         //IP黑名单检查
         String ipBlackList = configService.getConfigValueByKey(ConfigConstants.LOGIN_IP_BLACK_LIST);
         if (StringUtils.isNotEmpty(ipBlackList) && IpUtils.isMatch(ipBlackList, IpUtils.getIpAddr())) {

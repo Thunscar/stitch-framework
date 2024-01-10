@@ -53,7 +53,7 @@ public class UserConstants {
     public static final String DIR_TYPE = "M";
 
     /*菜单类型*/
-    public static final String MENU_TYPE = "C";
+    public static final String MENU_TYPE = "M";
 
     /*非外链菜单*/
     public static final String NO_FRAME = "0";

@@ -22,7 +22,7 @@ import java.util.List;
 import static com.stitchcodes.common.constant.ConfigConstants.*;
 
 /**
- * @author chenwei
+ * @author stitch
  * @description 针对表【sys_config(系统配置表)】的数据库操作Service实现
  * @createDate 2023-04-28 13:20:02
  */

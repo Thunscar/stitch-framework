@@ -17,7 +17,7 @@ public class CommonConstants {
     public static final String SUCCESS = "0";
 
     /*失败*/
-    public static final String FAIL = "-1";
+    public static final String FAIL = "1";
 
     /*用户token Key*/
     public static final String LOGIN_USER_KEY = "token_key";

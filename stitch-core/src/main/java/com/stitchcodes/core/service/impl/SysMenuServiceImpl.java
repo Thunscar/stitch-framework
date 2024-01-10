@@ -182,11 +182,14 @@ public class SysMenuServiceImpl implements SysMenuService {
         if (isParentView(menu)) {
             component = UserConstants.PARENT_MENU;
         }
-        if (UserConstants.OUTER_LINK.equals(menu.getIsFrame()) && StringUtils.isNotEmpty(menu.getPath())) {
+        if (isOuterLink(menu)) {
             component = UserConstants.OUTER_LINK;
         }
-        if (UserConstants.DIR_TYPE.equals(menu.getMenuType()) && CollectionUtils.isEmpty(menu.getChildrenMenu()) && StringUtils.isNotEmpty(menu.getComponent())) {
+        if (isFuncView(menu)) {
             component = menu.getComponent();
+            if (StringUtils.isEmpty(component)) {
+                component = menu.getPath();
+            }
         }
         return component;
     }
@@ -195,9 +198,19 @@ public class SysMenuServiceImpl implements SysMenuService {
         return UserConstants.ROOT_PARENT_ID == menu.getParentId() && UserConstants.MENU_TYPE.equals(menu.getMenuType()) && UserConstants.NO_FRAME.equals(menu.getIsFrame());
     }
 
+    // 是父目录
     private boolean isParentView(SysMenu menu) {
-//        return UserConstants.DIR_TYPE.equals(menu.getMenuType()) && UserConstants.ROOT_PARENT_ID != menu.getParentId();
         return UserConstants.DIR_TYPE.equals(menu.getMenuType()) && CollectionUtils.isNotEmpty(menu.getChildrenMenu());
+    }
+
+    // 是外链
+    private boolean isOuterLink(SysMenu menu) {
+        return UserConstants.OUTER_LINK.equals(menu.getIsFrame()) && StringUtils.isNotEmpty(menu.getPath());
+    }
+
+    // 是功能菜单
+    private boolean isFuncView(SysMenu menu) {
+        return UserConstants.DIR_TYPE.equals(menu.getMenuType()) && CollectionUtils.isEmpty(menu.getChildrenMenu());
     }
 }
 

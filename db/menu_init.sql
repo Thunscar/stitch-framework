@@ -24,3 +24,25 @@ create table stitch.sys_menu
 )
     comment '系统菜单表';
 
+
+
+insert into sys_menu values (1,'系统管理',0,1,'/system','','','0','0','M','1','0','','','0','',sysdate(),'',sysdate(),'系统管理目录');
+insert into sys_menu values (2,'权限管理',0,2,'/perms','','','0','0','M','1','0','','','0','',sysdate(),'',sysdate(),'权限管理目录');
+insert into sys_menu values (3,'系统监控',0,3,'/monitor','','','0','0','M','1','0','','','0','',sysdate(),'',sysdate(),'系统监控目录');
+
+insert into sys_menu values (101,'菜单管理',1,1,'/system/menu','','','0','0','M','1','0','','','0','',sysdate(),'',sysdate(),'菜单管理菜单');
+insert into sys_menu values (102,'参数管理',1,2,'/system/config','','','0','0','M','1','0','','','0','',sysdate(),'',sysdate(),'参数管理菜单');
+insert into sys_menu values (103,'字典管理',1,3,'/system/dict','','','0','0','M','1','0','','','0','',sysdate(),'',sysdate(),'字典管理菜单');
+insert into sys_menu values (104,'文件管理',1,4,'/system/file','','','0','0','M','1','0','','','0','',sysdate(),'',sysdate(),'文件管理菜单');
+insert into sys_menu values (105,'消息管理',1,5,'/system/message','','','0','0','M','1','0','','','0','',sysdate(),'',sysdate(),'消息管理菜单');
+
+insert into sys_menu values (106,'用户管理',2,1,'/perms/user','','','0','0','M','1','0','','','0','',sysdate(),'',sysdate(),'用户管理菜单');
+insert into sys_menu values (107,'角色管理',2,2,'/perms/role','','','0','0','M','1','0','','','0','',sysdate(),'',sysdate(),'角色管理菜单');
+insert into sys_menu values (108,'部门管理',2,3,'/perms/dept','','','0','0','M','1','0','','','0','',sysdate(),'',sysdate(),'部门管理菜单');
+insert into sys_menu values (109,'岗位管理',2,4,'/perms/post','','','0','0','M','1','0','','','0','',sysdate(),'',sysdate(),'岗位管理菜单');
+
+insert into sys_menu values (110,'系统日志',3,1,'/monitor/log','','','0','0','M','1','0','','','0','',sysdate(),'',sysdate(),'系统日志菜单');
+insert into sys_menu values (111,'登录日志',110,1,'/monitor/log/loginlog','','','0','0','M','1','0','','','0','',sysdate(),'',sysdate(),'登录日志菜单');
+insert into sys_menu values (112,'操作日志',110,2,'/monitor/log/operlog','','','0','0','M','1','0','','','0','',sysdate(),'',sysdate(),'操作日志菜单');
+
+
