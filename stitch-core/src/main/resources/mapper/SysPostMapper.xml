@@ -55,9 +55,10 @@
     </insert>
 
     <delete id="deletePost" parameterType="Long">
-        update sys_post
-        set is_delete = '1'
-        where post_id = #{postId}
+        update sys_post set is_delete = '1' where post_id in
+        <foreach collection="array" item="postId" open="(" close=")" separator=",">
+            #{postId}
+        </foreach>
     </delete>
     
     <update id="updatePost" parameterType="SysPost">
@@ -76,7 +77,7 @@
         <include refid="selectPostVo"/>
         <where>
             <if test="postCode != null and postCode != ''">
-                and post_code = #{postCode}
+                and post_code like concat('%',#{postCode},'%')
             </if>
             <if test="postName != null and postName != ''">
                 and post_name like concat('%',#{postName},'%')
@@ -85,6 +86,19 @@
                 and status = #{status}
             </if>
             and is_delete = '0'
+            order by post_sort
         </where>
+    </select>
+
+    <select id="checkPostCodeUnique" parameterType="SysPost" resultMap="SysPostResult">
+        select post_id, post_code
+        from sys_post
+        where post_code = #{postCode}
+          and is_delete = '0'
+        limit 1
+    </select>
+    <select id="selectSysPostById" resultType="com.stitchcodes.core.domain.SysPost">
+        <include refid="selectPostVo"/>
+        where post_id = #{postId} and is_delete = '0'
     </select>
 </mapper>

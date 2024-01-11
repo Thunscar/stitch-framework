@@ -102,5 +102,4 @@ public class SysUserController extends BaseController {
         return AjaxResult.success();
     }
 
-
 }

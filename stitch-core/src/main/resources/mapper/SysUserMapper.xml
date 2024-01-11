@@ -167,6 +167,9 @@
             <if test="phone != null and phone != ''">
                 and u.phone like concat('%',#{phone},'%')
             </if>
+            <if test="email != null and email != ''">
+                and u.email like concat('%',#{email},'%')
+            </if>
             <if test="sex != null and sex != ''">
                 and u.sex = #{sex}
             </if>
@@ -227,7 +230,7 @@
 
     <select id="selectUserById" parameterType="Long" resultMap="SysUserResult">
         <include refid="selectUserDetailVo"/>
-        where u.user_id = #{user_id}
+        where u.user_id = #{user_id} and u.is_delete = '0'
     </select>
 
     <select id="checkUserNameUnique" parameterType="String" resultMap="SysUserResult">

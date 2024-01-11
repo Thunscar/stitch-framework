@@ -3,6 +3,8 @@ package com.stitchcodes.core.mapper;
 
 import com.stitchcodes.core.domain.SysPost;
 
+import java.util.List;
+
 /**
  * @author chenwei
  * @description 针对表【sys_post(岗位信息表)】的数据库操作Mapper
@@ -24,7 +26,7 @@ public interface SysPostMapper {
      * @param postId 岗位ID
      * @return 结果
      */
-    int deletePost(Long postId);
+    int deletePost(Long[] postIds);
 
     /**
      * 更新岗位
@@ -40,8 +42,22 @@ public interface SysPostMapper {
      * @param sysPost 系统岗位信息
      * @return 结果
      */
-    int selectPostList(SysPost sysPost);
+    List<SysPost> selectPostList(SysPost sysPost);
 
+    /**
+     * 检查岗位编码唯一性
+     * @param sysPost 岗位信息
+     * @return
+     */
+    SysPost checkPostCodeUnique(SysPost sysPost);
+
+
+    /**
+     * 根据岗位ID查找岗位
+     * @param postId 岗位ID
+     * @return
+     */
+    SysPost selectSysPostById(Long postId);
 
 }
 

@@ -9,7 +9,4 @@
             <result property="postId" column="post_id" jdbcType="BIGINT"/>
     </resultMap>
 
-    <sql id="Base_Column_List">
-        user_id,post_id
-    </sql>
 </mapper>
