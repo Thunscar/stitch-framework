@@ -102,6 +102,18 @@ public class SysUserController extends BaseController {
         return AjaxResult.success();
     }
 
-    @GetMapping("/")
+    @GetMapping("/allocated")
+    public TableData allocatedUsers(SysUser sysUser) {
+        startPage();
+        List<SysUser> sysUsers = userService.selectAllocatedList(sysUser);
+        return getTableData(sysUsers);
+    }
+
+    @GetMapping("/unallocated")
+    public TableData unAllocatedUsers(SysUser sysUser) {
+        startPage();
+        List<SysUser> sysUsers = userService.selectUnAllocatedList(sysUser);
+        return getTableData(sysUsers);
+    }
 
 }
