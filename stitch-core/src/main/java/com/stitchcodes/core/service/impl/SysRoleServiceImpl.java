@@ -1,25 +1,24 @@
 package com.stitchcodes.core.service.impl;
 
 import com.stitchcodes.common.annotation.DataScope;
-import com.stitchcodes.common.constant.UserConstants;
 import com.stitchcodes.common.exception.StitchException;
 import com.stitchcodes.common.utils.CollectionUtils;
 import com.stitchcodes.common.utils.ObjectUtils;
 import com.stitchcodes.common.utils.SpringUtils;
 import com.stitchcodes.common.utils.StringUtils;
 import com.stitchcodes.core.domain.SysRole;
+import com.stitchcodes.core.domain.SysRoleMenu;
 import com.stitchcodes.core.mapper.SysRoleMapper;
+import com.stitchcodes.core.mapper.SysRoleMenuMapper;
 import com.stitchcodes.core.service.SysRoleService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
- * @author chenwei
+ * @author stitch
  * @description 针对表【sys_role(角色信息表)】的数据库操作Service实现
  * @createDate 2023-04-28 13:20:02
  */
@@ -28,6 +27,8 @@ public class SysRoleServiceImpl implements SysRoleService {
 
     @Resource
     private SysRoleMapper roleMapper;
+    @Resource
+    private SysRoleMenuMapper roleMenuMapper;
 
     @Override
     public Set<String> selectRolePermissionByUserId(Long userId) {
@@ -63,18 +64,46 @@ public class SysRoleServiceImpl implements SysRoleService {
     }
 
     @Override
-    public boolean createSysRole(SysRole role) {
-
-        return false;
+    @Transactional
+    public int createSysRole(SysRole role) {
+        //保存角色信息
+        roleMapper.insertRole(role);
+        //保存角色功能权限
+        return saveRoleMenu(role);
     }
 
     @Override
-    public boolean checkRoleKeyUnique(SysRole role) {
-        SysRole queryRole = selectRoleByKey(role.getRoleKey());
-        if (ObjectUtils.isNotNull(queryRole) && queryRole.getRoleId().longValue() != role.getRoleId()) {
-            return UserConstants.UN_UNIQUE;
+    public int saveRoleMenu(SysRole role) {
+        int result = 1;
+        List<SysRoleMenu> sysRoleMenus = new ArrayList<>();
+        for (Long menuId : role.getMenuIds()) {
+            SysRoleMenu sysRoleMenu = new SysRoleMenu();
+            sysRoleMenu.setRoleId(role.getRoleId());
+            sysRoleMenu.setMenuId(menuId);
+            sysRoleMenus.add(sysRoleMenu);
         }
-        return UserConstants.UNIQUE;
+        if (CollectionUtils.isNotEmpty(sysRoleMenus)) {
+            result = roleMenuMapper.insertRoleMenu(sysRoleMenus);
+        }
+        return result;
+    }
+
+    @Override
+    public void checkRoleKeyUnique(SysRole role) {
+        Long roleId = ObjectUtils.isNull(role.getRoleId()) ? -1L:role.getRoleId();
+        SysRole queryRole = selectRoleByKey(role.getRoleKey());
+        if (ObjectUtils.isNotNull(queryRole) && queryRole.getRoleId().longValue() != roleId.longValue()) {
+            throw new StitchException("角色权限标识符不唯一");
+        }
+    }
+
+    @Override
+    public void checkRoleNameUnique(SysRole role) {
+        Long roleId = ObjectUtils.isNull(role.getRoleId()) ? -1L:role.getRoleId();
+        SysRole queryRole = selectRoleByName(role.getRoleName());
+        if (ObjectUtils.isNotNull(queryRole) && queryRole.getRoleId().longValue() != roleId.longValue()) {
+            throw new StitchException("角色名称不唯一");
+        }
     }
 
     @Override
@@ -83,20 +112,27 @@ public class SysRoleServiceImpl implements SysRoleService {
     }
 
     @Override
-    public boolean removeSysRole(Long roleId) {
-        //TODO：需要同步删除角色关联表信息
-        return roleMapper.removeRoleById(roleId) > 0;
+    public SysRole selectRoleByName(String roleName) {
+        return roleMapper.selectSysRoleByName(roleName);
     }
 
     @Override
-    public boolean removeSysRoleBatch(Long[] roleIds) {
-        //TODO：需要同步删除角色关联表信息
-        return roleMapper.removeRoleBatch(roleIds) > 0;
+    @Transactional
+    public int removeSysRoleBatch(Long[] roleIds) {
+        roleMapper.removeRoleBatch(roleIds);
+        return roleMenuMapper.deleteAuthorizedMenus(roleIds);
     }
 
     @Override
-    public boolean updateSysRole(SysRole role) {
-        return roleMapper.updateRole(role) > 0;
+    public int updateSysRole(SysRole role) {
+        roleMapper.updateRole(role);
+        roleMenuMapper.deleteAuthorizedMenu(role.getRoleId());
+        return saveRoleMenu(role);
+    }
+
+    @Override
+    public Long[] selectAuthorizedMenu(Long roleId) {
+        return roleMenuMapper.selectAuthorizedMenu(roleId);
     }
 }
 

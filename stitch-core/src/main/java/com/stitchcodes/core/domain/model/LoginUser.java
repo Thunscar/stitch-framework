@@ -86,6 +86,13 @@ public class LoginUser implements UserDetails {
         this.permissions = permissions;
     }
 
+    /**
+     * 判断用户是否是管理员
+     */
+    public boolean isAdmin() {
+        return this.userId != null && 1L == this.userId;
+    }
+
     public Long getUserId() {
         return userId;
     }

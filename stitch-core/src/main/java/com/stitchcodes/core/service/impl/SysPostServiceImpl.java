@@ -39,8 +39,9 @@ public class SysPostServiceImpl implements SysPostService {
 
     @Override
     public void checkPostCodeUnique(SysPost sysPost) {
+        Long postId = ObjectUtils.isNull(sysPost.getPostId()) ? -1L : sysPost.getPostId();
         SysPost post = postMapper.checkPostCodeUnique(sysPost);
-        if (ObjectUtils.isNotNull(post) && post.getPostId().longValue() != sysPost.getPostId()) {
+        if (ObjectUtils.isNotNull(post) && post.getPostId().longValue() != postId) {
             throw new StitchException("岗位编码已存在");
         }
     }

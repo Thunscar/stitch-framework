@@ -80,7 +80,7 @@ public interface SysConfigService {
      * @param config 参数配置实体
      * @return 是否唯一（true唯一false不唯一）
      */
-    boolean checkSysConfigKeyUnique(SysConfig config);
+    void checkSysConfigKeyUnique(SysConfig config);
 
     /**
      * 获取验证码开关

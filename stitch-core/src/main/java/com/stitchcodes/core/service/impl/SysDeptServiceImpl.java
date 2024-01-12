@@ -52,12 +52,12 @@ public class SysDeptServiceImpl implements SysDeptService {
     }
 
     @Override
-    public boolean checkDeptNameUnique(SysDept dept) {
+    public void checkDeptNameUnique(SysDept dept) {
+        Long deptId = ObjectUtils.isNull(dept.getDeptId()) ? -1L : dept.getDeptId();
         SysDept sysDept = deptMapper.checkDeptNameUnique(dept);
-        if (ObjectUtils.isNotNull(sysDept) && (ObjectUtils.isNull(dept.getDeptId()) || sysDept.getDeptId().longValue() != dept.getDeptId())) {
-            return UserConstants.UN_UNIQUE;
+        if (ObjectUtils.isNotNull(sysDept) && sysDept.getDeptId().longValue() != deptId.longValue()) {
+            throw new StitchException("部门名称不唯一");
         }
-        return UserConstants.UNIQUE;
     }
 
     @Override

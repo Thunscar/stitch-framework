@@ -194,11 +194,9 @@ create table if not exists sys_role_dept
 
 create table if not exists sys_role_menu
 (
-    role_id bigint auto_increment comment '角色ID'
-        primary key,
+    role_id bigint not null comment '角色ID',
     menu_id bigint not null comment '菜单ID',
-    constraint sys_role_menu_pk2
-        unique (menu_id)
+    primary key(role_id, menu_id)
 )
     comment '角色菜单表';
 
@@ -239,13 +237,9 @@ create table if not exists sys_user_post
 
 create table if not exists sys_user_role
 (
-    user_id bigint not null comment '用户ID'
-        primary key,
+    user_id bigint not null comment '用户ID',
     role_id bigint not null comment '角色ID',
-    constraint sys_user_role_pk
-        unique (user_id),
-    constraint sys_user_role_pk3
-        unique (role_id)
+    primary key (user_id,role_id)
 )
     comment '用户角色关联表';
 

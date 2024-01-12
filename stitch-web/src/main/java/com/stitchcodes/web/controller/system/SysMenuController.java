@@ -37,12 +37,10 @@ public class SysMenuController extends BaseController {
 
     @PostMapping
     public AjaxResult add(@RequestBody SysMenu menu) {
-        if (!menuService.checkSysMenuNameUnique(menu)) {
-            return AjaxResult.error("菜单名称已存在");
-        }
+        //检查菜单名称是否唯一
+        menuService.checkSysMenuNameUnique(menu);
         //检查父级ID合法性
         menuService.checkParentIdValid(menu);
-
         menu.setCreateUser(AuthUtils.getLoginUserName());
         menuService.createSysMenu(menu);
         return AjaxResult.success();
@@ -61,9 +59,8 @@ public class SysMenuController extends BaseController {
 
     @PutMapping
     public AjaxResult update(@RequestBody SysMenu menu) {
-        if (!menuService.checkSysMenuNameUnique(menu)) {
-            return AjaxResult.error("菜单名称已存在");
-        }
+        //检查菜单名称是否唯一
+        menuService.checkSysMenuNameUnique(menu);
         //检查父级ID合法性
         menuService.checkParentIdValid(menu);
         menu.setUpdateUser(AuthUtils.getLoginUserName());

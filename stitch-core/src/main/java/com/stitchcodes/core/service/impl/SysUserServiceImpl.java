@@ -38,12 +38,12 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Override
     public List<SysUser> selectAllocatedList(SysUser sysUser) {
-        return userMapper.selectAllotedUserList(sysUser);
+        return userMapper.selectAllocatedUserList(sysUser);
     }
 
     @Override
     public List<SysUser> selectUnAllocatedList(SysUser sysUser) {
-        return userMapper.selectUnallotedUserList(sysUser);
+        return userMapper.selectUnallocatedUserList(sysUser);
     }
 
     @Override
@@ -68,8 +68,9 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Override
     public void checkUserNameUnique(SysUser sysUser) {
+        Long userId = ObjectUtils.isNull(sysUser.getUserId()) ? -1L:sysUser.getUserId();
         SysUser queryUser = userMapper.checkUserNameUnique(sysUser.getUserName());
-        if (ObjectUtils.isNotNull(queryUser) && queryUser.getUserId().longValue() != sysUser.getUserId()) {
+        if (ObjectUtils.isNotNull(queryUser) && queryUser.getUserId().longValue() != userId.longValue()) {
             throw new StitchException("用户名已存在");
         }
     }

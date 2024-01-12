@@ -1,7 +1,6 @@
 package com.stitchcodes.web.controller.system;
 
 import com.stitchcodes.common.api.AjaxResult;
-import com.stitchcodes.common.constant.UserConstants;
 import com.stitchcodes.common.controller.BaseController;
 import com.stitchcodes.common.exception.StitchException;
 import com.stitchcodes.core.domain.SysDept;
@@ -39,10 +38,8 @@ public class SysDeptController extends BaseController {
 
     @PostMapping
     public AjaxResult add(@RequestBody SysDept dept) {
-        if (deptService.checkDeptNameUnique(dept) == UserConstants.UN_UNIQUE) {
-            //不唯一
-            throw new StitchException("部门名称重复");
-        }
+        //检查参数键名是否唯一
+        deptService.checkDeptNameUnique(dept);
         //检查上级部门是否合法
         deptService.checkParentIdValid(dept);
         dept.setCreateUser(AuthUtils.getLoginUserName());
@@ -52,9 +49,8 @@ public class SysDeptController extends BaseController {
 
     @PutMapping
     public AjaxResult update(@RequestBody SysDept dept) {
-        if (deptService.checkDeptNameUnique(dept) == UserConstants.UN_UNIQUE) {
-            throw new StitchException("部门名称重复");
-        }
+        //检查参数键名是否唯一
+        deptService.checkDeptNameUnique(dept);
         //检查上级部门是否合法
         deptService.checkParentIdValid(dept);
         dept.setUpdateUser(AuthUtils.getLoginUserName());

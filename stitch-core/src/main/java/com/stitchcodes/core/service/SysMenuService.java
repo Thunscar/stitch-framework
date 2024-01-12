@@ -78,7 +78,7 @@ public interface SysMenuService {
      * @param menu 菜单
      * @return true(唯一) false(不唯一)
      */
-    boolean checkSysMenuNameUnique(SysMenu menu);
+    void checkSysMenuNameUnique(SysMenu menu);
 
     /**
      * 检查菜单是否有子菜单

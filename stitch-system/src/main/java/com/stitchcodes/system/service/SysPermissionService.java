@@ -43,7 +43,7 @@ public class SysPermissionService {
     }
 
     /**
-     * 获取用户菜单权限
+     * 获取用户菜单权限标识符
      *
      * @param user 用户
      * @return 权限列表

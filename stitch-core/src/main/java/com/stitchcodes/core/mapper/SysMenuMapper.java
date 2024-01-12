@@ -99,7 +99,7 @@ public interface SysMenuMapper {
      * @param menuName 菜单名称
      * @return 菜单列表
      */
-    List<SysMenu> selectSysMenuByName(SysMenu sysMenu);
+    SysMenu selectSysMenuByName(SysMenu sysMenu);
 
     /**
      * 根据父ID查询子菜单数量

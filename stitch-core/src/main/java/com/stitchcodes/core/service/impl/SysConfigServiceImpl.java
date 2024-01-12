@@ -125,13 +125,12 @@ public class SysConfigServiceImpl implements SysConfigService {
     }
 
     @Override
-    public boolean checkSysConfigKeyUnique(SysConfig config) {
+    public void checkSysConfigKeyUnique(SysConfig config) {
         Long configId = ObjectUtils.isNull(config.getConfigId()) ? -1L : config.getConfigId();
         SysConfig sysConfig = configMapper.checkSysConfigKeyUnique(config.getConfigKey());
-        if (ObjectUtils.isNotNull(sysConfig) && sysConfig.getConfigId().longValue() != configId) {
-            return UserConstants.UN_UNIQUE;
+        if (ObjectUtils.isNotNull(sysConfig) && sysConfig.getConfigId().longValue() != configId.longValue()) {
+            throw new StitchException("参数键不唯一");
         }
-        return UserConstants.UNIQUE;
     }
 
     @Override

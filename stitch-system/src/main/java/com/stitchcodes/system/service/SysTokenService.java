@@ -76,7 +76,7 @@ public class SysTokenService {
     }
 
     /**
-     * 设置当前登录用户，刷新token过期时间
+     * 为用户刷新token
      *
      * @param loginUser 当前登录用户
      */

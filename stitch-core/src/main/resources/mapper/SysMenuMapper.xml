@@ -240,13 +240,10 @@
           and m.visible = '1'
         order by m.parent_id, m.order_num
     </select>
-    <select id="selectSysMenuByName" parameterType="SysMenu" resultMap="SysMenuResult">
+    <select id="selectSysMenuByName"  resultMap="SysMenuResult">
         <include refid="selectMenuVo"/>
         where menu_name = #{menuName}
-        <if test="menuId != null and menuId != ''">
-            and menu_id <![CDATA[<>]]> #{menuId}
-        </if>
-        and is_delete = '0'
+        and is_delete = '0' limit 1
     </select>
     <select id="selectCountByParentId" resultType="Long">
         select count(1)

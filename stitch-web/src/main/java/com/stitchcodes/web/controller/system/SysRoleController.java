@@ -4,9 +4,13 @@ import com.stitchcodes.common.api.AjaxResult;
 import com.stitchcodes.common.api.TableData;
 import com.stitchcodes.common.controller.BaseController;
 import com.stitchcodes.common.excel.ExcelUtil;
+import com.stitchcodes.common.utils.ObjectUtils;
 import com.stitchcodes.core.domain.SysRole;
+import com.stitchcodes.core.domain.model.LoginUser;
 import com.stitchcodes.core.service.SysRoleService;
 import com.stitchcodes.core.utils.AuthUtils;
+import com.stitchcodes.system.service.SysPermissionService;
+import com.stitchcodes.system.service.SysTokenService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -25,6 +29,10 @@ public class SysRoleController extends BaseController {
 
     @Resource
     private SysRoleService roleService;
+    @Resource
+    private SysPermissionService permissionService;
+    @Resource
+    private SysTokenService tokenService;
 
     @GetMapping("/list")
     public TableData getRoleList(SysRole role) {
@@ -37,8 +45,7 @@ public class SysRoleController extends BaseController {
     public AjaxResult getRoleById(@PathVariable Long roleId) {
         //检查角色的访问权限
         roleService.checkRoleDataScope(roleId);
-        SysRole sysRole = roleService.selectSysRoleById(roleId);
-        return AjaxResult.success(sysRole);
+        return success(roleService.selectSysRoleById(roleId));
     }
 
     @DeleteMapping("/{roleIds}")
@@ -48,27 +55,39 @@ public class SysRoleController extends BaseController {
             roleService.checkRoleDataScope(roleId);
         }
         //移除角色信息
-        roleService.removeSysRoleBatch(roleIds);
-        return AjaxResult.success();
+        return toAjax(roleService.removeSysRoleBatch(roleIds));
     }
 
     @PostMapping
     public AjaxResult create(@RequestBody SysRole role) {
+        //检查角色名称是否重复
+        roleService.checkRoleNameUnique(role);
         //检查角色Key是否重复
         roleService.checkRoleKeyUnique(role);
 
         role.setCreateUser(AuthUtils.getLoginUserName());
-        roleService.createSysRole(role);
-        return AjaxResult.success();
+        return toAjax(roleService.createSysRole(role));
     }
 
     @PutMapping
     public AjaxResult update(@RequestBody SysRole role) {
+        //检查角色数据权限
+        roleService.checkRoleDataScope(role.getRoleId());
+        //检查角色名称是否重复
+        roleService.checkRoleNameUnique(role);
+        //检查角色Key是否重复
         roleService.checkRoleKeyUnique(role);
 
         role.setUpdateUser(AuthUtils.getLoginUserName());
-        roleService.updateSysRole(role);
-        return AjaxResult.success();
+        if (roleService.updateSysRole(role) > 0) {
+            LoginUser loginUser = AuthUtils.getLoginUser();
+            if (ObjectUtils.isNotNull(loginUser.getUser()) && !loginUser.getUser().isAdmin()){
+                loginUser.setPermissions(permissionService.getMenuPermission(loginUser.getUser()));
+                tokenService.setLoginUser(loginUser);
+            }
+            return success();
+        }
+        return error("修改角色[" + role.getRoleName() + "]失败");
     }
 
     @PostMapping("/export")
@@ -76,5 +95,10 @@ public class SysRoleController extends BaseController {
         List<SysRole> sysRoles = roleService.selectSysRoleList(role);
         ExcelUtil<SysRole> excelUtil = new ExcelUtil<>(SysRole.class);
         excelUtil.exportExcel("角色信息", sysRoles, response);
+    }
+
+    @GetMapping("/auth/{roleId}")
+    public AjaxResult auth(@PathVariable Long roleId) {
+        return success(roleService.selectAuthorizedMenu(roleId));
     }
 }

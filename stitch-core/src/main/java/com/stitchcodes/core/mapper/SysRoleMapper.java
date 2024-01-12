@@ -70,12 +70,20 @@ public interface SysRoleMapper {
     int insertRole(SysRole role);
 
     /**
-     * 检查角色Key是否唯一
+     * 根据角色权限标识符查找角色
      *
      * @param roleKey 角色Key
      * @return 结果
      */
     SysRole selectSysRoleByKey(String roleKey);
+
+
+    /**
+     * 根据角色名称查找角色
+     * @param roleName 角色名称
+     * @return
+     */
+    SysRole selectSysRoleByName(String roleName);
 
 }
 

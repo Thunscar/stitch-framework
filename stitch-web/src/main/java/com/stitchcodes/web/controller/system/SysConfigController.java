@@ -81,9 +81,8 @@ public class SysConfigController extends BaseController {
      */
     @PostMapping
     public AjaxResult add(@Valid @RequestBody SysConfig sysConfig) {
-        if (!configService.checkSysConfigKeyUnique(sysConfig)) {
-            return error("Failed to Create The Config Because The Parameter key Already Existed");
-        }
+        //检查参数键是否唯一
+        configService.checkSysConfigKeyUnique(sysConfig);
         sysConfig.setCreateUser(AuthUtils.getLoginUserName());
         return toAjax(configService.insertSysConfig(sysConfig));
     }
@@ -96,9 +95,8 @@ public class SysConfigController extends BaseController {
      */
     @PutMapping
     public AjaxResult update(@Valid @RequestBody SysConfig sysConfig) {
-        if (!configService.checkSysConfigKeyUnique(sysConfig)) {
-            return error("Failed to Create The Config Because The Parameter key Already Existed");
-        }
+        //检查参数键是否唯一
+        configService.checkSysConfigKeyUnique(sysConfig);
         sysConfig.setUpdateUser(AuthUtils.getLoginUserName());
         return toAjax(configService.updateSysConfig(sysConfig));
     }

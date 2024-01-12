@@ -49,7 +49,7 @@
                  left join sys_user u on u.user_id = ur.user_id
                  left join sys_dept d on d.dept_id = u.dept_id
     </sql>
-    <insert id="insertRole">
+    <insert id="insertRole" useGeneratedKeys="true" keyProperty="roleId">
         insert into sys_role (
         <if test="roleName != null and roleName != ''">role_name,</if>
         <if test="roleKey != null and roleKey != ''">role_key,</if>
@@ -77,10 +77,10 @@
     </update>
     <update id="removeRoleBatch">
         update sys_role
-        set is_delete = '0'
+        set is_delete = '1'
         where role_id in
-        <foreach collection="array" item="userId" open="(" close=")" separator=",">
-            #{userId}
+        <foreach collection="array" item="roleId" open="(" close=")" separator=",">
+            #{roleId}
         </foreach>
     </update>
     <update id="updateRole">
@@ -125,8 +125,6 @@
                 and r.status = #{status}
             </if>
             and r.is_delete = '0'
-            and u.is_delete = '0'
-            and d.is_delete = '0'
         </where>
         #{params.dataScope}
         order by r.role_sort
@@ -135,10 +133,14 @@
         <include refid="selectRoleInfo"/>
         where role_id = #{roleId} and is_delete = '0'
     </select>
-    <select id="selectSysRoleByKey" resultType="SysRole">
+    <select id="selectSysRoleByKey" resultMap="roleResultMap">
         <include refid="selectRoleInfo"/>
-        from sys_role
         where role_key = #{roleKey}
+        and is_delete = '0' limit 1
+    </select>
+    <select id="selectSysRoleByName" resultMap="roleResultMap">
+        <include refid="selectRoleInfo"/>
+        where role_name = #{roleName}
         and is_delete = '0' limit 1
     </select>
 

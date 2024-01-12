@@ -54,12 +54,21 @@ public class SysRole extends BaseEntity implements Serializable {
     /**
      * 菜单组
      */
-    private Long menuIds;
+    private Long[] menuIds;
 
     /**
      * 权限组
      */
     private Set<String> perms;
+
+
+    public Long[] getMenuIds() {
+        return menuIds;
+    }
+
+    public void setMenuIds(Long[] menuIds) {
+        this.menuIds = menuIds;
+    }
 
     public Long[] getDeptIds() {
         return deptIds;
@@ -67,14 +76,6 @@ public class SysRole extends BaseEntity implements Serializable {
 
     public void setDeptIds(Long[] deptIds) {
         this.deptIds = deptIds;
-    }
-
-    public Long getMenuIds() {
-        return menuIds;
-    }
-
-    public void setMenuIds(Long menuIds) {
-        this.menuIds = menuIds;
     }
 
     public Set<String> getPerms() {

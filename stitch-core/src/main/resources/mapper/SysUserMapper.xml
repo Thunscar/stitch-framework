@@ -189,7 +189,7 @@
         </where>
     </select>
 
-    <select id="selectAllotedUserList" parameterType="com.stitchcodes.core.domain.SysUser" resultMap="SysUserResult">
+    <select id="selectAllocatedUserList" parameterType="com.stitchcodes.core.domain.SysUser" resultMap="SysUserResult">
         <include refid="selectUserAllocated"/>
         <where>
             <if test="userName != null and userName != ''">
@@ -205,7 +205,7 @@
         </where>
     </select>
 
-    <select id="selectUnallotedUserList" parameterType="com.stitchcodes.core.domain.SysUser" resultMap="SysUserResult">
+    <select id="selectUnallocatedUserList" parameterType="com.stitchcodes.core.domain.SysUser" resultMap="SysUserResult">
         <include refid="selectUserAllocated"/>
         <where>
             <if test="userName != null and userName != ''">

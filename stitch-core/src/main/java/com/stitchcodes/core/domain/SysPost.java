@@ -1,5 +1,6 @@
 package com.stitchcodes.core.domain;
 
+import com.stitchcodes.common.annotation.Excel;
 import com.stitchcodes.common.domain.BaseEntity;
 
 import java.io.Serializable;
@@ -18,36 +19,31 @@ public class SysPost extends BaseEntity implements Serializable {
     /**
      * 岗位编码
      */
+    @Excel(name = "岗位编码", width = 20)
     private String postCode;
 
     /**
      * 岗位名称
      */
+    @Excel(name = "岗位名称", width = 20)
     private String postName;
 
     /**
      * 显示排序
      */
+    @Excel(name = "岗位排序", width = 10)
     private Integer postSort;
 
     /**
      * 状态(0正常1停用)
      */
+    @Excel(name = "岗位状态(0正常1停用)", width = 10)
     private String status;
 
     /**
      * 是否删除
      */
     private String isDelete;
-
-
-    public String getIsDelete() {
-        return isDelete;
-    }
-
-    public void setIsDelete(String isDelete) {
-        this.isDelete = isDelete;
-    }
 
     private static final long serialVersionUID = 1L;
 
@@ -119,6 +115,14 @@ public class SysPost extends BaseEntity implements Serializable {
      */
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(String isDelete) {
+        this.isDelete = isDelete;
     }
 
     @Override

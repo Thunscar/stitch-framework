@@ -5,7 +5,7 @@ import com.stitchcodes.core.domain.SysUser;
 import java.util.List;
 
 /**
- * @author chenwei
+ * @author stitch
  * @description 针对表【sys_user(系统用户表)】的数据库操作Mapper
  * @createDate 2023-04-29 14:12:11
  * @Entity generator.domain.SysUser
@@ -26,7 +26,7 @@ public interface SysUserMapper {
      * @param sysUser 用户信息
      * @return 结果
      */
-    List<SysUser> selectAllotedUserList(SysUser sysUser);
+    List<SysUser> selectAllocatedUserList(SysUser sysUser);
 
     /**
      * 条件查询未分配角色的用户列表
@@ -34,7 +34,7 @@ public interface SysUserMapper {
      * @param sysUser 用户信息
      * @return 结果
      */
-    List<SysUser> selectUnallotedUserList(SysUser sysUser);
+    List<SysUser> selectUnallocatedUserList(SysUser sysUser);
 
     /**
      * 通过用户名查询用户信息

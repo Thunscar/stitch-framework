@@ -123,8 +123,12 @@ public class SysMenuServiceImpl implements SysMenuService {
     }
 
     @Override
-    public boolean checkSysMenuNameUnique(SysMenu menu) {
-        return menuMapper.selectSysMenuByName(menu).isEmpty();
+    public void checkSysMenuNameUnique(SysMenu menu) {
+        Long menuId = ObjectUtils.isNull(menu.getMenuId()) ? -1L:menu.getMenuId();
+        SysMenu sysMenus = menuMapper.selectSysMenuByName(menu);
+        if(ObjectUtils.isNotNull(sysMenus) && sysMenus.getMenuId().longValue() != menuId.longValue()){
+            throw new StitchException("菜单名称不唯一");
+        }
     }
 
     @Override

@@ -41,7 +41,7 @@ public interface SysDeptService {
      * @param dept 部门信息
      * @return
      */
-    boolean checkDeptNameUnique(SysDept dept);
+    void checkDeptNameUnique(SysDept dept);
 
     /**
      * 创建系统部门
