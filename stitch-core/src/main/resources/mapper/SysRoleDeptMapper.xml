@@ -8,8 +8,21 @@
             <id property="roleId" column="role_id" jdbcType="BIGINT"/>
             <result property="deptId" column="dept_id" jdbcType="BIGINT"/>
     </resultMap>
+    <insert id="insertAllocatedDept">
+        insert into sys_role_dept (role_id, dept_id) values
+        <foreach collection="deptIds" index="index" item="item" separator=",">
+            (#{roleId},#{item})
+        </foreach>
+    </insert>
+    <delete id="removeAllocatedDept">
+        delete
+        from sys_role_dept
+        where role_id = #{roleId}
+    </delete>
 
-    <sql id="Base_Column_List">
-        role_id,dept_id
-    </sql>
+    <select id="selectAllocatedDept" resultType="java.lang.Long">
+        select dept_id
+        from sys_role_dept
+        where role_id = #{roleId}
+    </select>
 </mapper>

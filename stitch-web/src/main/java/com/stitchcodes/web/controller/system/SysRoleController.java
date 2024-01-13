@@ -41,11 +41,17 @@ public class SysRoleController extends BaseController {
         return getTableData(sysRoles);
     }
 
-    @GetMapping("/{roleId}")
-    public AjaxResult getRoleById(@PathVariable Long roleId) {
+    @GetMapping("/auth/{roleId}")
+    public AjaxResult getAuth(@PathVariable Long roleId) {
         //检查角色的访问权限
         roleService.checkRoleDataScope(roleId);
-        return success(roleService.selectSysRoleById(roleId));
+        return success(roleService.selectSysRoleContainsMenu(roleId));
+    }
+
+    @GetMapping("/data/{roleId}")
+    public AjaxResult getDataScope(@PathVariable Long roleId) {
+        //检查角色的访问权限
+        return success(roleService.selectSysRoleContainsDataScope(roleId));
     }
 
     @DeleteMapping("/{roleIds}")
@@ -54,6 +60,11 @@ public class SysRoleController extends BaseController {
         for (Long roleId : roleIds) {
             roleService.checkRoleDataScope(roleId);
         }
+        //检查是否可以被删除(已分配用户的角色不可删除)
+        for (Long roleId : roleIds) {
+            roleService.checkDeleteOperation(roleId);
+        }
+
         //移除角色信息
         return toAjax(roleService.removeSysRoleBatch(roleIds));
     }
@@ -81,7 +92,7 @@ public class SysRoleController extends BaseController {
         role.setUpdateUser(AuthUtils.getLoginUserName());
         if (roleService.updateSysRole(role) > 0) {
             LoginUser loginUser = AuthUtils.getLoginUser();
-            if (ObjectUtils.isNotNull(loginUser.getUser()) && !loginUser.getUser().isAdmin()){
+            if (ObjectUtils.isNotNull(loginUser.getUser()) && !loginUser.getUser().isAdmin()) {
                 loginUser.setPermissions(permissionService.getMenuPermission(loginUser.getUser()));
                 tokenService.setLoginUser(loginUser);
             }
@@ -97,8 +108,25 @@ public class SysRoleController extends BaseController {
         excelUtil.exportExcel("角色信息", sysRoles, response);
     }
 
-    @GetMapping("/auth/{roleId}")
-    public AjaxResult auth(@PathVariable Long roleId) {
-        return success(roleService.selectAuthorizedMenu(roleId));
+
+    @PostMapping("confer")
+    public AjaxResult conferRoles(Long roleId, Long[] userIds) {
+        //检查角色数据权限
+        roleService.checkRoleDataScope(roleId);
+        return toAjax(roleService.conferRole(roleId, userIds));
+    }
+
+    @PostMapping("/confer/cancel")
+    public AjaxResult cancelConferRoles(Long roleId, Long[] userIds) {
+        //检查角色数据权限
+        roleService.checkRoleDataScope(roleId);
+        return toAjax(roleService.cancelConferRole(roleId, userIds));
+    }
+
+    @PutMapping("/dataScope")
+    public AjaxResult updateDataScope(@RequestBody SysRole sysRole) {
+        //检查角色数据权限
+        roleService.checkRoleDataScope(sysRole.getRoleId());
+        return toAjax(roleService.updateDataScope(sysRole));
     }
 }

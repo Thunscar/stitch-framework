@@ -164,6 +164,14 @@ create table if not exists sys_post
 )
     comment '岗位信息表';
 
+create table if not exists sys_role_dept
+(
+    role_id bigint auto_increment comment '角色ID',
+    dept_id bigint not null comment '部门ID',
+    primary key (role_id,dept_id)
+)
+    comment '角色部门关联表';
+
 create table if not exists sys_role
 (
     role_id     bigint auto_increment comment '角色ID'
@@ -171,7 +179,7 @@ create table if not exists sys_role
     role_name   varchar(100)                       null comment '角色名称',
     role_key    varchar(100)                       null comment '角色权限字符串',
     role_sort   int      default 0                 null comment '显示顺序',
-    data_scope  char     default '1'               null comment '数据范围(1全部数据权限2自定义数据权限3本部门数据权限4本部门以下数据权限)',
+    data_scope  char     default '0'               null comment '数据范围(0全部数据权限1自定义数据权限2本部门数据权限3本部门以下数据权限4本人数据权限)',
     status      char     default '0'               null comment '状态(0正常1停用)',
     is_delete   char     default '0'               null comment '是否删除(0存在1已删除)',
     create_user varchar(100)                       null comment '创建人',
@@ -181,16 +189,6 @@ create table if not exists sys_role
     remark      varchar(500)                       null comment '备注'
 )
     comment '角色信息表';
-
-create table if not exists sys_role_dept
-(
-    role_id bigint auto_increment comment '角色ID'
-        primary key,
-    dept_id bigint not null comment '部门ID',
-    constraint sys_role_dept_pk2
-        unique (dept_id)
-)
-    comment '角色部门关联表';
 
 create table if not exists sys_role_menu
 (

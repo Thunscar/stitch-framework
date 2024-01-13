@@ -205,10 +205,8 @@
                 u.phone like concat ('%',#{phone},'%')
             </if>
             and u.is_delete = '0'
-            and (r.role_id != #{roleId} or r.role_id is null)
             and u.user_id not in
-            (select u.user_id from sys_user u inner join sys_user_role ur on u.user_id = ur.user_id
-            and ur.role_id = #{roleId})
+            (select ur.user_id from sys_user_role ur where ur.role_id = #{roleId})
             ${params.dataScope}
         </where>
     </select>

@@ -19,6 +19,8 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.stitchcodes.common.constant.DataScopeConstant.*;
+
 /**
  * @Author: stitch
  * @Date: 2023/5/7 21:34
@@ -27,37 +29,6 @@ import java.util.List;
 @Aspect
 @Component
 public class DataScopeAspect {
-
-    /**
-     * 全部数据权限
-     */
-    public static final String DATA_SCOPE_ALL = "0";
-
-    /**
-     * 自定义数据权限
-     */
-    public static final String DATA_SCOPE_CUSTOM = "1";
-
-    /**
-     * 部门数据权限
-     */
-    public static final String DATA_SCOPE_DEPT = "2";
-
-    /**
-     * 部门及以下数据权限
-     */
-    public static final String DATA_SCOPE_DEPT_AND_CHILD = "3";
-
-    /**
-     * 用户数据权限
-     */
-    public static final String DATA_SCOPE_SELF = "4";
-
-    /**
-     * 数据权限关键字
-     */
-    public static final String DATA_SCOPE = "dataScope";
-
 
     @Before("@annotation(controllerDataScope)")
     public void doBefore(JoinPoint point, DataScope controllerDataScope) {

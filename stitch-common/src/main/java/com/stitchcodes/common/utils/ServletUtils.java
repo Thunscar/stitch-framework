@@ -1,5 +1,6 @@
 package com.stitchcodes.common.utils;
 
+import com.stitchcodes.common.constant.HttpStatus;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -81,5 +82,9 @@ public class ServletUtils {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void sendString(HttpServletResponse response, String str) {
+        sendString(response, str, HttpStatus.SUCCESS);
     }
 }

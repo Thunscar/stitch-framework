@@ -30,12 +30,12 @@ public interface SysRoleService {
 
 
     /**
-     * 查询角色信息
+     * 查询角色信息包含功能权限信息
      *
      * @param roleId 角色ID
      * @return 结果
      */
-    SysRole selectSysRoleById(Long roleId);
+    SysRole selectSysRoleContainsMenu(Long roleId);
 
     /**
      * 检查角色的访问权限
@@ -55,6 +55,7 @@ public interface SysRoleService {
 
     /**
      * 保存角色功能菜单授权信息
+     *
      * @param role 角色信息
      * @return
      */
@@ -72,10 +73,10 @@ public interface SysRoleService {
 
     /**
      * 检查角色名称是否唯一
+     *
      * @param role 角色信息
      */
     void checkRoleNameUnique(SysRole role);
-
 
 
     /**
@@ -88,10 +89,19 @@ public interface SysRoleService {
 
     /**
      * 通过角色名称查找角色
+     *
      * @param roleName 角色名称
      * @return
      */
     SysRole selectRoleByName(String roleName);
+
+
+    /**
+     * 检查是否可以被删除(已分配用户的角色不可被删除)
+     *
+     * @param role 角色信息
+     */
+    void checkDeleteOperation(Long roleId);
 
     /**
      * 批量删除角色信息
@@ -110,10 +120,38 @@ public interface SysRoleService {
     int updateSysRole(SysRole role);
 
     /**
-     * 获取角色授权的功能
-     * @param roleId 角色ID
+     * 更新角色数据权限
+     * @param role 角色信息
      * @return
      */
-    Long[] selectAuthorizedMenu(Long roleId);
+    int updateDataScope(SysRole role);
+
+
+    /**
+     * 将角色授权给用户
+     *
+     * @param roleId  角色ID
+     * @param userIds 用户ID数组
+     * @return
+     */
+    int conferRole(Long roleId, Long[] userIds);
+
+    /**
+     * 取消角色用户授权
+     *
+     * @param roleId  角色ID
+     * @param userIds 用户ID数组
+     * @return
+     */
+    int cancelConferRole(Long roleId, Long[] userIds);
+
+
+    /**
+     * 查询角色信息包含部门数据权限
+     *
+     * @param roleId 角色信息
+     * @return
+     */
+    SysRole selectSysRoleContainsDataScope(Long roleId);
 
 }

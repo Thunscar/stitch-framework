@@ -105,7 +105,18 @@ public class SysUser extends BaseEntity implements Serializable {
      */
     private List<SysRole> roles;
 
+    /**
+     * 角色ID
+     */
     private Long roleId;
+
+    public Long getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(Long roleId) {
+        this.roleId = roleId;
+    }
 
     public SysDept getDept() {
         return dept;

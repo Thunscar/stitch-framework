@@ -1,5 +1,7 @@
 package com.stitchcodes.system.security.handler;
 
+import com.alibaba.fastjson2.JSONObject;
+import com.stitchcodes.common.api.AjaxResult;
 import com.stitchcodes.common.constant.HttpStatus;
 import com.stitchcodes.common.utils.ServletUtils;
 import org.springframework.security.core.AuthenticationException;
@@ -22,6 +24,6 @@ public class AuthenticationEntryPointHandler implements AuthenticationEntryPoint
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         String message = String.format("Failed to Request URI:[%s], Unauthorized", request.getRequestURI());
-        ServletUtils.sendString(response, message, HttpStatus.UNAUTHORIZED);
+        ServletUtils.sendString(response, JSONObject.toJSONString(new AjaxResult(HttpStatus.UNAUTHORIZED, message)));
     }
 }

@@ -1,6 +1,7 @@
 package com.stitchcodes.core.service.impl;
 
 import com.stitchcodes.common.annotation.DataScope;
+import com.stitchcodes.common.constant.DataScopeConstant;
 import com.stitchcodes.common.exception.StitchException;
 import com.stitchcodes.common.utils.CollectionUtils;
 import com.stitchcodes.common.utils.ObjectUtils;
@@ -8,8 +9,10 @@ import com.stitchcodes.common.utils.SpringUtils;
 import com.stitchcodes.common.utils.StringUtils;
 import com.stitchcodes.core.domain.SysRole;
 import com.stitchcodes.core.domain.SysRoleMenu;
+import com.stitchcodes.core.mapper.SysRoleDeptMapper;
 import com.stitchcodes.core.mapper.SysRoleMapper;
 import com.stitchcodes.core.mapper.SysRoleMenuMapper;
+import com.stitchcodes.core.mapper.SysUserRoleMapper;
 import com.stitchcodes.core.service.SysRoleService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +32,10 @@ public class SysRoleServiceImpl implements SysRoleService {
     private SysRoleMapper roleMapper;
     @Resource
     private SysRoleMenuMapper roleMenuMapper;
+    @Resource
+    private SysUserRoleMapper userRoleMapper;
+    @Resource
+    private SysRoleDeptMapper roleDeptMapper;
 
     @Override
     public Set<String> selectRolePermissionByUserId(Long userId) {
@@ -49,8 +56,11 @@ public class SysRoleServiceImpl implements SysRoleService {
     }
 
     @Override
-    public SysRole selectSysRoleById(Long roleId) {
-        return roleMapper.selectRoleById(roleId);
+    public SysRole selectSysRoleContainsMenu(Long roleId) {
+        SysRole sysRole = roleMapper.selectRoleById(roleId);
+        //查询部门的功能权限
+        sysRole.setMenuIds(roleMenuMapper.selectAuthorizedMenu(roleId));
+        return sysRole;
     }
 
     @Override
@@ -90,7 +100,7 @@ public class SysRoleServiceImpl implements SysRoleService {
 
     @Override
     public void checkRoleKeyUnique(SysRole role) {
-        Long roleId = ObjectUtils.isNull(role.getRoleId()) ? -1L:role.getRoleId();
+        Long roleId = ObjectUtils.isNull(role.getRoleId()) ? -1L : role.getRoleId();
         SysRole queryRole = selectRoleByKey(role.getRoleKey());
         if (ObjectUtils.isNotNull(queryRole) && queryRole.getRoleId().longValue() != roleId.longValue()) {
             throw new StitchException("角色权限标识符不唯一");
@@ -99,7 +109,7 @@ public class SysRoleServiceImpl implements SysRoleService {
 
     @Override
     public void checkRoleNameUnique(SysRole role) {
-        Long roleId = ObjectUtils.isNull(role.getRoleId()) ? -1L:role.getRoleId();
+        Long roleId = ObjectUtils.isNull(role.getRoleId()) ? -1L : role.getRoleId();
         SysRole queryRole = selectRoleByName(role.getRoleName());
         if (ObjectUtils.isNotNull(queryRole) && queryRole.getRoleId().longValue() != roleId.longValue()) {
             throw new StitchException("角色名称不唯一");
@@ -117,6 +127,14 @@ public class SysRoleServiceImpl implements SysRoleService {
     }
 
     @Override
+    public void checkDeleteOperation(Long roleId) {
+        if (userRoleMapper.countUserAllocated(roleId) > 0) {
+            SysRole sysRole = roleMapper.selectRoleById(roleId);
+            throw new StitchException(String.format("角色[%s]已分配,无法删除", sysRole.getRoleName()));
+        }
+    }
+
+    @Override
     @Transactional
     public int removeSysRoleBatch(Long[] roleIds) {
         roleMapper.removeRoleBatch(roleIds);
@@ -131,8 +149,43 @@ public class SysRoleServiceImpl implements SysRoleService {
     }
 
     @Override
-    public Long[] selectAuthorizedMenu(Long roleId) {
-        return roleMenuMapper.selectAuthorizedMenu(roleId);
+    @Transactional
+    public int updateDataScope(SysRole role) {
+        int result = 0;
+        //清除原有数据权限关系
+        result += roleDeptMapper.removeAllocatedDept(role.getRoleId());
+
+        //保存新的数据权限关系
+        if (role.getDataScope().equals(DataScopeConstant.DATA_SCOPE_CUSTOM) && ObjectUtils.isNotNull(role.getDeptIds()) && role.getDeptIds().length != 0) {
+            result += roleDeptMapper.insertAllocatedDept(role.getRoleId(), role.getDeptIds());
+        }
+
+        //更新角色数据权限字段
+        SysRole safeRole = new SysRole();
+        safeRole.setRoleId(role.getRoleId());
+        safeRole.setDataScope(role.getDataScope());
+        result += roleMapper.updateRole(safeRole);
+        return result;
+    }
+
+    @Override
+    public int conferRole(Long roleId, Long[] userIds) {
+        return userRoleMapper.insertUserRole(roleId, userIds);
+    }
+
+    @Override
+    public int cancelConferRole(Long roleId, Long[] userIds) {
+        return userRoleMapper.removeUserRole(roleId, userIds);
+    }
+
+    @Override
+    public SysRole selectSysRoleContainsDataScope(Long roleId) {
+        SysRole sysRole = roleMapper.selectRoleById(roleId);
+        //自定义数据权限.将部门列表范围
+        if (ObjectUtils.isNotNull(sysRole) && sysRole.getDataScope().equals(DataScopeConstant.DATA_SCOPE_CUSTOM)) {
+            sysRole.setDeptIds(roleDeptMapper.selectAllocatedDept(roleId));
+        }
+        return sysRole;
     }
 }
 
