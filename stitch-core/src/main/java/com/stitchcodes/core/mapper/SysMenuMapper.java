@@ -118,6 +118,13 @@ public interface SysMenuMapper {
     List<Long> selectUnValidParentId(SysMenu menu);
 
 
+    /**
+     * 通过路径查找菜单
+     *
+     * @param menu 菜单信息
+     * @return
+     */
+    SysMenu selectSysMenuByPath(SysMenu menu);
 }
 
 

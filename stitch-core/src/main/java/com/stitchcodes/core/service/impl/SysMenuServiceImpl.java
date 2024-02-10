@@ -76,7 +76,7 @@ public class SysMenuServiceImpl implements SysMenuService {
             MetaVo meta = new MetaVo();
             meta.setTitle(sysMenu.getMenuName());
             meta.setIcon(sysMenu.getIcon());
-            meta.setNoCache(UserConstants.IS_CACHE.equals(sysMenu.getIsCache()));
+            meta.setCache(UserConstants.CACHE.equals(sysMenu.getIsCache()));
             meta.setLink(UserConstants.IS_LINK.equals(sysMenu.getIsFrame()) ? sysMenu.getPath() : null);
             routerVo.setMeta(meta);
             List<SysMenu> childMenu = sysMenu.getChildrenMenu();
@@ -109,7 +109,7 @@ public class SysMenuServiceImpl implements SysMenuService {
     }
 
     @Override
-    public boolean createSysMenu(SysMenu menu) {
+    public int createSysMenu(SysMenu menu) {
         if (menu.getParentId() != UserConstants.ROOT_PARENT_ID) {
             SysMenu parentMenu = selectSysMenuById(menu.getParentId());
             if (ObjectUtils.isNull(parentMenu)) {
@@ -119,14 +119,14 @@ public class SysMenuServiceImpl implements SysMenuService {
                 throw new StitchException("上级菜单已停用,不可创建菜单");
             }
         }
-        return menuMapper.insertMenu(menu) > 0;
+        return menuMapper.insertMenu(menu);
     }
 
     @Override
     public void checkSysMenuNameUnique(SysMenu menu) {
-        Long menuId = ObjectUtils.isNull(menu.getMenuId()) ? -1L:menu.getMenuId();
+        Long menuId = ObjectUtils.isNull(menu.getMenuId()) ? -1L : menu.getMenuId();
         SysMenu sysMenus = menuMapper.selectSysMenuByName(menu);
-        if(ObjectUtils.isNotNull(sysMenus) && sysMenus.getMenuId().longValue() != menuId.longValue()){
+        if (ObjectUtils.isNotNull(sysMenus) && sysMenus.getMenuId().longValue() != menuId.longValue()) {
             throw new StitchException("菜单名称不唯一");
         }
     }
@@ -137,13 +137,13 @@ public class SysMenuServiceImpl implements SysMenuService {
     }
 
     @Override
-    public boolean removeSysMenu(Long menu) {
-        return menuMapper.deleteMenu(menu) > 0;
+    public int removeSysMenu(Long menu) {
+        return menuMapper.deleteMenu(menu);
     }
 
     @Override
-    public boolean updateSysMenu(SysMenu menu) {
-        return menuMapper.updateMenu(menu) > 0;
+    public int updateSysMenu(SysMenu menu) {
+        return menuMapper.updateMenu(menu);
     }
 
     @Override
@@ -155,8 +155,12 @@ public class SysMenuServiceImpl implements SysMenuService {
     }
 
     @Override
-    public void checkPathValid(SysMenu menu) {
-
+    public void checkSysMenuPathUnique(SysMenu menu) {
+        Long menuId = ObjectUtils.isNull(menu.getMenuId()) ? -1L : menu.getMenuId();
+        SysMenu sysMenus = menuMapper.selectSysMenuByPath(menu);
+        if (ObjectUtils.isNotNull(sysMenus) && sysMenus.getMenuId().longValue() != menuId.longValue()) {
+            throw new StitchException("菜单路径不唯一");
+        }
     }
 
     private List<SysMenu> getChildPerms(List<SysMenu> menus, long parentId) {

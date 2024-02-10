@@ -25,7 +25,7 @@ public interface SysUserService {
      * @param sysUser 用户信息
      * @return 结果
      */
-    List<SysUser> selectAllocatedList(SysUser sysUser);
+    List<SysUser> selectAllocatedUsers(SysUser sysUser);
 
     /**
      * 查询未分配角色的用户列表
@@ -33,7 +33,7 @@ public interface SysUserService {
      * @param sysUser 用户信息
      * @return 结果
      */
-    List<SysUser> selectUnAllocatedList(SysUser sysUser);
+    List<SysUser> selectUnAllocatedUsers(SysUser sysUser);
 
     /**
      * 通过用户名查询用户
@@ -94,7 +94,7 @@ public interface SysUserService {
      * @param sysUser 用户信息
      * @return 是否新增成功
      */
-    boolean insertUser(SysUser sysUser);
+    int insertUser(SysUser sysUser);
 
     /**
      * 注册用户
@@ -110,7 +110,7 @@ public interface SysUserService {
      * @param sysUser 用户信息
      * @return 是否更新成功
      */
-    boolean updateUser(SysUser sysUser);
+    int updateUser(SysUser sysUser);
 
     /**
      * 用户授权角色
@@ -173,9 +173,8 @@ public interface SysUserService {
      * 通过用户ID批量删除用户
      *
      * @param userIds 用户ID
-     * @return 是否批量删除成功
      */
-    boolean deleteUserByIds(Long[] userIds);
+    int deleteUserByIds(Long[] userIds);
 
     /**
      * 导入用户信息
@@ -186,6 +185,14 @@ public interface SysUserService {
      * @return 结果
      */
     String importUser(List<SysUser> sysUsers, boolean isUpdateSupport, String operateName);
+
+
+    /**
+     * 获取用户信息，屏蔽密码等信息
+     * @param userId 用户ID
+     * @return
+     */
+    SysUser selectSafeUser(Long userId);
 
 
 }

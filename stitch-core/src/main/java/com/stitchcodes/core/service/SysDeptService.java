@@ -49,7 +49,7 @@ public interface SysDeptService {
      * @param dept 部门实体
      * @return 结果
      */
-    boolean createSysDept(SysDept dept);
+    int createSysDept(SysDept dept);
 
     /**
      * 检查父级ID合法性
@@ -64,7 +64,7 @@ public interface SysDeptService {
      * @param dept 部门信息
      * @return 结果
      */
-    boolean updateSysDept(SysDept dept);
+    int updateSysDept(SysDept dept);
 
     /**
      * 是否有子部门
@@ -88,6 +88,6 @@ public interface SysDeptService {
      * @param deptId 部门ID
      * @return 结果
      */
-    boolean removeSysDept(Long deptId);
+    int removeSysDept(Long deptId);
 
 }

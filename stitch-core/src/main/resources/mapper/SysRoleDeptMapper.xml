@@ -14,10 +14,13 @@
             (#{roleId},#{item})
         </foreach>
     </insert>
-    <delete id="removeAllocatedDept">
+    <delete id="removeAllAllocatedDept">
         delete
         from sys_role_dept
-        where role_id = #{roleId}
+        where role_id in 
+        <foreach collection="array" open="(" close=")" separator="," index="index" item="item">
+            #{item}
+        </foreach>
     </delete>
 
     <select id="selectAllocatedDept" resultType="java.lang.Long">

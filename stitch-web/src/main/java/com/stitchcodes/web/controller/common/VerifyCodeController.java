@@ -43,6 +43,7 @@ public class VerifyCodeController extends BaseController {
     private Producer verifyMathProducer;
 
 
+    //获取验证码图片
     @GetMapping("/verifyImage")
     public AjaxResult getVerifyImage() throws IOException {
         //获取验证码开关

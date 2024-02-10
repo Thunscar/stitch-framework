@@ -62,7 +62,7 @@ public class UserConstants {
     public static final String MENU_VISIBLE = "1";
 
     /*缓存*/
-    public static final String IS_CACHE = "1";
+    public static final String CACHE = "1";
 
     /*是外链*/
     public static final String IS_LINK = "1";

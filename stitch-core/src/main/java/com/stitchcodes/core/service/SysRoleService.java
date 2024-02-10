@@ -154,4 +154,18 @@ public interface SysRoleService {
      */
     SysRole selectSysRoleContainsDataScope(Long roleId);
 
+    /**
+     * 查询已分配给用户的角色列表
+     * @param sysRole 角色信息（包含用户Id）
+     * @return
+     */
+    List<SysRole> selectAllocatedRoles(SysRole sysRole);
+
+    /**
+     * 查询未分配给用户的角色列表
+     * @param sysRole 角色信息（包含用户Id）
+     * @return
+     */
+    List<SysRole> selectUnallocatedRoles(SysRole sysRole);
+
 }

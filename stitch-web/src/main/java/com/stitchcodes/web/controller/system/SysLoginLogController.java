@@ -23,6 +23,7 @@ public class SysLoginLogController extends BaseController {
     @Resource
     private SysLoginInfoService loginInfoService;
 
+    //查询登录日志
     @GetMapping("/list")
     public TableData getLoginLogList(SysLoginInfo sysLoginInfo){
         startPage();

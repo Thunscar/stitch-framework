@@ -182,7 +182,7 @@
         <if test="status != null and status != ''">
             and status = #{status}
         </if>
-        <if test="visible != null and visible ！= ''">
+        <if test="visible != null and visible != ''">
             and visible = #{visible}
         </if>
         and m.is_delete = '0'
@@ -257,5 +257,10 @@
         where menu_id = #{menuId}
            or parent_id = #{menuId}
             and is_delete = '0'
+    </select>
+    <select id="selectSysMenuByPath" resultType="com.stitchcodes.core.domain.SysMenu">
+        <include refid="selectMenuVo"/>
+        where path = #{path}
+        and is_delete = '0' limit 1
     </select>
 </mapper>

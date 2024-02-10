@@ -15,12 +15,12 @@ public @interface DataScope {
     /**
      * 部门表别名
      */
-    String deptAlias() default "";
+    String deptAlias() default "d";
 
     /**
      * 用户表别名
      */
-    String userAlias() default "";
+    String userAlias() default "u";
 
     /**
      * 权限字符（用于多个角色匹配符合要求的权限）默认根据权限字符@ss获取，多个权限用逗号分隔

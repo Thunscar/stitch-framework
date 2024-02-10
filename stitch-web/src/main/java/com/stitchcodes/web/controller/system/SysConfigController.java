@@ -29,11 +29,7 @@ public class SysConfigController extends BaseController {
     @Resource
     private SysConfigService configService;
 
-    /**
-     * 获取系统参数配置信息
-     *
-     * @return 系统参数列表
-     */
+    //获取系统参数配置信息
     @PreAuthorize("@permissionManager.hasPermission('system:config:list')")
     @GetMapping("/list")
     public TableData list(SysConfig sysConfig) {
@@ -43,29 +39,13 @@ public class SysConfigController extends BaseController {
         return getTableData(sysConfigList);
     }
 
-    /**
-     * 通过Id获取系统参数
-     *
-     * @param configId 系统参数ID
-     * @return 系统参数信息
-     */
+    //通过Id获取系统参数
     @GetMapping("/{configId}")
     public AjaxResult getById(@PathVariable Long configId) {
         return success(configService.getConfigValueById(configId));
     }
 
-    /**
-     * 通过参数Key获取系统参数值
-     *
-     * @param configKey 系统参数key
-     * @return 系统参数实体
-     */
-    @GetMapping("/configKey/{configKey}")
-    public AjaxResult getByKey(@PathVariable String configKey) {
-        String configValueByKey = configService.getConfigValueByKey(configKey);
-        return success((Object) ConvertUtils.toString(configValueByKey));
-    }
-
+    //导出参数列表
     @PostMapping("/export")
     public void export(HttpServletResponse response, SysConfig config) throws IOException {
         List<SysConfig> sysConfigList = configService.getSysConfigList(config);
@@ -73,26 +53,16 @@ public class SysConfigController extends BaseController {
         util.exportExcel("参数数据", sysConfigList, response);
     }
 
-    /**
-     * 新增系统参数信息
-     *
-     * @param sysConfig 系统参数实体
-     * @return 是否创建成功
-     */
+    //新增系统参数信息
     @PostMapping
-    public AjaxResult add(@Valid @RequestBody SysConfig sysConfig) {
+    public AjaxResult create(@Valid @RequestBody SysConfig sysConfig) {
         //检查参数键是否唯一
         configService.checkSysConfigKeyUnique(sysConfig);
         sysConfig.setCreateUser(AuthUtils.getLoginUserName());
         return toAjax(configService.insertSysConfig(sysConfig));
     }
 
-    /**
-     * 修改系统参数
-     *
-     * @param sysConfig 系统参数配置实体
-     * @return 是否修改成功
-     */
+    //修改系统参数
     @PutMapping
     public AjaxResult update(@Valid @RequestBody SysConfig sysConfig) {
         //检查参数键是否唯一
@@ -102,23 +72,13 @@ public class SysConfigController extends BaseController {
     }
 
 
-    /**
-     * 删除参数配置
-     *
-     * @param configIds 参数配置Id数组
-     * @return
-     */
+    //删除参数配置
     @DeleteMapping("/{configIds}")
     public AjaxResult deleteConfig(@PathVariable Long[] configIds) {
-        configService.deleteSysConfig(configIds);
-        return success();
+        return toAjax(configService.deleteSysConfig(configIds));
     }
 
-    /**
-     * 刷新参数缓存
-     *
-     * @return 是否刷新成功
-     */
+    //刷新参数缓存
     @PostMapping("/refresh")
     public AjaxResult refreshCache() {
         configService.resetConfigCache();

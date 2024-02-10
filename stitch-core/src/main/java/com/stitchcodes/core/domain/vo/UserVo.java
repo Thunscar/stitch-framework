@@ -15,7 +15,7 @@ public class UserVo {
 
     private String username;
 
-    private String nikeName;
+    private String nickName;
 
     private String email;
 
@@ -31,7 +31,7 @@ public class UserVo {
     public UserVo(SysUser user) {
         this.userId = user.getUserId();
         this.username = user.getUserName();
-        this.nikeName = user.getNikeName();
+        this.nickName = user.getNickName();
         this.email = user.getEmail();
         this.phone = user.getPhone();
         this.sex = user.getSex();
@@ -43,7 +43,7 @@ public class UserVo {
         final StringBuffer sb = new StringBuffer("UserVo{");
         sb.append("userId=").append(userId);
         sb.append(", username='").append(username).append('\'');
-        sb.append(", nikeName='").append(nikeName).append('\'');
+        sb.append(", nickName='").append(nickName).append('\'');
         sb.append(", email='").append(email).append('\'');
         sb.append(", phone='").append(phone).append('\'');
         sb.append(", sex='").append(sex).append('\'');
@@ -57,12 +57,12 @@ public class UserVo {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserVo userVo = (UserVo) o;
-        return Objects.equals(userId, userVo.userId) && Objects.equals(username, userVo.username) && Objects.equals(nikeName, userVo.nikeName) && Objects.equals(email, userVo.email) && Objects.equals(phone, userVo.phone) && Objects.equals(sex, userVo.sex) && Objects.equals(avatar, userVo.avatar);
+        return Objects.equals(userId, userVo.userId) && Objects.equals(username, userVo.username) && Objects.equals(nickName, userVo.nickName) && Objects.equals(email, userVo.email) && Objects.equals(phone, userVo.phone) && Objects.equals(sex, userVo.sex) && Objects.equals(avatar, userVo.avatar);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, username, nikeName, email, phone, sex, avatar);
+        return Objects.hash(userId, username, nickName, email, phone, sex, avatar);
     }
 
     public Long getUserId() {
@@ -81,12 +81,12 @@ public class UserVo {
         this.username = username;
     }
 
-    public String getNikeName() {
-        return nikeName;
+    public String getNickName() {
+        return nickName;
     }
 
-    public void setNikeName(String nikeName) {
-        this.nikeName = nikeName;
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 
     public String getEmail() {

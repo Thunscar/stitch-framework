@@ -34,12 +34,7 @@ public class SysLoginController extends BaseController {
     @Resource
     private SysMenuService menuService;
 
-    /**
-     * 登录接口
-     *
-     * @param loginBody 登录实体参数
-     * @return 结果
-     */
+    //用户登录
     @PostMapping("/login")
     public AjaxResult login(@RequestBody LoginBody loginBody) {
         String token = loginService.login(loginBody.getUsername(), loginBody.getPassword(), loginBody.getUuid(), loginBody.getCode());
@@ -48,22 +43,14 @@ public class SysLoginController extends BaseController {
         return result;
     }
 
-    /**
-     * 用户登出
-     *
-     * @return 结果
-     */
+    //用户登出
     @PostMapping("/logout")
     public AjaxResult logout() {
         loginService.logout();
         return AjaxResult.success();
     }
 
-    /**
-     * 获取用户信息接口
-     *
-     * @return 结果
-     */
+    //获取用户信息接口
     @GetMapping("/user/info")
     public AjaxResult getUserInfo() {
         SysUser user = AuthUtils.getLoginUser().getUser();
@@ -77,11 +64,7 @@ public class SysLoginController extends BaseController {
         return result;
     }
 
-    /**
-     * 获取用户路由
-     *
-     * @return 结果
-     */
+    //获取用户路由
     @GetMapping("/routers")
     public AjaxResult getRouters() {
         Long loginUserId = AuthUtils.getLoginUserId();

@@ -61,6 +61,15 @@ public class SysRole extends BaseEntity implements Serializable {
      */
     private Set<String> perms;
 
+    private Long userId;
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 
     public Long[] getMenuIds() {
         return menuIds;

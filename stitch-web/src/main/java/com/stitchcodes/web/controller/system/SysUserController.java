@@ -4,6 +4,7 @@ import com.stitchcodes.common.api.AjaxResult;
 import com.stitchcodes.common.api.TableData;
 import com.stitchcodes.common.controller.BaseController;
 import com.stitchcodes.common.excel.ExcelUtil;
+import com.stitchcodes.common.utils.StringUtils;
 import com.stitchcodes.core.domain.SysUser;
 import com.stitchcodes.core.service.SysConfigService;
 import com.stitchcodes.core.service.SysUserService;
@@ -32,6 +33,7 @@ public class SysUserController extends BaseController {
     @Resource
     private SysPasswordService passwordService;
 
+    //查询角色列表
     @GetMapping("/list")
     public TableData list(SysUser user) {
         startPage();
@@ -39,43 +41,49 @@ public class SysUserController extends BaseController {
         return getTableData(sysUsers);
     }
 
+    //获取角色信息(屏蔽敏感信息)
     @GetMapping("{userId}")
     public AjaxResult getUserInfo(@PathVariable Long userId) {
         //校验数据权限
         userService.checkUserDataScope(userId);
-        SysUser sysUser = userService.selectUserById(userId);
-        return AjaxResult.success(sysUser);
+        return AjaxResult.success(userService.selectSafeUser(userId));
     }
 
+    //创建用户
     @PostMapping
-    public AjaxResult add(@RequestBody SysUser user) {
+    public AjaxResult create(@RequestBody SysUser user) {
         //校验用户名是否唯一
         userService.checkUserNameUnique(user);
+        //若密码为空，设置系统默认密码
+        if (StringUtils.isEmpty(user.getPassword())) {
+            String initPassword = configService.selectAccountInitPassword();
+            user.setPassword(initPassword);
+        }
         user.setCreateUser(AuthUtils.getLoginUserName());
-        userService.insertUser(user);
-        return AjaxResult.success();
+        return toAjax(userService.insertUser(user));
     }
 
+    //更新用户信息
     @PutMapping
     public AjaxResult update(@RequestBody SysUser user) {
         userService.checkUserDataScope(user.getUserId());
         //检查用户名是否唯一
         userService.checkUserNameUnique(user);
         user.setUpdateUser(AuthUtils.getLoginUserName());
-        userService.updateUser(user);
-        return AjaxResult.success();
+        return toAjax(userService.updateUser(user));
     }
 
+    //批量删除用户
     @DeleteMapping("{userIds}")
     public AjaxResult delete(@PathVariable Long[] userIds) {
         //检查数据权限
         for (Long userId : userIds) {
             userService.checkUserDataScope(userId);
         }
-        userService.deleteUserByIds(userIds);
-        return AjaxResult.success();
+        return toAjax(userService.deleteUserByIds(userIds));
     }
 
+    //导出用户信息到excel
     @PostMapping("export")
     public void export(HttpServletResponse response, SysUser user) throws IOException {
         List<SysUser> sysUsers = userService.selectUserList(user);
@@ -83,6 +91,7 @@ public class SysUserController extends BaseController {
         excelUtil.exportExcel("用户数据", sysUsers, response);
     }
 
+    //重置用户密码(重置后的密码在参数管理中设置)
     @PostMapping("/reset/{userId}")
     public AjaxResult resetPassword(@PathVariable Long userId) {
         //检查数据权限
@@ -98,21 +107,22 @@ public class SysUserController extends BaseController {
         sysUser.setUpdateUser(AuthUtils.getLoginUserName());
 
         //更新用户密码
-        userService.resetUserPassword(sysUser);
-        return AjaxResult.success();
+        return toAjax(userService.resetUserPassword(sysUser));
     }
 
+    //查询某个角色已分配的用户列表
     @GetMapping("/allocated")
     public TableData allocatedUsers(SysUser sysUser) {
         startPage();
-        List<SysUser> sysUsers = userService.selectAllocatedList(sysUser);
+        List<SysUser> sysUsers = userService.selectAllocatedUsers(sysUser);
         return getTableData(sysUsers);
     }
 
+    //查询某个角色可分配的用户列表
     @GetMapping("/unallocated")
     public TableData unAllocatedUsers(SysUser sysUser) {
         startPage();
-        List<SysUser> sysUsers = userService.selectUnAllocatedList(sysUser);
+        List<SysUser> sysUsers = userService.selectUnAllocatedUsers(sysUser);
         return getTableData(sysUsers);
     }
 

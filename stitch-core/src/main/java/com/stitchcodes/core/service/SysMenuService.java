@@ -70,7 +70,7 @@ public interface SysMenuService {
      * @param menu 菜单信息
      * @return 结果
      */
-    boolean createSysMenu(SysMenu menu);
+    int createSysMenu(SysMenu menu);
 
     /**
      * 检查菜单名称是否唯一
@@ -94,7 +94,7 @@ public interface SysMenuService {
      * @param menu 菜单信息
      * @return 结果
      */
-    boolean removeSysMenu(Long menu);
+    int removeSysMenu(Long menu);
 
     /**
      * 更新系统菜单信息
@@ -102,7 +102,7 @@ public interface SysMenuService {
      * @param menu 菜单信息
      * @return 结果
      */
-    boolean updateSysMenu(SysMenu menu);
+    int updateSysMenu(SysMenu menu);
 
 
     /**
@@ -113,9 +113,9 @@ public interface SysMenuService {
     void checkParentIdValid(SysMenu menu);
 
     /**
-     * 检查
-     * @param menu
+     * 检查菜单路径是否唯一
+     *
+     * @param menu 菜单信息
      */
-    void checkPathValid(SysMenu menu);
-
+    void checkSysMenuPathUnique(SysMenu menu);
 }

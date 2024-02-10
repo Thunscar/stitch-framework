@@ -23,30 +23,32 @@ public class SysDeptController extends BaseController {
     @Resource
     private SysDeptService deptService;
 
+    //查询机构列表
     @GetMapping("/list")
     public AjaxResult list(SysDept dept) {
-        List<SysDept> sysDeptList = deptService.selectSysDeptList(dept);
-        return AjaxResult.success(sysDeptList);
+        return AjaxResult.success(deptService.selectSysDeptList(dept));
     }
 
+    //获取机构信息
     @GetMapping("{deptId}")
     public AjaxResult getDeptById(@PathVariable Long deptId) {
+        //检查部门数据权限
         deptService.checkDeptDataScope(deptId);
-        SysDept sysDept = deptService.selectSysDeptById(deptId);
-        return AjaxResult.success(sysDept);
+        return AjaxResult.success(deptService.selectSysDeptById(deptId));
     }
 
+    //创建机构
     @PostMapping
-    public AjaxResult add(@RequestBody SysDept dept) {
+    public AjaxResult create(@RequestBody SysDept dept) {
         //检查参数键名是否唯一
         deptService.checkDeptNameUnique(dept);
         //检查上级部门是否合法
         deptService.checkParentIdValid(dept);
         dept.setCreateUser(AuthUtils.getLoginUserName());
-        deptService.createSysDept(dept);
-        return AjaxResult.success();
+        return toAjax(deptService.createSysDept(dept));
     }
 
+    //更新机构
     @PutMapping
     public AjaxResult update(@RequestBody SysDept dept) {
         //检查参数键名是否唯一
@@ -54,10 +56,10 @@ public class SysDeptController extends BaseController {
         //检查上级部门是否合法
         deptService.checkParentIdValid(dept);
         dept.setUpdateUser(AuthUtils.getLoginUserName());
-        deptService.updateSysDept(dept);
-        return AjaxResult.success();
+        return toAjax(deptService.updateSysDept(dept));
     }
 
+    //删除机构
     @DeleteMapping("{deptId}")
     public AjaxResult delete(@PathVariable Long deptId) {
         deptService.checkDeptDataScope(deptId);
@@ -67,8 +69,7 @@ public class SysDeptController extends BaseController {
         if (deptService.hasUserForDept(deptId)) {
             throw new StitchException("该部门存在用户,不可删除");
         }
-        deptService.removeSysDept(deptId);
-        return AjaxResult.success();
+        return toAjax(deptService.removeSysDept(deptId));
     }
 
 }

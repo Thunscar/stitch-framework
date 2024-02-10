@@ -204,7 +204,7 @@ create table if not exists sys_user
         primary key,
     dept_id     bigint                             null comment '部门ID',
     user_name   varchar(100)                       null comment '用户账号',
-    nike_name   varchar(100)                       null comment '用户昵称',
+    nick_name   varchar(100)                       null comment '用户昵称',
     user_type   varchar(2)                         null comment '用户类型(00系统用户)',
     email       varchar(50)                        null comment '邮箱',
     phone       varchar(20)                        null comment '电话号码',

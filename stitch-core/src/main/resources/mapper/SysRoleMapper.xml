@@ -33,17 +33,17 @@
         from sys_role
     </sql>
     <sql id="selectRoleVo">
-        select r.role_id,
-               r.role_name,
-               r.role_key,
-               r.role_sort,
-               r.data_scope,
-               r.status,
-               r.create_user,
-               r.create_time,
-               r.update_user,
-               r.update_time,
-               r.remark
+        select distinct r.role_id,
+                        r.role_name,
+                        r.role_key,
+                        r.role_sort,
+                        r.data_scope,
+                        r.status,
+                        r.create_user,
+                        r.create_time,
+                        r.update_user,
+                        r.update_time,
+                        r.remark
         from sys_role r
                  left join sys_user_role ur on r.role_id = ur.role_id
                  left join sys_user u on u.user_id = ur.user_id
@@ -125,8 +125,8 @@
                 and r.status = #{status}
             </if>
             and r.is_delete = '0'
+            ${params.dataScope}
         </where>
-        #{params.dataScope}
         order by r.role_sort
     </select>
     <select id="selectRoleById" parameterType="Long" resultMap="roleResultMap">
@@ -142,6 +142,33 @@
         <include refid="selectRoleInfo"/>
         where role_name = #{roleName}
         and is_delete = '0' limit 1
+    </select>
+    <select id="selectAllocatedRoles" resultMap="roleResultMap">
+        <include refid="selectRoleVo"></include>
+        <where>
+            <if test="roleName != null and roleName != ''">
+                and r.role_name like concat('%',#{roleName},'%')
+            </if>
+            and r.is_delete = '0'
+            and r.status = '0'
+            and u.user_id = #{userId}
+            ${params.dataScope}
+        </where>
+        order by r.role_sort
+    </select>
+    <select id="selectUnallocatedRoles" resultMap="roleResultMap">
+        <include refid="selectRoleVo"></include>
+        <where>
+            <if test="roleName != null and roleName != ''">
+                and r.role_name like concat('%',#{roleName},'%')
+            </if>
+            and r.is_delete = '0'
+            and r.status = '0'
+            and r.role_id not in
+            (select ur.role_id from sys_user_role ur where ur.user_id = #{userId})
+            ${params.dataScope}
+        </where>
+        order by r.role_sort
     </select>
 
 </mapper>

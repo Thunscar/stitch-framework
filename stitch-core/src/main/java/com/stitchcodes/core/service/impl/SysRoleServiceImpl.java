@@ -50,7 +50,7 @@ public class SysRoleServiceImpl implements SysRoleService {
     }
 
     @Override
-    @DataScope(deptAlias = "d")
+    @DataScope
     public List<SysRole> selectSysRoleList(SysRole role) {
         return roleMapper.selectRoleList(role);
     }
@@ -100,18 +100,18 @@ public class SysRoleServiceImpl implements SysRoleService {
 
     @Override
     public void checkRoleKeyUnique(SysRole role) {
-        Long roleId = ObjectUtils.isNull(role.getRoleId()) ? -1L : role.getRoleId();
+        long roleId = ObjectUtils.isNull(role.getRoleId()) ? -1L : role.getRoleId();
         SysRole queryRole = selectRoleByKey(role.getRoleKey());
-        if (ObjectUtils.isNotNull(queryRole) && queryRole.getRoleId().longValue() != roleId.longValue()) {
+        if (ObjectUtils.isNotNull(queryRole) && queryRole.getRoleId() != roleId) {
             throw new StitchException("角色权限标识符不唯一");
         }
     }
 
     @Override
     public void checkRoleNameUnique(SysRole role) {
-        Long roleId = ObjectUtils.isNull(role.getRoleId()) ? -1L : role.getRoleId();
+        long roleId = ObjectUtils.isNull(role.getRoleId()) ? -1L : role.getRoleId();
         SysRole queryRole = selectRoleByName(role.getRoleName());
-        if (ObjectUtils.isNotNull(queryRole) && queryRole.getRoleId().longValue() != roleId.longValue()) {
+        if (ObjectUtils.isNotNull(queryRole) && queryRole.getRoleId() != roleId) {
             throw new StitchException("角色名称不唯一");
         }
     }
@@ -137,8 +137,11 @@ public class SysRoleServiceImpl implements SysRoleService {
     @Override
     @Transactional
     public int removeSysRoleBatch(Long[] roleIds) {
-        roleMapper.removeRoleBatch(roleIds);
-        return roleMenuMapper.deleteAuthorizedMenus(roleIds);
+        //删除角色菜单关联信息
+        roleMenuMapper.deleteAuthorizedMenus(roleIds);
+        //删除角色部门关联信息
+        roleDeptMapper.removeAllAllocatedDept(roleIds);
+        return roleMapper.removeRoleBatch(roleIds);
     }
 
     @Override
@@ -153,7 +156,8 @@ public class SysRoleServiceImpl implements SysRoleService {
     public int updateDataScope(SysRole role) {
         int result = 0;
         //清除原有数据权限关系
-        result += roleDeptMapper.removeAllocatedDept(role.getRoleId());
+        Long[] roleIds = {role.getRoleId()};
+        result += roleDeptMapper.removeAllAllocatedDept(roleIds);
 
         //保存新的数据权限关系
         if (role.getDataScope().equals(DataScopeConstant.DATA_SCOPE_CUSTOM) && ObjectUtils.isNotNull(role.getDeptIds()) && role.getDeptIds().length != 0) {
@@ -186,6 +190,18 @@ public class SysRoleServiceImpl implements SysRoleService {
             sysRole.setDeptIds(roleDeptMapper.selectAllocatedDept(roleId));
         }
         return sysRole;
+    }
+
+    @Override
+    @DataScope
+    public List<SysRole> selectAllocatedRoles(SysRole sysRole) {
+        return roleMapper.selectAllocatedRoles(sysRole);
+    }
+
+    @Override
+    @DataScope
+    public List<SysRole> selectUnallocatedRoles(SysRole sysRole) {
+        return roleMapper.selectUnallocatedRoles(sysRole);
     }
 }
 

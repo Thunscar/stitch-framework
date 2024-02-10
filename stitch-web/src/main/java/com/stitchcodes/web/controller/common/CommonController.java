@@ -13,10 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/")
 public class CommonController {
 
-    @GetMapping()
+    @GetMapping
     public String rootRequest() {
         return "Welcome to use Stitch Application...";
     }
-
 
 }

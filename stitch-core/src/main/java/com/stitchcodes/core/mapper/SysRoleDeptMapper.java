@@ -29,14 +29,13 @@ public interface SysRoleDeptMapper {
      */
     int insertAllocatedDept(@Param("roleId") Long roleId, @Param("deptIds") Long[] deptIds);
 
+
     /**
      * 移除角色的部门数据权限
-     *
-     * @param roleId  角色ID
-     * @param deptIds 部门ID
+     * @param roleIds 角色ID
      * @return
      */
-    int removeAllocatedDept(@Param("roleId") Long roleId);
+    int removeAllAllocatedDept(Long[] roleIds);
 }
 
 

@@ -7,14 +7,18 @@ import com.stitchcodes.common.utils.CollectionUtils;
 import com.stitchcodes.common.utils.ObjectUtils;
 import com.stitchcodes.common.utils.SpringUtils;
 import com.stitchcodes.common.utils.encode.StitchPasswordEncoder;
+import com.stitchcodes.core.domain.SysRole;
 import com.stitchcodes.core.domain.SysUser;
 import com.stitchcodes.core.mapper.SysUserMapper;
+import com.stitchcodes.core.mapper.SysUserRoleMapper;
 import com.stitchcodes.core.service.SysUserService;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author stitch
@@ -28,21 +32,25 @@ public class SysUserServiceImpl implements SysUserService {
     @Resource
     private SysUserMapper userMapper;
     @Resource
+    private SysUserRoleMapper userRoleMapper;
+    @Resource
     private StitchPasswordEncoder passwordEncoder;
 
     @Override
-    @DataScope(deptAlias = "d")
+    @DataScope
     public List<SysUser> selectUserList(SysUser sysUser) {
         return userMapper.selectUserList(sysUser);
     }
 
     @Override
-    public List<SysUser> selectAllocatedList(SysUser sysUser) {
+    @DataScope
+    public List<SysUser> selectAllocatedUsers(SysUser sysUser) {
         return userMapper.selectAllocatedUserList(sysUser);
     }
 
     @Override
-    public List<SysUser> selectUnAllocatedList(SysUser sysUser) {
+    @DataScope
+    public List<SysUser> selectUnAllocatedUsers(SysUser sysUser) {
         return userMapper.selectUnallocatedUserList(sysUser);
     }
 
@@ -68,7 +76,7 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Override
     public void checkUserNameUnique(SysUser sysUser) {
-        Long userId = ObjectUtils.isNull(sysUser.getUserId()) ? -1L:sysUser.getUserId();
+        Long userId = ObjectUtils.isNull(sysUser.getUserId()) ? -1L : sysUser.getUserId();
         SysUser queryUser = userMapper.checkUserNameUnique(sysUser.getUserName());
         if (ObjectUtils.isNotNull(queryUser) && queryUser.getUserId().longValue() != userId.longValue()) {
             throw new StitchException("用户名已存在");
@@ -91,12 +99,20 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     @Override
-    public boolean insertUser(SysUser sysUser) {
+    @Transactional
+    public int insertUser(SysUser sysUser) {
+        int result = 0;
         //用户密码加密
         sysUser.setPassword(passwordEncoder.encode(sysUser.getPassword()));
         //设置非系统用户
         sysUser.setUserType(UserConstants.NON_SYSTEM_USER);
-        return userMapper.insertUser(sysUser) > 0;
+        result += userMapper.insertUser(sysUser);
+
+        //保存角色配置信息
+        if (sysUser.getRoleIds().length > 0) {
+            result += userRoleMapper.insertRoleUser(sysUser.getUserId(), sysUser.getRoleIds());
+        }
+        return result;
     }
 
     @Override
@@ -105,8 +121,8 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     @Override
-    public boolean updateUser(SysUser sysUser) {
-        return userMapper.updateUser(sysUser) > 0;
+    public int updateUser(SysUser sysUser) {
+        return userMapper.updateUser(sysUser);
     }
 
     @Override
@@ -145,14 +161,25 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     @Override
-    public boolean deleteUserByIds(Long[] userIds) {
+    public int deleteUserByIds(Long[] userIds) {
         //需要同步删除用户关联信息
-        return userMapper.deleteUserByIds(userIds) > 0;
+        return userMapper.deleteUserByIds(userIds);
     }
 
     @Override
     public String importUser(List<SysUser> sysUsers, boolean isUpdateSupport, String operateName) {
         return null;
+    }
+
+    @Override
+    public SysUser selectSafeUser(Long userId) {
+        SysUser sysUser = selectUserById(userId);
+        if (ObjectUtils.isNotNull(sysUser)) {
+            sysUser.setPassword("");
+            List<Long> roleIds = sysUser.getRoles().stream().map(SysRole::getRoleId).collect(Collectors.toList());
+            sysUser.setRoleIds(roleIds.toArray(new Long[0]));
+        }
+        return sysUser;
     }
 }
 

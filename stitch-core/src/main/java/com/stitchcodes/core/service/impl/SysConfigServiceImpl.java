@@ -110,8 +110,9 @@ public class SysConfigServiceImpl implements SysConfigService {
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
-    public void deleteSysConfig(Long[] configIds) {
+    @Transactional
+    public int deleteSysConfig(Long[] configIds) {
+        int result = 0;
         for (Long configId : configIds) {
             SysConfig config = getConfigValueById(configId);
             if (StringUtils.equals(UserConstants.YES, config.getConfigType())) {
@@ -121,7 +122,9 @@ public class SysConfigServiceImpl implements SysConfigService {
             if (row > 0) {
                 redisCache.deleteObject(getConfigCacheKey(config.getConfigKey()));
             }
+            result += row;
         }
+        return result;
     }
 
     @Override

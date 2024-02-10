@@ -72,7 +72,7 @@ public interface SysConfigService {
      *
      * @param configIds 系统参数配置数组
      */
-    void deleteSysConfig(Long[] configIds);
+    int deleteSysConfig(Long[] configIds);
 
     /**
      * 检查参数键是否唯一

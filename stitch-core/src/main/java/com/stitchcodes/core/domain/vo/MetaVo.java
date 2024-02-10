@@ -20,7 +20,7 @@ public class MetaVo {
     /**
      * 是否缓存
      */
-    private boolean noCache;
+    private boolean cache;
 
     /**
      * 是否是链接
@@ -30,10 +30,10 @@ public class MetaVo {
     public MetaVo() {
     }
 
-    public MetaVo(String title, String icon, boolean noCache, String link) {
+    public MetaVo(String title, String icon, boolean cache, String link) {
         this.title = title;
         this.icon = icon;
-        this.noCache = noCache;
+        this.cache = cache;
         this.link = link;
     }
 
@@ -53,12 +53,12 @@ public class MetaVo {
         this.icon = icon;
     }
 
-    public boolean isNoCache() {
-        return noCache;
+    public boolean isCache() {
+        return cache;
     }
 
-    public void setNoCache(boolean noCache) {
-        this.noCache = noCache;
+    public void setCache(boolean cache) {
+        this.cache = cache;
     }
 
     public String getLink() {

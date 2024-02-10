@@ -27,7 +27,7 @@ public class SysDeptServiceImpl implements SysDeptService {
     private SysDeptMapper deptMapper;
 
     @Override
-    @DataScope(deptAlias = "d")
+    @DataScope
     public List<SysDept> selectSysDeptList(SysDept dept) {
         return deptMapper.selectDeptList(dept);
     }
@@ -61,7 +61,7 @@ public class SysDeptServiceImpl implements SysDeptService {
     }
 
     @Override
-    public boolean createSysDept(SysDept dept) {
+    public int createSysDept(SysDept dept) {
         //检查父级部门状态是否正常
         SysDept parentDept = deptMapper.selectDeptById(dept.getParentId());
         if (ObjectUtils.isNull(parentDept) && !UserConstants.ROOT_DEPT_PARENT.equals(dept.getParentId())) {
@@ -76,7 +76,7 @@ public class SysDeptServiceImpl implements SysDeptService {
         } else {
             dept.setAncestors(UserConstants.ROOT_DEPT_PARENT.toString());
         }
-        return deptMapper.insertDept(dept) > 0;
+        return deptMapper.insertDept(dept);
     }
 
     @Override
@@ -88,7 +88,7 @@ public class SysDeptServiceImpl implements SysDeptService {
     }
 
     @Override
-    public boolean updateSysDept(SysDept dept) {
+    public int updateSysDept(SysDept dept) {
         if (UserConstants.ROOT_DEPT_PARENT.equals(dept.getParentId())) {
             dept.setAncestors(UserConstants.ROOT_DEPT_PARENT.toString());
         } else {
@@ -99,7 +99,7 @@ public class SysDeptServiceImpl implements SysDeptService {
             dept.setAncestors(parentDept.getAncestors() + "," + parentDept.getDeptId());
         }
 
-        return deptMapper.updateDept(dept) > 0;
+        return deptMapper.updateDept(dept);
     }
 
     @Override
@@ -113,8 +113,8 @@ public class SysDeptServiceImpl implements SysDeptService {
     }
 
     @Override
-    public boolean removeSysDept(Long deptId) {
-        return deptMapper.deleteDept(deptId) > 0;
+    public int removeSysDept(Long deptId) {
+        return deptMapper.deleteDept(deptId);
     }
 
 

@@ -80,10 +80,27 @@ public interface SysRoleMapper {
 
     /**
      * 根据角色名称查找角色
+     *
      * @param roleName 角色名称
      * @return
      */
     SysRole selectSysRoleByName(String roleName);
+
+    /**
+     * 查询已分配给用户的角色列表
+     *
+     * @param sysRole 角色信息
+     * @return
+     */
+    List<SysRole> selectAllocatedRoles(SysRole sysRole);
+
+    /**
+     * 查询未分配给用户的角色列表
+     *
+     * @param sysRole 角色信息
+     * @return
+     */
+    List<SysRole> selectUnallocatedRoles(SysRole sysRole);
 
 }
 
