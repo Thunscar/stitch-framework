@@ -31,7 +31,7 @@ public class SysPostController extends BaseController {
     @GetMapping("/list")
     public TableData list(SysPost sysPost) {
         startPage();
-        List<SysPost> sysPosts = postService.selectSysPost(sysPost);
+        List<SysPost> sysPosts = postService.selectSysPostList(sysPost);
         return getTableData(sysPosts);
     }
 
@@ -70,7 +70,7 @@ public class SysPostController extends BaseController {
     //导出岗位列表到excel
     @PostMapping("/export")
     public void export(HttpServletResponse response, SysPost sysPost) throws IOException {
-        List<SysPost> sysPosts = postService.selectSysPost(sysPost);
+        List<SysPost> sysPosts = postService.selectSysPostList(sysPost);
         ExcelUtil<SysPost> excelUtil = new ExcelUtil<>(SysPost.class);
         excelUtil.exportExcel("岗位数据", sysPosts, response);
     }

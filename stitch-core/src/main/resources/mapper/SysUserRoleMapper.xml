@@ -8,20 +8,34 @@
             <id property="userId" column="user_id" jdbcType="BIGINT"/>
             <result property="roleId" column="role_id" jdbcType="BIGINT"/>
     </resultMap>
-    <insert id="insertUserRole">
+    <insert id="insertRoleUsers">
         insert into sys_user_role (user_id, role_id) values
         <foreach collection="userIds" index="index" item="item" separator=",">
             (#{item},#{roleId})
         </foreach>
     </insert>
-    <insert id="insertRoleUser">
+    <insert id="insertUserRoles">
         insert into sys_user_role (user_id, role_id) values
         <foreach collection="roleIds" index="index" item="item" separator=",">
             (#{userId},#{item})
         </foreach>
     </insert>
-    <delete id="removeUserRole">
+    <delete id="removeRoleUsers">
         delete from sys_user_role where role_id = #{roleId} and user_id in
+        <foreach collection="userIds" index="index" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </delete>
+    <delete id="removeUserRoles">
+        delete from sys_user_role where user_id = #{userId} and role_id in
+        <foreach collection="roleIds" index="index" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </delete>
+    <delete id="removeByUserIds">
+        delete
+        from sys_user_role
+        where user_id in
         <foreach collection="userIds" index="index" item="item" separator="," open="(" close=")">
             #{item}
         </foreach>

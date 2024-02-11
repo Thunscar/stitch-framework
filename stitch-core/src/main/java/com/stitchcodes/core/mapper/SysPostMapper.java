@@ -59,6 +59,13 @@ public interface SysPostMapper {
      */
     SysPost selectSysPostById(Long postId);
 
+    /**
+     * 查询用户岗位
+     * @param userId 用户id
+     * @return
+     */
+    List<SysPost> selectSysPostByUserId(Long userId);
+
 }
 
 

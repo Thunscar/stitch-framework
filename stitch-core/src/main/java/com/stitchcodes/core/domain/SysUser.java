@@ -107,13 +107,19 @@ public class SysUser extends BaseEntity implements Serializable {
      */
     private List<SysRole> roles;
 
-
     private Long[] roleIds;
+
+    private Long[] postIds;
 
     private Long roleId;
 
+    public Long[] getPostIds() {
+        return postIds;
+    }
 
-
+    public void setPostIds(Long[] postIds) {
+        this.postIds = postIds;
+    }
 
     public SysDept getDept() {
         return dept;
@@ -349,16 +355,16 @@ public class SysUser extends BaseEntity implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SysUser sysUser = (SysUser) o;
-        return Objects.equals(userId, sysUser.userId) && Objects.equals(deptId, sysUser.deptId) && Objects.equals(userName, sysUser.userName) && Objects.equals(nickName, sysUser.nickName) && Objects.equals(userType, sysUser.userType) && Objects.equals(email, sysUser.email) && Objects.equals(phone, sysUser.phone) && Objects.equals(sex, sysUser.sex) && Objects.equals(avatar, sysUser.avatar) && Objects.equals(password, sysUser.password) && Objects.equals(status, sysUser.status) && Objects.equals(isDelete, sysUser.isDelete) && Objects.equals(loginIp, sysUser.loginIp) && Objects.equals(loginTime, sysUser.loginTime) && Objects.equals(dept, sysUser.dept) && Objects.equals(roles, sysUser.roles) && Arrays.equals(roleIds, sysUser.roleIds) && Objects.equals(roleId, sysUser.roleId);
+        return Objects.equals(userId, sysUser.userId) && Objects.equals(deptId, sysUser.deptId) && Objects.equals(userName, sysUser.userName) && Objects.equals(nickName, sysUser.nickName) && Objects.equals(userType, sysUser.userType) && Objects.equals(email, sysUser.email) && Objects.equals(phone, sysUser.phone) && Objects.equals(sex, sysUser.sex) && Objects.equals(avatar, sysUser.avatar) && Objects.equals(password, sysUser.password) && Objects.equals(status, sysUser.status) && Objects.equals(isDelete, sysUser.isDelete) && Objects.equals(loginIp, sysUser.loginIp) && Objects.equals(loginTime, sysUser.loginTime) && Objects.equals(dept, sysUser.dept) && Objects.equals(roles, sysUser.roles) && Arrays.equals(roleIds, sysUser.roleIds) && Arrays.equals(postIds, sysUser.postIds) && Objects.equals(roleId, sysUser.roleId);
     }
 
     @Override
     public int hashCode() {
         int result = Objects.hash(userId, deptId, userName, nickName, userType, email, phone, sex, avatar, password, status, isDelete, loginIp, loginTime, dept, roles, roleId);
         result = 31 * result + Arrays.hashCode(roleIds);
+        result = 31 * result + Arrays.hashCode(postIds);
         return result;
     }
-
 
     @Override
     public String toString() {
@@ -380,6 +386,7 @@ public class SysUser extends BaseEntity implements Serializable {
         sb.append(", dept=").append(dept);
         sb.append(", roles=").append(roles);
         sb.append(", roleIds=").append(roleIds == null ? "null" : Arrays.asList(roleIds).toString());
+        sb.append(", postIds=").append(postIds == null ? "null" : Arrays.asList(postIds).toString());
         sb.append(", roleId=").append(roleId);
         sb.append('}');
         return sb.toString();

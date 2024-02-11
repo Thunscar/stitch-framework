@@ -134,7 +134,7 @@ public interface SysRoleService {
      * @param userIds 用户ID数组
      * @return
      */
-    int conferRole(Long roleId, Long[] userIds);
+    int allocateUsers(Long roleId, Long[] userIds);
 
     /**
      * 取消角色用户授权
@@ -143,7 +143,7 @@ public interface SysRoleService {
      * @param userIds 用户ID数组
      * @return
      */
-    int cancelConferRole(Long roleId, Long[] userIds);
+    int cancelAllocateUsers(Long roleId, Long[] userIds);
 
 
     /**

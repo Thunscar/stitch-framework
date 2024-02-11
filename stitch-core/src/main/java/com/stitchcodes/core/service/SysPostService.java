@@ -17,7 +17,7 @@ public interface SysPostService {
      * @param sysPost 岗位信息
      * @return
      */
-    List<SysPost> selectSysPost(SysPost sysPost);
+    List<SysPost> selectSysPostList(SysPost sysPost);
 
     /**
      * 批量删除岗位
@@ -57,6 +57,13 @@ public interface SysPostService {
      * @return
      */
     SysPost selectSysPostById(Long postId);
+
+    /**
+     * 查询用户的岗位信息
+     * @param userId 用户ID
+     * @return
+     */
+    List<SysPost> selectSysPostListByUserId(Long userId);
 
 
 }

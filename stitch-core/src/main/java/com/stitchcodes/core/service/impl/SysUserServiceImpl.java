@@ -7,9 +7,9 @@ import com.stitchcodes.common.utils.CollectionUtils;
 import com.stitchcodes.common.utils.ObjectUtils;
 import com.stitchcodes.common.utils.SpringUtils;
 import com.stitchcodes.common.utils.encode.StitchPasswordEncoder;
-import com.stitchcodes.core.domain.SysRole;
 import com.stitchcodes.core.domain.SysUser;
 import com.stitchcodes.core.mapper.SysUserMapper;
+import com.stitchcodes.core.mapper.SysUserPostMapper;
 import com.stitchcodes.core.mapper.SysUserRoleMapper;
 import com.stitchcodes.core.service.SysUserService;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author stitch
@@ -33,6 +32,8 @@ public class SysUserServiceImpl implements SysUserService {
     private SysUserMapper userMapper;
     @Resource
     private SysUserRoleMapper userRoleMapper;
+    @Resource
+    private SysUserPostMapper userPostMapper;
     @Resource
     private StitchPasswordEncoder passwordEncoder;
 
@@ -106,11 +107,16 @@ public class SysUserServiceImpl implements SysUserService {
         sysUser.setPassword(passwordEncoder.encode(sysUser.getPassword()));
         //设置非系统用户
         sysUser.setUserType(UserConstants.NON_SYSTEM_USER);
-        result += userMapper.insertUser(sysUser);
+        //保存用户信息并将ID带回
+        result = userMapper.insertUser(sysUser);
 
         //保存角色配置信息
         if (sysUser.getRoleIds().length > 0) {
-            result += userRoleMapper.insertRoleUser(sysUser.getUserId(), sysUser.getRoleIds());
+            userRoleMapper.insertUserRoles(sysUser.getUserId(), sysUser.getRoleIds());
+        }
+        //保存角色岗位信息
+        if (sysUser.getPostIds().length > 0) {
+            userPostMapper.insertUserPost(sysUser.getUserId(), sysUser.getPostIds());
         }
         return result;
     }
@@ -121,7 +127,20 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     @Override
+    @Transactional
     public int updateUser(SysUser sysUser) {
+        //移除角色配置信息
+        userRoleMapper.removeByUserIds(new Long[]{sysUser.getUserId()});
+        //保存角色配置信息
+        if (sysUser.getRoleIds().length > 0) {
+            userRoleMapper.insertUserRoles(sysUser.getUserId(), sysUser.getRoleIds());
+        }
+        //移除角色岗位信息
+        userPostMapper.removeByUserIds(new Long[]{sysUser.getUserId()});
+        //保存角色岗位信息
+        if (sysUser.getPostIds().length > 0) {
+            userPostMapper.insertUserPost(sysUser.getUserId(), sysUser.getPostIds());
+        }
         return userMapper.updateUser(sysUser);
     }
 
@@ -161,8 +180,12 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     @Override
+    @Transactional
     public int deleteUserByIds(Long[] userIds) {
-        //需要同步删除用户关联信息
+        //删除用户岗位关联信息
+        userPostMapper.removeByUserIds(userIds);
+        //删除用户角色关联信息
+        userRoleMapper.removeByUserIds(userIds);
         return userMapper.deleteUserByIds(userIds);
     }
 
@@ -176,10 +199,18 @@ public class SysUserServiceImpl implements SysUserService {
         SysUser sysUser = selectUserById(userId);
         if (ObjectUtils.isNotNull(sysUser)) {
             sysUser.setPassword("");
-            List<Long> roleIds = sysUser.getRoles().stream().map(SysRole::getRoleId).collect(Collectors.toList());
-            sysUser.setRoleIds(roleIds.toArray(new Long[0]));
         }
         return sysUser;
+    }
+
+    @Override
+    public int allocateRoles(Long userId, Long[] roleIds) {
+        return userRoleMapper.insertUserRoles(userId, roleIds);
+    }
+
+    @Override
+    public int cancelAllocateRoles(Long userId, Long[] roleIds) {
+        return userRoleMapper.removeUserRoles(userId, roleIds);
     }
 }
 

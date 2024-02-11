@@ -189,10 +189,27 @@ public interface SysUserService {
 
     /**
      * 获取用户信息，屏蔽密码等信息
+     *
      * @param userId 用户ID
      * @return
      */
     SysUser selectSafeUser(Long userId);
+
+    /**
+     * 分配角色
+     * @param userId 角色ID
+     * @param roleIds 角色ID列表
+     * @return
+     */
+    int allocateRoles(Long userId, Long[] roleIds);
+
+    /**
+     * 取消分配角色
+     * @param userId 用户ID
+     * @param roleIds 角色ID列表
+     * @return
+     */
+    int cancelAllocateRoles(Long userId, Long[] roleIds);
 
 
 }

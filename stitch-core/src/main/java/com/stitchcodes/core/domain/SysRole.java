@@ -1,5 +1,6 @@
 package com.stitchcodes.core.domain;
 
+import com.stitchcodes.common.annotation.Excel;
 import com.stitchcodes.common.domain.BaseEntity;
 
 import java.io.Serializable;
@@ -14,16 +15,19 @@ public class SysRole extends BaseEntity implements Serializable {
     /**
      * 角色ID
      */
+    @Excel(name = "角色ID")
     private Long roleId;
 
     /**
      * 角色名称
      */
+    @Excel(name = "角色名称")
     private String roleName;
 
     /**
      * 角色权限字符串
      */
+    @Excel(name = "角色键")
     private String roleKey;
 
     /**

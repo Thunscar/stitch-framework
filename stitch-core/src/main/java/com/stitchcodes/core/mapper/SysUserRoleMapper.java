@@ -18,15 +18,16 @@ public interface SysUserRoleMapper {
      * @param userIds 用户ID数组
      * @return
      */
-    int insertUserRole(@Param("roleId") Long roleId, @Param("userIds") Long[] userIds);
+    int insertRoleUsers(@Param("roleId") Long roleId, @Param("userIds") Long[] userIds);
 
     /**
      * 添加角色用户关联信息
-     * @param userId 用户ID
+     *
+     * @param userId  用户ID
      * @param roleIds 角色ID数组
      * @return
      */
-    int insertRoleUser(@Param("userId")Long userId,@Param("roleIds")Long[] roleIds);
+    int insertUserRoles(@Param("userId") Long userId, @Param("roleIds") Long[] roleIds);
 
 
     /**
@@ -36,7 +37,16 @@ public interface SysUserRoleMapper {
      * @param userIds 用户ID
      * @return
      */
-    int removeUserRole(@Param("roleId") Long roleId, @Param("userIds") Long[] userIds);
+    int removeRoleUsers(@Param("roleId") Long roleId, @Param("userIds") Long[] userIds);
+
+    /**
+     * 移除用户角色关联信息
+     *
+     * @param userId  用户ID
+     * @param roleIds 角色ID列表
+     * @return
+     */
+    int removeUserRoles(@Param("userId") Long userId, @Param("roleIds") Long[] roleIds);
 
 
     /**
@@ -46,6 +56,13 @@ public interface SysUserRoleMapper {
      * @return
      */
     int countUserAllocated(Long roleId);
+
+    /**
+     * 移除用户的角色关联信息
+     * @param userIds 用户ID数组
+     * @return
+     */
+    int removeByUserIds(@Param("userIds")Long[] userIds);
 
 }
 

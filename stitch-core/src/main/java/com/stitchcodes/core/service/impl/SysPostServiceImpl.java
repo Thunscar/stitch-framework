@@ -23,7 +23,7 @@ public class SysPostServiceImpl implements SysPostService {
 
 
     @Override
-    public List<SysPost> selectSysPost(SysPost sysPost) {
+    public List<SysPost> selectSysPostList(SysPost sysPost) {
         return postMapper.selectPostList(sysPost);
     }
 
@@ -54,6 +54,11 @@ public class SysPostServiceImpl implements SysPostService {
     @Override
     public SysPost selectSysPostById(Long postId) {
         return postMapper.selectSysPostById(postId);
+    }
+
+    @Override
+    public List<SysPost> selectSysPostListByUserId(Long userId) {
+        return postMapper.selectSysPostByUserId(userId);
     }
 }
 

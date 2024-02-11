@@ -173,13 +173,13 @@ public class SysRoleServiceImpl implements SysRoleService {
     }
 
     @Override
-    public int conferRole(Long roleId, Long[] userIds) {
-        return userRoleMapper.insertUserRole(roleId, userIds);
+    public int allocateUsers(Long roleId, Long[] userIds) {
+        return userRoleMapper.insertRoleUsers(roleId, userIds);
     }
 
     @Override
-    public int cancelConferRole(Long roleId, Long[] userIds) {
-        return userRoleMapper.removeUserRole(roleId, userIds);
+    public int cancelAllocateUsers(Long roleId, Long[] userIds) {
+        return userRoleMapper.removeRoleUsers(roleId, userIds);
     }
 
     @Override

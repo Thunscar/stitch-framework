@@ -116,19 +116,19 @@ public class SysRoleController extends BaseController {
     }
 
     //给角色分配用户
-    @PostMapping("confer")
-    public AjaxResult conferRoles(Long roleId, Long[] userIds) {
+    @PostMapping("/allocate")
+    public AjaxResult allocateUsers(Long roleId, Long[] userIds) {
         //检查角色数据权限
         roleService.checkRoleDataScope(roleId);
-        return toAjax(roleService.conferRole(roleId, userIds));
+        return toAjax(roleService.allocateUsers(roleId, userIds));
     }
 
     //取消角色分配的用户
-    @PostMapping("/confer/cancel")
-    public AjaxResult cancelConferRoles(Long roleId, Long[] userIds) {
+    @PostMapping("/allocate/cancel")
+    public AjaxResult cancelAllocateUsers(Long roleId, Long[] userIds) {
         //检查角色数据权限
         roleService.checkRoleDataScope(roleId);
-        return toAjax(roleService.cancelConferRole(roleId, userIds));
+        return toAjax(roleService.cancelAllocateUsers(roleId, userIds));
     }
 
     //修改角色数据权限

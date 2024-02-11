@@ -4,9 +4,24 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.stitchcodes.core.mapper.SysUserPostMapper">
 
-    <resultMap id="BaseResultMap" type="com.stitchcodes.core.domain.SysUserPost">
+    <resultMap id="UserRoleResultMap" type="com.stitchcodes.core.domain.SysUserPost">
             <id property="userId" column="user_id" jdbcType="BIGINT"/>
             <result property="postId" column="post_id" jdbcType="BIGINT"/>
     </resultMap>
+    <insert id="insertUserPost">
+        insert into sys_user_post (user_id, post_id) values
+        <foreach collection="postIds" index="index" item="item" separator=",">
+            (#{userId},#{item})
+        </foreach>
+    </insert>
+    <delete id="removeByUserIds">
+        delete
+        from sys_user_post
+        where user_id in
+        <foreach collection="userIds" index="index" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </delete>
+
 
 </mapper>

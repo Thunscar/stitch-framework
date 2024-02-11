@@ -4,10 +4,13 @@ import com.stitchcodes.common.api.AjaxResult;
 import com.stitchcodes.common.api.TableData;
 import com.stitchcodes.common.controller.BaseController;
 import com.stitchcodes.common.excel.ExcelUtil;
+import com.stitchcodes.common.utils.ObjectUtils;
 import com.stitchcodes.common.utils.StringUtils;
+import com.stitchcodes.core.domain.SysDept;
+import com.stitchcodes.core.domain.SysPost;
+import com.stitchcodes.core.domain.SysRole;
 import com.stitchcodes.core.domain.SysUser;
-import com.stitchcodes.core.service.SysConfigService;
-import com.stitchcodes.core.service.SysUserService;
+import com.stitchcodes.core.service.*;
 import com.stitchcodes.core.utils.AuthUtils;
 import com.stitchcodes.system.service.SysPasswordService;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +34,13 @@ public class SysUserController extends BaseController {
     @Resource
     private SysConfigService configService;
     @Resource
+    private SysRoleService roleService;
+    @Resource
+    private SysPostService postService;
+    @Resource
+    private SysDeptService deptService;
+
+    @Resource
     private SysPasswordService passwordService;
 
     //查询角色列表
@@ -41,12 +51,34 @@ public class SysUserController extends BaseController {
         return getTableData(sysUsers);
     }
 
-    //获取角色信息(屏蔽敏感信息)
-    @GetMapping("{userId}")
-    public AjaxResult getUserInfo(@PathVariable Long userId) {
+    //获取角色信息
+    @GetMapping(value = {"/", "{userId}"})
+    public AjaxResult getUserInfo(@PathVariable(required = false) Long userId) {
         //校验数据权限
         userService.checkUserDataScope(userId);
-        return AjaxResult.success(userService.selectSafeUser(userId));
+
+        AjaxResult userInfo = new AjaxResult();
+        if (ObjectUtils.isNotNull(userId)) {
+            //获取角色信息
+            SysUser sysUser = userService.selectSafeUser(userId);
+            Long[] roleIds = sysUser.getRoles().stream().map(SysRole::getRoleId).filter(ObjectUtils::isNotNull).toArray(Long[]::new);
+            sysUser.setRoleIds(roleIds);
+            List<SysPost> userPosts = postService.selectSysPostListByUserId(userId);
+            sysUser.setPostIds(userPosts.stream().map(SysPost::getPostId).toArray(Long[]::new));
+            userInfo.put("user", sysUser);
+        }
+
+        //获取部门列表
+        List<SysDept> deptList = deptService.selectSysDeptList(new SysDept());
+        //获取角色列表
+        List<SysRole> roleList = roleService.selectSysRoleList(new SysRole());
+        //获取岗位列表
+        List<SysPost> postList = postService.selectSysPostList(new SysPost());
+
+        userInfo.put("depts", deptList);
+        userInfo.put("roles", roleList);
+        userInfo.put("posts", postList);
+        return userInfo;
     }
 
     //创建用户
@@ -124,6 +156,22 @@ public class SysUserController extends BaseController {
         startPage();
         List<SysUser> sysUsers = userService.selectUnAllocatedUsers(sysUser);
         return getTableData(sysUsers);
+    }
+
+    //批量分配给用户角色
+    @PostMapping("/allocate")
+    public AjaxResult allocateRoles(Long userId, Long[] roleIds) {
+        //检查用户数据权限
+        userService.checkUserDataScope(userId);
+        return toAjax(userService.allocateRoles(userId, roleIds));
+    }
+
+    //批量取消分配给用户的角色
+    @PostMapping("/allocate/cancel")
+    public AjaxResult cancelAllocateRoles(Long userId, Long[] roleIds) {
+        //检查用户数据权限
+        userService.checkUserDataScope(userId);
+        return toAjax(userService.cancelAllocateRoles(userId, roleIds));
     }
 
 }

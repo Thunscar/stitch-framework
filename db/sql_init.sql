@@ -1,4 +1,4 @@
-create table if not exists sys_config
+create table sys_config
 (
     config_id    bigint auto_increment comment '参数主键'
         primary key,
@@ -15,7 +15,7 @@ create table if not exists sys_config
 )
     comment '系统配置表';
 
-create table if not exists sys_dept
+create table sys_dept
 (
     dept_id     bigint auto_increment comment '主键'
         primary key,
@@ -35,7 +35,7 @@ create table if not exists sys_dept
 )
     comment '部门表';
 
-create table if not exists sys_dict_data
+create table sys_dict_data
 (
     dict_code   bigint auto_increment comment '字典编码'
         primary key,
@@ -54,7 +54,7 @@ create table if not exists sys_dict_data
     remark      varchar(500)                       null comment '备注'
 );
 
-create table if not exists sys_dict_type
+create table sys_dict_type
 (
     dict_id     bigint auto_increment comment '字典ID'
         primary key,
@@ -69,7 +69,7 @@ create table if not exists sys_dict_type
 )
     comment '字典类型表';
 
-create table if not exists sys_login_info
+create table sys_login_info
 (
     info_id        bigint auto_increment comment '信息ID'
         primary key,
@@ -84,7 +84,7 @@ create table if not exists sys_login_info
     login_time     datetime default CURRENT_TIMESTAMP null comment '登录时间'
 );
 
-create table if not exists sys_menu
+create table sys_menu
 (
     menu_id     bigint auto_increment comment '菜单ID'
         primary key,
@@ -110,7 +110,7 @@ create table if not exists sys_menu
 )
     comment '系统菜单表';
 
-create table if not exists sys_notice
+create table sys_notice
 (
     notice_id      bigint auto_increment comment '通知ID'
         primary key,
@@ -125,7 +125,7 @@ create table if not exists sys_notice
     remark         varchar(500)                       null comment '备注'
 );
 
-create table if not exists sys_operate_log
+create table sys_operate_log
 (
     log_id           bigint auto_increment comment '日志主键'
         primary key,
@@ -147,7 +147,7 @@ create table if not exists sys_operate_log
 )
     comment '系统操作日志表';
 
-create table if not exists sys_post
+create table sys_post
 (
     post_id     bigint auto_increment comment '岗位ID'
         primary key,
@@ -164,15 +164,15 @@ create table if not exists sys_post
 )
     comment '岗位信息表';
 
-create table if not exists sys_role_dept
+create table sys_role_dept
 (
     role_id bigint auto_increment comment '角色ID',
     dept_id bigint not null comment '部门ID',
-    primary key (role_id,dept_id)
+    primary key (role_id, dept_id)
 )
     comment '角色部门关联表';
 
-create table if not exists sys_role
+create table sys_role
 (
     role_id     bigint auto_increment comment '角色ID'
         primary key,
@@ -190,15 +190,15 @@ create table if not exists sys_role
 )
     comment '角色信息表';
 
-create table if not exists sys_role_menu
+create table sys_role_menu
 (
     role_id bigint not null comment '角色ID',
     menu_id bigint not null comment '菜单ID',
-    primary key(role_id, menu_id)
+    primary key (role_id, menu_id)
 )
     comment '角色菜单表';
 
-create table if not exists sys_user
+create table sys_user
 (
     user_id     bigint auto_increment comment '用户ID'
         primary key,
@@ -223,21 +223,20 @@ create table if not exists sys_user
 )
     comment '系统用户表';
 
-create table if not exists sys_user_post
+drop table if exists sys_user_post;
+create table sys_user_post
 (
-    user_id bigint not null comment '用户ID'
-        primary key,
+    user_id bigint not null comment '用户ID',
     post_id bigint not null comment '岗位ID',
-    constraint sys_user_post_pk2
-        unique (post_id)
+    primary key (user_id, post_id)
 )
     comment '用户岗位关联表';
 
-create table if not exists sys_user_role
+create table sys_user_role
 (
     user_id bigint not null comment '用户ID',
     role_id bigint not null comment '角色ID',
-    primary key (user_id,role_id)
+    primary key (user_id, role_id)
 )
     comment '用户角色关联表';
 
