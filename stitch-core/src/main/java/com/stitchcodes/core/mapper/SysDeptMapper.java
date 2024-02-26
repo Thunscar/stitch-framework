@@ -5,7 +5,7 @@ import com.stitchcodes.core.domain.SysDept;
 import java.util.List;
 
 /**
- * @author chenwei
+ * @author stitch
  * @description 针对表【sys_dept(部门表)】的数据库操作Mapper
  * @createDate 2023-04-29 14:12:10
  * @Entity generator.domain.SysDept

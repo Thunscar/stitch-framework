@@ -5,7 +5,7 @@ import com.stitchcodes.core.domain.SysUser;
 import java.util.List;
 
 /**
- * @author chenwei
+ * @author stitch
  * @description 针对表【sys_user(系统用户表)】的数据库操作Service
  * @createDate 2023-04-28 13:20:02
  */

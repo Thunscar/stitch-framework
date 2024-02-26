@@ -11,7 +11,6 @@ import com.stitchcodes.core.domain.SysConfig;
 import com.stitchcodes.core.mapper.SysConfigMapper;
 import com.stitchcodes.core.service.SysConfigService;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -110,7 +109,6 @@ public class SysConfigServiceImpl implements SysConfigService {
     }
 
     @Override
-    @Transactional
     public int deleteSysConfig(Long[] configIds) {
         int result = 0;
         for (Long configId : configIds) {

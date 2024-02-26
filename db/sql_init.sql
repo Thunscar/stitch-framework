@@ -35,6 +35,7 @@ create table sys_dept
 )
     comment '部门表';
 
+drop table if exists sys_dict_data;
 create table sys_dict_data
 (
     dict_code   bigint auto_increment comment '字典编码'
@@ -44,16 +45,16 @@ create table sys_dict_data
     dict_value  varchar(100)                       null comment '字典键值',
     dict_type   varchar(100)                       null comment '字典类型',
     css_class   varchar(100)                       null comment '样式属性',
-    list_class  varchar(100)                       null comment '列表回显样式',
-    is_default  char     default '0'               null comment '是否默认(0非默认1默认)',
     status      char     default '0'               null comment '状态(0正常1停用)',
     create_user varchar(100)                       null comment '创建人',
     create_time datetime default CURRENT_TIMESTAMP null comment '创建时间',
     update_user varchar(100)                       null comment '更新人',
     update_time datetime default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP comment '更新时间',
+    is_delete   char     default '0'               null comment '是否删除(0未删除1已删除)',
     remark      varchar(500)                       null comment '备注'
 );
 
+drop table if exists sys_dict_type;
 create table sys_dict_type
 (
     dict_id     bigint auto_increment comment '字典ID'
@@ -65,6 +66,7 @@ create table sys_dict_type
     create_time datetime default CURRENT_TIMESTAMP null comment '创建时间',
     update_user varchar(100)                       null comment '更新人',
     update_time datetime default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP comment '更新时间',
+    is_delete   char     default '0'               null comment '是否删除(0未删除1已删除)',
     remark      varchar(500)                       null comment '备注'
 )
     comment '字典类型表';

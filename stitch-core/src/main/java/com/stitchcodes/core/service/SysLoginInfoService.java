@@ -5,7 +5,7 @@ import com.stitchcodes.core.domain.SysLoginInfo;
 import java.util.List;
 
 /**
- * @author chenwei
+ * @author stitch
  * @description 针对表【sys_login_info】的数据库操作Service
  * @createDate 2023-04-28 13:20:02
  */

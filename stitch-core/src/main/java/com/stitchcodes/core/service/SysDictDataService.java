@@ -1,7 +1,7 @@
 package com.stitchcodes.core.service;
 
 /**
-* @author chenwei
+* @author stitch
 * @description 针对表【sys_dict_data】的数据库操作Service
 * @createDate 2023-04-28 13:20:02
 */

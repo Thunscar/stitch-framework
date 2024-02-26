@@ -5,7 +5,7 @@ import com.stitchcodes.core.domain.SysConfig;
 import java.util.List;
 
 /**
- * @author chenwei
+ * @author stitch
  * @description 针对表【sys_config(系统配置表)】的数据库操作Mapper
  * @createDate 2023-04-29 14:12:10
  * @Entity generator.domain.SysConfig

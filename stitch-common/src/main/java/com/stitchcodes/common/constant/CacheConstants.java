@@ -12,6 +12,9 @@ public class CacheConstants {
     /*系统参数缓存前缀*/
     public static final String CONFIG_KEY = CACHE_PREFIX + "_config:";
 
+    /*字典数据缓存前缀*/
+    public static final String DICT_KEY = CACHE_PREFIX + "_dict:";
+
     /*验证码参数缓存前缀*/
     public static final String VERIFY_CODE_KEY = CACHE_PREFIX + "_verifyCode:";
 
