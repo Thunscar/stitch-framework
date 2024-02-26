@@ -63,7 +63,7 @@ public interface SysDictTypeService {
     /**
      * 批量删除系统字典类型
      *
-     * @param dictType 字典类型
+     * @param dictIds 字典类型ID列表
      * @return
      */
     int deleteBatchSysDictType(Long[] dictIds);

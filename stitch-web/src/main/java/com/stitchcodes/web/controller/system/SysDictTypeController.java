@@ -22,6 +22,7 @@ public class SysDictTypeController extends BaseController {
     @Resource
     private SysDictTypeService dictTypeService;
 
+
     //查询字典类型列表
     @GetMapping("/list")
     public TableData list(SysDictType dictType) {

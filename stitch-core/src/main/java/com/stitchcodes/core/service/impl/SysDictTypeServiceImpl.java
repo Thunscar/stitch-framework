@@ -18,6 +18,8 @@ import javax.annotation.Resource;
 import java.util.Collection;
 import java.util.List;
 
+import static com.stitchcodes.common.utils.RedisKeyUtil.getDictCacheKey;
+
 /**
  * @author stitch
  * @description 针对表【sys_dict_type(字典类型表)】的数据库操作Service实现
@@ -129,17 +131,6 @@ public class SysDictTypeServiceImpl implements SysDictTypeService {
         if (ObjectUtils.isNotNull(sysDictType) && sysDictType.getDictId().longValue() != dictId) {
             throw new StitchException(StringUtils.format("字典类型[%s]已存在", dictType.getDictType()));
         }
-    }
-
-
-    /**
-     * 获取字典缓存Key值
-     *
-     * @param dictType 字典类型
-     * @return 字典缓存Key值
-     */
-    public String getDictCacheKey(String dictType) {
-        return CacheConstants.DICT_KEY + dictType;
     }
 
 }
