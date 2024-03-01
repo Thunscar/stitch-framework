@@ -1,3 +1,4 @@
+drop table if exists sys_config;
 create table sys_config
 (
     config_id    bigint auto_increment comment '参数主键'
@@ -15,6 +16,7 @@ create table sys_config
 )
     comment '系统配置表';
 
+drop table if exists sys_dept;
 create table sys_dept
 (
     dept_id     bigint auto_increment comment '主键'
@@ -26,7 +28,7 @@ create table sys_dept
     leader      varchar(100)     null comment '负责人',
     phone       varchar(20)      null comment '联系电话',
     email       varchar(50)      null comment '邮箱',
-    status      char default '0' null comment '部门状态(0正常1停用)',
+    status      char default '0' null comment '部门状态',
     is_delete   char default '0' null comment '是否删除(0未删除1已删除)',
     create_user varchar(100)     null comment '创建人',
     create_time datetime         null comment '创建时间',
@@ -45,7 +47,6 @@ create table sys_dict_data
     dict_value  varchar(100)                       null comment '字典键值',
     dict_type   varchar(100)                       null comment '字典类型',
     css_class   varchar(100)                       null comment '样式属性',
-    status      char     default '0'               null comment '状态(0正常1停用)',
     create_user varchar(100)                       null comment '创建人',
     create_time datetime default CURRENT_TIMESTAMP null comment '创建时间',
     update_user varchar(100)                       null comment '更新人',
@@ -61,7 +62,7 @@ create table sys_dict_type
         primary key,
     dict_name   varchar(100)                       null comment '字典名称',
     dict_type   varchar(100)                       null comment '字典类型',
-    status      char     default '0'               null comment '状态(0正常1停用)',
+    is_system   char     default '0'               null comment '是否系统内置(0非内置1内置)',
     create_user varchar(100)                       null comment '创建人',
     create_time datetime default CURRENT_TIMESTAMP null comment '创建时间',
     update_user varchar(100)                       null comment '更新人',
@@ -71,6 +72,7 @@ create table sys_dict_type
 )
     comment '字典类型表';
 
+drop table if exists sys_login_info;
 create table sys_login_info
 (
     info_id        bigint auto_increment comment '信息ID'
@@ -86,6 +88,7 @@ create table sys_login_info
     login_time     datetime default CURRENT_TIMESTAMP null comment '登录时间'
 );
 
+drop table if exists sys_menu;
 create table sys_menu
 (
     menu_id     bigint auto_increment comment '菜单ID'
@@ -100,7 +103,7 @@ create table sys_menu
     is_cache    char     default '0'               null comment '是否缓存(0缓存1不缓存)',
     menu_type   char                               null comment '菜单类型(M菜单B按钮)',
     visible     char     default '1'               null comment '是否展示(0不展示1展示)',
-    status      char     default '0'               null comment '状态(0正常1停用)',
+    status      char     default '0'               null comment '状态',
     perms       varchar(100)                       null comment '权限',
     icon        varchar(100)                       null comment '图标名称',
     is_delete   char     default '0'               null comment '是否删除(0未删除1已删除)',
@@ -112,6 +115,8 @@ create table sys_menu
 )
     comment '系统菜单表';
 
+
+drop table if exists sys_notice;
 create table sys_notice
 (
     notice_id      bigint auto_increment comment '通知ID'
@@ -119,7 +124,7 @@ create table sys_notice
     notice_title   varchar(100)                       not null comment '通知标题',
     notice_type    char                               not null comment '通知类型(0通知1公告)',
     notice_content longblob                           null comment '通知内容',
-    status         char     default '0'               null comment '状态(0正常1关闭)',
+    status         char     default '0'               null comment '状态',
     create_user    varchar(100)                       null comment '创建人',
     create_time    datetime default CURRENT_TIMESTAMP null comment '创建时间',
     update_user    varchar(100)                       null comment '更新人',
@@ -127,6 +132,7 @@ create table sys_notice
     remark         varchar(500)                       null comment '备注'
 );
 
+drop table if exists sys_operate_log;
 create table sys_operate_log
 (
     log_id           bigint auto_increment comment '日志主键'
@@ -149,6 +155,7 @@ create table sys_operate_log
 )
     comment '系统操作日志表';
 
+drop table if exists sys_post;
 create table sys_post
 (
     post_id     bigint auto_increment comment '岗位ID'
@@ -166,6 +173,8 @@ create table sys_post
 )
     comment '岗位信息表';
 
+
+drop table if exists sys_role_dept;
 create table sys_role_dept
 (
     role_id bigint auto_increment comment '角色ID',
@@ -174,6 +183,8 @@ create table sys_role_dept
 )
     comment '角色部门关联表';
 
+
+drop table if exists sys_role;
 create table sys_role
 (
     role_id     bigint auto_increment comment '角色ID'
@@ -192,6 +203,8 @@ create table sys_role
 )
     comment '角色信息表';
 
+
+drop table if exists sys_role_menu;
 create table sys_role_menu
 (
     role_id bigint not null comment '角色ID',
@@ -200,6 +213,7 @@ create table sys_role_menu
 )
     comment '角色菜单表';
 
+drop table if exists sys_user;
 create table sys_user
 (
     user_id     bigint auto_increment comment '用户ID'
@@ -234,6 +248,7 @@ create table sys_user_post
 )
     comment '用户岗位关联表';
 
+drop table if exists sys_user_role;
 create table sys_user_role
 (
     user_id bigint not null comment '用户ID',

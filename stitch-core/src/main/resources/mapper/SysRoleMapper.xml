@@ -150,7 +150,6 @@
                 and r.role_name like concat('%',#{roleName},'%')
             </if>
             and r.is_delete = '0'
-            and r.status = '0'
             and u.user_id = #{userId}
             ${params.dataScope}
         </where>
@@ -163,7 +162,6 @@
                 and r.role_name like concat('%',#{roleName},'%')
             </if>
             and r.is_delete = '0'
-            and r.status = '0'
             and r.role_id not in
             (select ur.role_id from sys_user_role ur where ur.user_id = #{userId})
             ${params.dataScope}

@@ -30,10 +30,7 @@ public class SysDictType extends BaseEntity implements Serializable {
      */
     private String isDelete;
 
-    /**
-     * 状态(0正常1停用)
-     */
-    private String status;
+    private String isSystem;
 
     private static final long serialVersionUID = 1L;
 
@@ -79,20 +76,6 @@ public class SysDictType extends BaseEntity implements Serializable {
         this.dictType = dictType;
     }
 
-    /**
-     * 状态(0正常1停用)
-     */
-    public String getStatus() {
-        return status;
-    }
-
-    /**
-     * 状态(0正常1停用)
-     */
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public String getIsDelete() {
         return isDelete;
     }
@@ -101,17 +84,25 @@ public class SysDictType extends BaseEntity implements Serializable {
         this.isDelete = isDelete;
     }
 
+    public String getIsSystem() {
+        return isSystem;
+    }
+
+    public void setIsSystem(String isSystem) {
+        this.isSystem = isSystem;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SysDictType that = (SysDictType) o;
-        return Objects.equals(dictId, that.dictId) && Objects.equals(dictName, that.dictName) && Objects.equals(dictType, that.dictType) && Objects.equals(isDelete, that.isDelete) && Objects.equals(status, that.status);
+        return Objects.equals(dictId, that.dictId) && Objects.equals(dictName, that.dictName) && Objects.equals(dictType, that.dictType) && Objects.equals(isDelete, that.isDelete) && Objects.equals(isSystem, that.isSystem);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(dictId, dictName, dictType, isDelete, status);
+        return Objects.hash(dictId, dictName, dictType, isDelete, isSystem);
     }
 
     @Override
@@ -121,7 +112,7 @@ public class SysDictType extends BaseEntity implements Serializable {
         sb.append(", dictName='").append(dictName).append('\'');
         sb.append(", dictType='").append(dictType).append('\'');
         sb.append(", isDelete='").append(isDelete).append('\'');
-        sb.append(", status='").append(status).append('\'');
+        sb.append(", isSystem='").append(isSystem).append('\'');
         sb.append('}');
         return sb.toString();
     }

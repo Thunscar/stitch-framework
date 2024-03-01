@@ -19,7 +19,7 @@ import java.util.List;
  * @Description: 字典数据操作控制器
  */
 @RestController
-@RequestMapping("/dict/data")
+@RequestMapping("/sys/dict/data")
 public class SysDictDataController {
 
     @Resource

@@ -3,7 +3,6 @@ package com.stitchcodes.core.domain;
 import com.stitchcodes.common.annotation.Excel;
 import com.stitchcodes.common.domain.BaseEntity;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 /**
@@ -76,7 +75,6 @@ public class SysConfig extends BaseEntity {
     /**
      * 参数名称
      */
-    @NotBlank(message = "The Parameter Name Can not be Null")
     @Size(min = 0, max = 100, message = "The Parameter Name Can not Exceed 100 Characters")
     public String getConfigName() {
         return configName;
@@ -92,7 +90,6 @@ public class SysConfig extends BaseEntity {
     /**
      * 参数键
      */
-    @NotBlank(message = "The Parameter Key Can not be Null")
     @Size(min = 0, max = 100, message = "The Parameter Key Can not Exceed 100 Characters")
     public String getConfigKey() {
         return configKey;
@@ -108,7 +105,6 @@ public class SysConfig extends BaseEntity {
     /**
      * 参数值
      */
-    @NotBlank(message = "The Parameter Value Can not be Null")
     @Size(min = 0, max = 500, message = "The Parameter Value Can not Exceed 100 Characters")
     public String getConfigValue() {
         return configValue;

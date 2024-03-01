@@ -3,12 +3,18 @@ package com.stitchcodes.web.controller.system;
 import com.stitchcodes.common.api.AjaxResult;
 import com.stitchcodes.common.api.TableData;
 import com.stitchcodes.common.controller.BaseController;
+import com.stitchcodes.core.domain.SysDictData;
 import com.stitchcodes.core.domain.SysDictType;
+import com.stitchcodes.core.service.SysDictDataService;
 import com.stitchcodes.core.service.SysDictTypeService;
+import com.stitchcodes.core.utils.AuthUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: stitch
@@ -21,6 +27,8 @@ public class SysDictTypeController extends BaseController {
 
     @Resource
     private SysDictTypeService dictTypeService;
+    @Resource
+    private SysDictDataService dictDataService;
 
 
     //查询字典类型列表
@@ -37,11 +45,27 @@ public class SysDictTypeController extends BaseController {
         return AjaxResult.success(dictTypeService.selectDictTypeById(dictTypeId));
     }
 
+    //查询字典数据
+    @GetMapping("/init")
+    public AjaxResult initDictData() {
+        List<Map<String, Object>> result = new ArrayList<>();
+        List<SysDictType> sysDictTypeList = dictTypeService.selectDictTypeList(null);
+        for (SysDictType dictType : sysDictTypeList) {
+            HashMap<String, Object> dictMap = new HashMap<>();
+            List<SysDictData> dictData = dictDataService.selectDictDataByDictType(dictType.getDictType());
+            dictMap.put("dictTypeCode", dictType.getDictType());
+            dictMap.put("dictDataList", dictData);
+            result.add(dictMap);
+        }
+        return AjaxResult.success(result);
+    }
+
     //创建字典类型
     @PostMapping
     public AjaxResult create(@RequestBody SysDictType sysDictType) {
         //检查类型是否唯一
         dictTypeService.checkDictTypeUnique(sysDictType);
+        sysDictType.setCreateUser(AuthUtils.getLoginUserName());
         return toAjax(dictTypeService.createSysDictType(sysDictType));
     }
 
@@ -50,6 +74,7 @@ public class SysDictTypeController extends BaseController {
     public AjaxResult update(@RequestBody SysDictType sysDictType) {
         //检查类型是否唯一
         dictTypeService.checkDictTypeUnique(sysDictType);
+        sysDictType.setUpdateUser(AuthUtils.getLoginUserName());
         return toAjax(dictTypeService.updateSysDictType(sysDictType));
     }
 

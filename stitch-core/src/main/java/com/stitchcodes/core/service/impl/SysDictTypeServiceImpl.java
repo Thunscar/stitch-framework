@@ -43,9 +43,7 @@ public class SysDictTypeServiceImpl implements SysDictTypeService {
     @Override
     public void loadingDictCache() {
         //查询可用的字典类型数据
-        SysDictType queryDictType = new SysDictType();
-        queryDictType.setStatus("0");
-        List<SysDictType> sysDictTypeList = dictTypeMapper.selectDictTypeList(queryDictType);
+        List<SysDictType> sysDictTypeList = dictTypeMapper.selectDictTypeList(null);
         for (SysDictType sysDictType : sysDictTypeList) {
             //查询该类型字典数据
             List<SysDictData> sysDictDataList = dictDataMapper.selectSysDictDataByType(sysDictType.getDictType());
@@ -129,7 +127,7 @@ public class SysDictTypeServiceImpl implements SysDictTypeService {
         Long dictId = ObjectUtils.isNull(dictType.getDictId()) ? -1L : dictType.getDictId();
         SysDictType sysDictType = dictTypeMapper.selectSysDictTypeByCode(dictType.getDictType());
         if (ObjectUtils.isNotNull(sysDictType) && sysDictType.getDictId().longValue() != dictId) {
-            throw new StitchException(StringUtils.format("字典类型[%s]已存在", dictType.getDictType()));
+            throw new StitchException(String.format("字典类型[%s]已存在", dictType.getDictType()));
         }
     }
 

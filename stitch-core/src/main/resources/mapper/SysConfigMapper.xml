@@ -106,7 +106,7 @@
             <if test="updateUser != null and updateUser != ''">
                 update_user = #{updateUser},
             </if>
-            <if test="remark != null and remark != ''">
+            <if test="remark != null">
                 remark = #{remark},
             </if>
             update_time = sysdate()

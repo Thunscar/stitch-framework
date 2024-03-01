@@ -2,6 +2,7 @@ package com.stitchcodes.core.service.impl;
 
 import com.stitchcodes.common.redis.RedisCache;
 import com.stitchcodes.common.utils.CollectionUtils;
+import com.stitchcodes.common.utils.ObjectUtils;
 import com.stitchcodes.core.domain.SysDictData;
 import com.stitchcodes.core.mapper.SysDictDataMapper;
 import com.stitchcodes.core.service.SysDictDataService;
@@ -28,7 +29,7 @@ public class SysDictDataServiceImpl implements SysDictDataService {
     public List<SysDictData> selectDictDataByDictType(String dictType) {
         //查询缓存中的字典数据信息
         List<SysDictData> cacheDictData = redisCache.getCacheObject(getDictCacheKey(dictType));
-        if (CollectionUtils.isNotEmpty(cacheDictData)) {
+        if (ObjectUtils.isNotNull(cacheDictData)) {
             return cacheDictData;
         }
         //查数据库中字典数据信息 若查找保存到缓存

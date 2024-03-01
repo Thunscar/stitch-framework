@@ -64,9 +64,10 @@ public class SysLoginController extends BaseController {
         return result;
     }
 
-    //获取用户路由
+    //加载路由信息
     @GetMapping("/routers")
     public AjaxResult getRouters() {
+        //获取可访问的路由
         Long loginUserId = AuthUtils.getLoginUserId();
         List<SysMenu> sysMenus = menuService.selectMenuTreeByUserId(loginUserId);
         List<RouterVo> routerVos = menuService.buildRouterVos(sysMenus);

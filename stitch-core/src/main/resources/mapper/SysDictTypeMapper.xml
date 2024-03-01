@@ -8,7 +8,7 @@
         <id property="dictId" column="dict_id" jdbcType="BIGINT"/>
         <result property="dictName" column="dict_name" jdbcType="VARCHAR"/>
         <result property="dictType" column="dict_type" jdbcType="VARCHAR"/>
-        <result property="status" column="status" jdbcType="CHAR"/>
+        <result property="isSystem" column="is_system" jdbcType="CHAR"/>
         <result property="createUser" column="create_user" jdbcType="VARCHAR"/>
         <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
         <result property="updateUser" column="update_user" jdbcType="VARCHAR"/>
@@ -27,7 +27,7 @@
         <if test="dictName != null and dictName != ''">dict_name,</if>
         <if test="dictType != null and dictType != ''">dict_type,</if>
         <if test="remark != null">remark,</if>
-        <if test="status != null and status != ''">status,</if>
+        <if test="isSystem != null and isSystem != ''">is_system,</if>
         <if test="createUser != null and createUser != ''">create_user,</if>
         create_time
         )values
@@ -35,7 +35,7 @@
         <if test="dictName != null and dictName != ''">#{dictName},</if>
         <if test="dictType != null and dictType != ''">#{dictType},</if>
         <if test="remark != null">#{remark},</if>
-        <if test="status != null and status != ''">#{status},</if>
+        <if test="isSystem != null and isSystem != ''">#{isSystem},</if>
         <if test="createUser != null and createUser != ''">#{createUser},</if>
         sysdate()
         )
@@ -44,7 +44,7 @@
         update sys_dict_type set
         <if test="dictName != null and dictName != ''">dict_name = #{dictName},</if>
         <if test="dictType != null and dictType != ''">dict_type = #{dictType},</if>
-        <if test="status != null and status != ''">status = #{status},</if>
+        <if test="isSystem != null and isSystem != ''">is_System = #{isSystem},</if>
         <if test="remark != null">remark = #{remark},</if>
         <if test="updateUser != null and updateUser != ''">update_user = #{updateUser},</if>
         update_time = sysdate()
@@ -59,8 +59,8 @@
             <if test="dictType != null and dictType != ''">
                 and dict_type = #{dictType}
             </if>
-            <if test="status != null and status != ''">
-                and status = #{status}
+            <if test="isSystem != null and isSystem != ''">
+                and isSystem = #{isSystem}
             </if>
             and is_delete = '0'
         </where>
