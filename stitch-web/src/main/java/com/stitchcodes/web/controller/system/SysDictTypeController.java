@@ -79,8 +79,8 @@ public class SysDictTypeController extends BaseController {
     }
 
     //删除字典类型
-    @DeleteMapping
-    public AjaxResult delete(Long[] dictTypeIds) {
+    @DeleteMapping("/{dictTypeIds}")
+    public AjaxResult delete(@PathVariable Long[] dictTypeIds) {
         return toAjax(dictTypeService.deleteBatchSysDictType(dictTypeIds));
     }
 

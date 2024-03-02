@@ -1,13 +1,13 @@
 package com.stitchcodes.web.controller.system;
 
 import com.stitchcodes.common.api.AjaxResult;
+import com.stitchcodes.common.api.TableData;
+import com.stitchcodes.common.controller.BaseController;
 import com.stitchcodes.common.utils.ObjectUtils;
 import com.stitchcodes.core.domain.SysDictData;
 import com.stitchcodes.core.service.SysDictDataService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.stitchcodes.core.utils.AuthUtils;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -20,11 +20,12 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/sys/dict/data")
-public class SysDictDataController {
+public class SysDictDataController extends BaseController {
 
     @Resource
     private SysDictDataService dictDataService;
 
+    //从缓存中查询字典数据
     @GetMapping("/{dictType}")
     public AjaxResult getByDictType(@PathVariable String dictType) {
         List<SysDictData> dictDataList = dictDataService.selectDictDataByDictType(dictType);
@@ -33,4 +34,39 @@ public class SysDictDataController {
         }
         return AjaxResult.success(dictDataList);
     }
+
+    //分页查询数据字典数据
+    @GetMapping("/list")
+    public TableData list(SysDictData dictData) {
+        startPage();
+        List<SysDictData> dictDataList = dictDataService.selectDictDataList(dictData);
+        return getTableData(dictDataList);
+    }
+
+    @GetMapping("/code/{dictCode}")
+    public AjaxResult getByCode(@PathVariable Long dictCode) {
+        return AjaxResult.success(dictDataService.selectDictDataByCode(dictCode));
+    }
+
+    @PostMapping()
+    public AjaxResult create(@RequestBody SysDictData dictData) {
+        //检查标签是否重复
+        dictDataService.checkDictLabelUnique(dictData);
+        dictData.setCreateUser(AuthUtils.getLoginUserName());
+        return toAjax(dictDataService.createDictData(dictData));
+    }
+
+    @PutMapping
+    public AjaxResult update(@RequestBody SysDictData dictData) {
+        //检查标签是否重复
+        dictDataService.checkDictLabelUnique(dictData);
+        dictData.setUpdateUser(AuthUtils.getLoginUserName());
+        return toAjax(dictDataService.updateDictData(dictData));
+    }
+
+    @DeleteMapping("/{dictType}/{dictCodes}")
+    public AjaxResult delete(@PathVariable String dictType, @PathVariable Long[] dictCodes) {
+        return toAjax(dictDataService.deleteDictData(dictType, dictCodes));
+    }
+
 }

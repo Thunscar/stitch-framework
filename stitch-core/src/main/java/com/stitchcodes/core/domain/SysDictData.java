@@ -45,11 +45,6 @@ public class SysDictData extends BaseEntity implements Serializable {
     private String listClass;
 
     /**
-     * 是否默认(0非默认1默认)
-     */
-    private String isDefault;
-
-    /**
      * 是否删除
      */
     private String isDelete;
@@ -154,20 +149,6 @@ public class SysDictData extends BaseEntity implements Serializable {
         this.listClass = listClass;
     }
 
-    /**
-     * 是否默认(0非默认1默认)
-     */
-    public String getIsDefault() {
-        return isDefault;
-    }
-
-    /**
-     * 是否默认(0非默认1默认)
-     */
-    public void setIsDefault(String isDefault) {
-        this.isDefault = isDefault;
-    }
-
     public String getIsDelete() {
         return isDelete;
     }
@@ -181,12 +162,12 @@ public class SysDictData extends BaseEntity implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SysDictData that = (SysDictData) o;
-        return Objects.equals(dictCode, that.dictCode) && Objects.equals(dictSort, that.dictSort) && Objects.equals(dictLabel, that.dictLabel) && Objects.equals(dictValue, that.dictValue) && Objects.equals(dictType, that.dictType) && Objects.equals(cssClass, that.cssClass) && Objects.equals(listClass, that.listClass) && Objects.equals(isDefault, that.isDefault) && Objects.equals(isDelete, that.isDelete);
+        return Objects.equals(dictCode, that.dictCode) && Objects.equals(dictSort, that.dictSort) && Objects.equals(dictLabel, that.dictLabel) && Objects.equals(dictValue, that.dictValue) && Objects.equals(dictType, that.dictType) && Objects.equals(cssClass, that.cssClass) && Objects.equals(listClass, that.listClass) && Objects.equals(isDelete, that.isDelete);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(dictCode, dictSort, dictLabel, dictValue, dictType, cssClass, listClass, isDefault, isDelete);
+        return Objects.hash(dictCode, dictSort, dictLabel, dictValue, dictType, cssClass, listClass, isDelete);
     }
 
     @Override
@@ -199,7 +180,6 @@ public class SysDictData extends BaseEntity implements Serializable {
         sb.append(", dictType='").append(dictType).append('\'');
         sb.append(", cssClass='").append(cssClass).append('\'');
         sb.append(", listClass='").append(listClass).append('\'');
-        sb.append(", isDefault='").append(isDefault).append('\'');
         sb.append(", isDelete='").append(isDelete).append('\'');
         sb.append('}');
         return sb.toString();

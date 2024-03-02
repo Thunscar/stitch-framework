@@ -6,7 +6,6 @@ import com.stitchcodes.common.exception.StitchException;
 import com.stitchcodes.common.redis.RedisCache;
 import com.stitchcodes.common.utils.CollectionUtils;
 import com.stitchcodes.common.utils.ObjectUtils;
-import com.stitchcodes.common.utils.StringUtils;
 import com.stitchcodes.core.domain.SysDictData;
 import com.stitchcodes.core.domain.SysDictType;
 import com.stitchcodes.core.mapper.SysDictDataMapper;
@@ -47,7 +46,9 @@ public class SysDictTypeServiceImpl implements SysDictTypeService {
         List<SysDictType> sysDictTypeList = dictTypeMapper.selectDictTypeList(null);
         for (SysDictType sysDictType : sysDictTypeList) {
             //查询该类型字典数据
-            List<SysDictData> sysDictDataList = dictDataMapper.selectSysDictDataByType(sysDictType.getDictType());
+            SysDictData dictData = new SysDictData();
+            dictData.setDictType(sysDictType.getDictType());
+            List<SysDictData> sysDictDataList = dictDataMapper.selectSysDictDataList(dictData);
             redisCache.setCacheObject(getDictCacheKey(sysDictType.getDictType()), sysDictDataList);
         }
     }
@@ -93,11 +94,13 @@ public class SysDictTypeServiceImpl implements SysDictTypeService {
         int result = dictTypeMapper.updateSysDictType(dictType);
         if (result > 0) {
             //查询字典数据
-            List<SysDictData> sysDictData = dictDataMapper.selectSysDictDataByType(dictType.getDictType());
+            SysDictData dictData = new SysDictData();
+            dictData.setDictType(dictType.getDictType());
+            List<SysDictData> sysDictDataList = dictDataMapper.selectSysDictDataList(dictData);
             //删除原有的字典类型缓存
             redisCache.deleteObject(getDictCacheKey(oldDictType.getDictType()));
             //添加新的字典类型与数据缓存
-            redisCache.setCacheObject(getDictCacheKey(dictType.getDictType()), sysDictData);
+            redisCache.setCacheObject(getDictCacheKey(dictType.getDictType()), sysDictDataList);
         }
         return result;
     }
@@ -109,11 +112,13 @@ public class SysDictTypeServiceImpl implements SysDictTypeService {
             //检查是否可以被删除(系统内置数据字典不可删除,有字典数据的不可被删除)
             SysDictType dictType = dictTypeMapper.selectSysDictTypeById(dictId);
             if (DictConstants.BUILD_IN_SYSTEM.equals(dictType.getIsSystem())) {
-                throw new StitchException(StringUtils.format("字典类型[%s]为系统内置数据字典,无法删除", dictType.getDictName()));
+                throw new StitchException(String.format("字典类型[%s]为系统内置数据字典,无法删除", dictType.getDictName()));
             }
-            List<SysDictData> dictDataList = dictDataMapper.selectSysDictDataByType(dictType.getDictType());
+            SysDictData dictData = new SysDictData();
+            dictData.setDictType(dictType.getDictType());
+            List<SysDictData> dictDataList = dictDataMapper.selectSysDictDataList(dictData);
             if (CollectionUtils.isNotEmpty(dictDataList)) {
-                throw new StitchException(StringUtils.format("字典类型[%s]存在字典数据,无法删除", dictType.getDictName()));
+                throw new StitchException(String.format("字典类型[%s]存在字典数据,无法删除", dictType.getDictName()));
             }
             //删除数据库中的字典类型
             int row = dictTypeMapper.deleteSysDictType(dictId);

@@ -9,12 +9,13 @@
     <version>1.0.0</version>
     <packaging>pom</packaging>
     <modules>
-        <module>stitch-launcher</module>
         <module>stitch-common</module>
         <module>stitch-core</module>
         <module>stitch-system</module>
         <module>stitch-web</module>
+        <module>stitch-launcher</module>
     </modules>
+
 
     <properties>
         <stitch.version>1.0.0</stitch.version>

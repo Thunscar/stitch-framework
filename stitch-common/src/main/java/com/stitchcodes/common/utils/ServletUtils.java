@@ -69,16 +69,16 @@ public class ServletUtils {
     }
 
     /**
-     * 将字符串渲染到前端
+     * 将指定数据渲染到前端
      *
-     * @param str 字符串
+     * @param obj 对象
      */
-    public static void sendString(HttpServletResponse response, String str, int httpStatus) {
+    public static void sendString(HttpServletResponse response, Object obj, int httpStatus) {
         try {
             response.setContentType("application/json");
             response.setCharacterEncoding("utf-8");
             response.setStatus(httpStatus);
-            response.getWriter().print(str);
+            response.getWriter().print(obj);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -23,8 +23,66 @@
         select *
         from sys_dict_data
     </sql>
-    <select id="selectSysDictDataByType" resultMap="DictDataResult">
+    <insert id="insertSysDictData">
+        insert into sys_dict_data
+        (
+        dict_type,
+        <if test="dictLabel != null and dictLabel != ''">dict_label,</if>
+        <if test="dictValue != null and dictValue != ''">dict_value,</if>
+        <if test="cssClass != null and cssClass != ''">css_class,</if>
+        <if test="dictSort != null and dictSort != ''">dict_sort,</if>
+        <if test="remark != null and remark != ''">remark,</if>
+        <if test="createUser != null and createUser != ''">create_user,</if>
+        create_time
+        )values
+        (
+        #{dictType},
+        <if test="dictLabel != null and dictLabel != ''">#{dictLabel},</if>
+        <if test="dictValue != null and dictValue != ''">#{dictValue},</if>
+        <if test="cssClass != null and cssClass != ''">#{cssClass},</if>
+        <if test="dictSort != null and dictSort != ''">#{dictSort},</if>
+        <if test="remark != null and remark != ''">#{remark},</if>
+        <if test="createUser != null and createUser != ''">#{createUser},</if>
+        sysdate()
+        )
+    </insert>
+    <update id="updateSysDictData">
+        update sys_dict_data set
+        <if test="dictType != null and dictType != ''">dict_type = #{dictType},</if>
+        <if test="dictLabel != null and dictLabel != ''">dict_label = #{dictLabel},</if>
+        <if test="dictValue != null and dictValue != ''">dict_value = #{dictValue},</if>
+        <if test="cssClass != null and cssClass != ''">css_class = #{cssClass},</if>
+        <if test="dictSort != null and dictSort != ''">dict_sort = #{dictSort},</if>
+        <if test="remark != null and remark != ''">remark = #{remark},</if>
+        <if test="updateUser != null and updateUser != ''">update_user = #{updateUser},</if>
+        update_time = sysdate()
+        where dict_code = #{dictCode}
+    </update>
+    <update id="deleteSysDictData">
+        update sys_dict_data
+        set is_delete = '1'
+        where dict_code in
+        <foreach collection="dictIds" item="item" index="index" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </update>
+
+    <select id="selectSysDictDataList" resultMap="DictDataResult">
         <include refid="selectDictDataVo"/>
-        where dict_type = #{dictType} and is_delete = '0'
+        <where>
+            <if test="dictLabel != null and dictLabel != ''">
+                and dict_label like concat('%',#{dictLabel},'%')
+            </if>
+            and dict_type = #{dictType} and is_delete = '0'
+        </where>
+        order by dict_sort
+    </select>
+    <select id="selectSysDictDataByCode" resultMap="DictDataResult">
+        <include refid="selectDictDataVo"/>
+        where dict_code = #{dictCode} and is_delete = '0'
+    </select>
+    <select id="selectSysDictDataByLabel" resultMap="DictDataResult">
+        <include refid="selectDictDataVo"/>
+        where dict_type = #{dictType} and dict_label = #{dictLabel} and is_delete = '0' limit 1
     </select>
 </mapper>

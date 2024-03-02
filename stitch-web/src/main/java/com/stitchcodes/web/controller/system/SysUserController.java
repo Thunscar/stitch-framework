@@ -101,6 +101,11 @@ public class SysUserController extends BaseController {
         userService.checkUserDataScope(user.getUserId());
         //检查用户名是否唯一
         userService.checkUserNameUnique(user);
+        //若密码为空，设置系统默认密码
+        if (StringUtils.isEmpty(user.getPassword())) {
+            String initPassword = configService.selectAccountInitPassword();
+            user.setPassword(initPassword);
+        }
         user.setUpdateUser(AuthUtils.getLoginUserName());
         return toAjax(userService.updateUser(user));
     }

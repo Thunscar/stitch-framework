@@ -35,7 +35,7 @@ public class AddressUtils {
                 JSONObject result = JSON.parseObject(resultString);
                 String region = (String) result.get("pro");
                 String city = (String) result.get("city");
-                return StringUtils.format("%s %s", region, city);
+                return String.format("%s %s", region, city);
             } catch (Exception e) {
                 log.error(LogUtils.format(OperateConstants.GET_ADDRESS, "ip:{}", ResultEnum.FAILED, "obtain the address error"), ip, e);
             }

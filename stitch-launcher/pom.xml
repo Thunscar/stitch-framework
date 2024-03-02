@@ -33,5 +33,66 @@
         </dependency>
     </dependencies>
 
+    <build>
+        <finalName>Stitch-Service</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.*</include>
+                </includes>
+                <excludes>
+                    <exclude>**/*.java</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*.*</include>
+                </includes>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.1.2</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <!-- 指定启动主类（Main-Class）-->
+                            <mainClass>com.stitchcodes.StitchApplication</mainClass>
+                            <!-- 在 MANIFEST.MF 加上 Class-Path 项并配置依赖包 -->
+                            <addClasspath>true</addClasspath>
+                            <!-- 指定依赖包所在目录 -->
+                            <classpathPrefix>libs/</classpathPrefix>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.1.2</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <!-- 依赖的jar包输出目录 -->
+                            <outputDirectory>${project.build.directory}/libs</outputDirectory>
+                            <!-- 排除 provide 范围-->
+                            <useBaseVersion>true</useBaseVersion>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+
+
 
 </project>
