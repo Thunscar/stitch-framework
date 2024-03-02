@@ -1,6 +1,7 @@
 package com.stitchcodes.core.service.impl;
 
 import com.stitchcodes.common.constant.CacheConstants;
+import com.stitchcodes.common.constant.DictConstants;
 import com.stitchcodes.common.exception.StitchException;
 import com.stitchcodes.common.redis.RedisCache;
 import com.stitchcodes.common.utils.CollectionUtils;
@@ -105,8 +106,11 @@ public class SysDictTypeServiceImpl implements SysDictTypeService {
     public int deleteBatchSysDictType(Long[] dictIds) {
         int result = 0;
         for (Long dictId : dictIds) {
-            //检查是否可以被删除(有字典数据的不可被删除)
+            //检查是否可以被删除(系统内置数据字典不可删除,有字典数据的不可被删除)
             SysDictType dictType = dictTypeMapper.selectSysDictTypeById(dictId);
+            if (DictConstants.BUILD_IN_SYSTEM.equals(dictType.getIsSystem())) {
+                throw new StitchException(StringUtils.format("字典类型[%s]为系统内置数据字典,无法删除", dictType.getDictName()));
+            }
             List<SysDictData> dictDataList = dictDataMapper.selectSysDictDataByType(dictType.getDictType());
             if (CollectionUtils.isNotEmpty(dictDataList)) {
                 throw new StitchException(StringUtils.format("字典类型[%s]存在字典数据,无法删除", dictType.getDictName()));
