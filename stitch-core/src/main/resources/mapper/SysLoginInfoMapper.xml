@@ -59,19 +59,19 @@
         <include refid="selectSysLoginInfoVo"/>
         <where>
             <if test="userName != null and userName != ''">
-                and user_name = #{userName},
+                and user_name = #{userName}
             </if>
             <if test="ipaddr != null and ipaddr != ''">
-                and ipaddr = #{ipaddr},
+                and ipaddr = #{ipaddr}
             </if>
             <if test="loginLocation != null and loginLocation != ''">
-                and login_location like concat('%',#{loginLocation},'%'),
+                and login_location like concat('%',#{loginLocation},'%')
             </if>
             <if test="browser != null and browser != ''">
-                and browser like concat('%',#{browser},'%'),
+                and browser like concat('%',#{browser},'%')
             </if>
             <if test="os != null and os != ''">
-                and os like concat('%',#{os},'%'),
+                and os like concat('%',#{os},'%')
             </if>
         </where>
         order by login_time DESC

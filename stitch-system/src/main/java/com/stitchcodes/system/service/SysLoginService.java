@@ -155,12 +155,12 @@ public class SysLoginService {
             String verifyCode = redisCache.getCacheObject(verifyCodeKey);
             redisCache.deleteObject(verifyCodeKey);
             if (verifyCode == null) {
-                String message = "Verify Code is Expired";
+                String message = "验证码已过期";
                 AsyncManager.me().execute(AsyncFactory.recordLoginInfo(userName, UserConstants.LOGIN_FAIL, OperateConstants.LOGIN_OPERATION, message));
                 throw new StitchException(message);
             }
             if (!StringUtils.nvl(code).equals(verifyCode)) {
-                String message = "Verify Code Error, Please Try Again";
+                String message = "验证码错误，请重新输入";
                 AsyncManager.me().execute(AsyncFactory.recordLoginInfo(userName, UserConstants.LOGIN_FAIL, OperateConstants.LOGIN_OPERATION, message));
                 throw new StitchException(message);
             }

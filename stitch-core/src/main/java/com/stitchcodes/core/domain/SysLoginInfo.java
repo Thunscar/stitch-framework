@@ -1,5 +1,6 @@
 package com.stitchcodes.core.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.stitchcodes.common.domain.BaseEntity;
 
 import java.io.Serializable;
@@ -58,6 +59,7 @@ public class SysLoginInfo extends BaseEntity implements Serializable {
     /**
      * 登录时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date loginTime;
 
     private static final long serialVersionUID = 1L;
