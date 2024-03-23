@@ -158,19 +158,24 @@
     <select id="selectMenuListByUserId" parameterType="SysMenu" resultMap="SysMenuResult">
         select distinct
         m.menu_id,
-        m.parent_id,
         m.menu_name,
+        m.parent_id,
+        m.order_num,
         m.path,
         m.component,
-        m.`query`,
-        m.visible,
-        ifnull(perms, '') as perms,
+        m.query,
         m.is_frame,
         m.is_cache,
         m.menu_type,
+        m.visible,
+        m.status,
+        ifnull(perms, '') as perms,
         m.icon,
-        m.order_num,
-        m.create_time
+        m.create_user,
+        m.create_time,
+        m.update_user,
+        m.update_time,
+        m.remark
         from sys_menu m
         left join sys_role_menu rm on rm.menu_id = m.menu_id
         left join sys_user_role ur on ur.role_id = rm.role_id
@@ -206,7 +211,7 @@
                         m.order_num,
                         m.create_time
         from sys_menu m
-        where m.menu_type in ('M', 'C')
+        where m.menu_type = 'M'
           and m.is_delete = '0'
           and m.status = '0'
           and m.visible = '1'
@@ -238,6 +243,7 @@
           and m.is_delete = '0'
           and m.status = '0'
           and m.visible = '1'
+          and m.menu_type = 'M'
         order by m.parent_id, m.order_num
     </select>
     <select id="selectSysMenuByName"  resultMap="SysMenuResult">

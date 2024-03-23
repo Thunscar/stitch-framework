@@ -19,5 +19,8 @@ public class HttpStatus {
     /* 未授权 */
     public static final int UNAUTHORIZED = 401;
 
+    /* 拒绝访问 */
+    public static final int ACCESS_DENIED = 403;
+
 
 }

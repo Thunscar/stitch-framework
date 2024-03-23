@@ -7,6 +7,7 @@ import com.stitchcodes.common.utils.ObjectUtils;
 import com.stitchcodes.core.domain.SysDictData;
 import com.stitchcodes.core.service.SysDictDataService;
 import com.stitchcodes.core.utils.AuthUtils;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -36,6 +37,7 @@ public class SysDictDataController extends BaseController {
     }
 
     //分页查询数据字典数据
+    @PreAuthorize("@pm.hasPerms('sys:dict:list')")
     @GetMapping("/list")
     public TableData list(SysDictData dictData) {
         startPage();
@@ -48,6 +50,7 @@ public class SysDictDataController extends BaseController {
         return AjaxResult.success(dictDataService.selectDictDataByCode(dictCode));
     }
 
+    @PreAuthorize("@pm.hasPerms('sys:dict:create')")
     @PostMapping()
     public AjaxResult create(@RequestBody SysDictData dictData) {
         //检查标签是否重复
@@ -56,6 +59,7 @@ public class SysDictDataController extends BaseController {
         return toAjax(dictDataService.createDictData(dictData));
     }
 
+    @PreAuthorize("@pm.hasPerms('sys:dict:update')")
     @PutMapping
     public AjaxResult update(@RequestBody SysDictData dictData) {
         //检查标签是否重复
@@ -64,6 +68,7 @@ public class SysDictDataController extends BaseController {
         return toAjax(dictDataService.updateDictData(dictData));
     }
 
+    @PreAuthorize("@pm.hasPerms('sys:dict:delete')")
     @DeleteMapping("/{dictType}/{dictCodes}")
     public AjaxResult delete(@PathVariable String dictType, @PathVariable Long[] dictCodes) {
         return toAjax(dictDataService.deleteDictData(dictType, dictCodes));

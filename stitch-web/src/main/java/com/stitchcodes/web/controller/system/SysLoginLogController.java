@@ -4,6 +4,7 @@ import com.stitchcodes.common.api.TableData;
 import com.stitchcodes.common.controller.BaseController;
 import com.stitchcodes.core.domain.SysLoginInfo;
 import com.stitchcodes.core.service.SysLoginInfoService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,6 +25,7 @@ public class SysLoginLogController extends BaseController {
     private SysLoginInfoService loginInfoService;
 
     //查询登录日志
+    @PreAuthorize("@pm.hasPerms('sys:loginlog:list')")
     @GetMapping("/list")
     public TableData getLoginLogList(SysLoginInfo sysLoginInfo){
         startPage();

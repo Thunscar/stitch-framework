@@ -13,6 +13,7 @@ import com.stitchcodes.core.domain.SysUser;
 import com.stitchcodes.core.service.*;
 import com.stitchcodes.core.utils.AuthUtils;
 import com.stitchcodes.system.service.SysPasswordService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -44,6 +45,7 @@ public class SysUserController extends BaseController {
     private SysPasswordService passwordService;
 
     //查询角色列表
+    @PreAuthorize("@pm.hasPerms('sys:user:list')")
     @GetMapping("/list")
     public TableData list(SysUser user) {
         startPage();
@@ -52,6 +54,7 @@ public class SysUserController extends BaseController {
     }
 
     //获取角色信息
+    @PreAuthorize("@pm.hasPerms('sys:user:query')")
     @GetMapping(value = {"/", "{userId}"})
     public AjaxResult getUserInfo(@PathVariable(required = false) Long userId) {
         //校验数据权限
@@ -82,6 +85,7 @@ public class SysUserController extends BaseController {
     }
 
     //创建用户
+    @PreAuthorize("@pm.hasPerms('sys:user:create')")
     @PostMapping
     public AjaxResult create(@RequestBody SysUser user) {
         //校验用户名是否唯一
@@ -96,6 +100,7 @@ public class SysUserController extends BaseController {
     }
 
     //更新用户信息
+    @PreAuthorize("@pm.hasPerms('sys:user:update')")
     @PutMapping
     public AjaxResult update(@RequestBody SysUser user) {
         userService.checkUserDataScope(user.getUserId());
@@ -111,6 +116,7 @@ public class SysUserController extends BaseController {
     }
 
     //批量删除用户
+    @PreAuthorize("@pm.hasPerms('sys:user:delete')")
     @DeleteMapping("{userIds}")
     public AjaxResult delete(@PathVariable Long[] userIds) {
         //检查数据权限
@@ -121,6 +127,7 @@ public class SysUserController extends BaseController {
     }
 
     //导出用户信息到excel
+    @PreAuthorize("@pm.hasPerms('sys:user:export')")
     @PostMapping("export")
     public void export(HttpServletResponse response, SysUser user) throws IOException {
         List<SysUser> sysUsers = userService.selectUserList(user);
@@ -129,6 +136,7 @@ public class SysUserController extends BaseController {
     }
 
     //重置用户密码(重置后的密码在参数管理中设置)
+    @PreAuthorize("@pm.hasPerms('sys:user:resetPassword')")
     @PostMapping("/reset/{userId}")
     public AjaxResult resetPassword(@PathVariable Long userId) {
         //检查数据权限
@@ -164,6 +172,7 @@ public class SysUserController extends BaseController {
     }
 
     //批量分配给用户角色
+    @PreAuthorize("@pm.hasPerms('sys:user:allocatedRole')")
     @PostMapping("/allocate")
     public AjaxResult allocateRoles(Long userId, Long[] roleIds) {
         //检查用户数据权限
@@ -172,6 +181,7 @@ public class SysUserController extends BaseController {
     }
 
     //批量取消分配给用户的角色
+    @PreAuthorize("@pm.hasPerms('sys:user:allocatedRole')")
     @PostMapping("/allocate/cancel")
     public AjaxResult cancelAllocateRoles(Long userId, Long[] roleIds) {
         //检查用户数据权限

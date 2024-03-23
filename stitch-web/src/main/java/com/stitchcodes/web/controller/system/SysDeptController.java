@@ -6,6 +6,7 @@ import com.stitchcodes.common.exception.StitchException;
 import com.stitchcodes.core.domain.SysDept;
 import com.stitchcodes.core.service.SysDeptService;
 import com.stitchcodes.core.utils.AuthUtils;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -23,12 +24,14 @@ public class SysDeptController extends BaseController {
     private SysDeptService deptService;
 
     //查询机构列表
+    @PreAuthorize("@pm.hasPerms('sys:dept:list')")
     @GetMapping("/list")
     public AjaxResult list(SysDept dept) {
         return AjaxResult.success(deptService.selectSysDeptList(dept));
     }
 
     //获取机构信息
+    @PreAuthorize("@pm.hasPerms('sys:dept:query')")
     @GetMapping("{deptId}")
     public AjaxResult getDeptById(@PathVariable Long deptId) {
         //检查部门数据权限
@@ -37,6 +40,7 @@ public class SysDeptController extends BaseController {
     }
 
     //创建机构
+    @PreAuthorize("@pm.hasPerms('sys:dept:create')")
     @PostMapping
     public AjaxResult create(@RequestBody SysDept dept) {
         //检查参数键名是否唯一
@@ -48,6 +52,7 @@ public class SysDeptController extends BaseController {
     }
 
     //更新机构
+    @PreAuthorize("@pm.hasPerms('sys:dept:update')")
     @PutMapping
     public AjaxResult update(@RequestBody SysDept dept) {
         //检查参数键名是否唯一
@@ -59,6 +64,7 @@ public class SysDeptController extends BaseController {
     }
 
     //删除机构
+    @PreAuthorize("@pm.hasPerms('sys:dept:delete')")
     @DeleteMapping("{deptId}")
     public AjaxResult delete(@PathVariable Long deptId) {
         deptService.checkDeptDataScope(deptId);

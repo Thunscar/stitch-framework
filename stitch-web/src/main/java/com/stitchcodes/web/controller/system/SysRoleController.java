@@ -11,6 +11,7 @@ import com.stitchcodes.core.service.SysRoleService;
 import com.stitchcodes.core.utils.AuthUtils;
 import com.stitchcodes.system.service.SysPermissionService;
 import com.stitchcodes.system.service.SysTokenService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -35,6 +36,7 @@ public class SysRoleController extends BaseController {
     private SysTokenService tokenService;
 
     //查询角色列表
+    @PreAuthorize("@pm.hasPerms('sys:role:list')")
     @GetMapping("/list")
     public TableData getRoleList(SysRole role) {
         startPage();
@@ -58,6 +60,7 @@ public class SysRoleController extends BaseController {
     }
 
     //批量删除角色
+    @PreAuthorize("@pm.hasPerms('sys:role:delete')")
     @DeleteMapping("/{roleIds}")
     public AjaxResult remove(@PathVariable Long[] roleIds) {
         //检查角色的访问权限
@@ -74,6 +77,7 @@ public class SysRoleController extends BaseController {
     }
 
     //创建角色
+    @PreAuthorize("@pm.hasPerms('sys:role:create')")
     @PostMapping
     public AjaxResult create(@RequestBody SysRole role) {
         //检查角色名称是否重复
@@ -86,6 +90,7 @@ public class SysRoleController extends BaseController {
     }
 
     //更新角色信息
+    @PreAuthorize("@pm.hasPerms('sys:role:update')")
     @PutMapping
     public AjaxResult update(@RequestBody SysRole role) {
         //检查角色数据权限
@@ -108,6 +113,7 @@ public class SysRoleController extends BaseController {
     }
 
     //导出角色信息到excel
+    @PreAuthorize("@pm.hasPerms('sys:role:export')")
     @PostMapping("/export")
     public void export(SysRole role, HttpServletResponse response) throws IOException {
         List<SysRole> sysRoles = roleService.selectSysRoleList(role);
@@ -116,6 +122,7 @@ public class SysRoleController extends BaseController {
     }
 
     //给角色分配用户
+    @PreAuthorize("@pm.hasPerms('sys:role:allocatedUser')")
     @PostMapping("/allocate")
     public AjaxResult allocateUsers(Long roleId, Long[] userIds) {
         //检查角色数据权限
@@ -124,6 +131,7 @@ public class SysRoleController extends BaseController {
     }
 
     //取消角色分配的用户
+    @PreAuthorize("@pm.hasPerms('sys:role:allocatedUser')")
     @PostMapping("/allocate/cancel")
     public AjaxResult cancelAllocateUsers(Long roleId, Long[] userIds) {
         //检查角色数据权限
@@ -132,6 +140,7 @@ public class SysRoleController extends BaseController {
     }
 
     //修改角色数据权限
+    @PreAuthorize("@pm.hasPerms('sys:role:dataScope')")
     @PutMapping("/dataScope")
     public AjaxResult updateDataScope(@RequestBody SysRole sysRole) {
         //检查角色数据权限

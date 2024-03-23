@@ -8,6 +8,7 @@ import com.stitchcodes.core.domain.SysDictType;
 import com.stitchcodes.core.service.SysDictDataService;
 import com.stitchcodes.core.service.SysDictTypeService;
 import com.stitchcodes.core.utils.AuthUtils;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -32,6 +33,7 @@ public class SysDictTypeController extends BaseController {
 
 
     //查询字典类型列表
+    @PreAuthorize("@pm.hasPerms('sys:dict:list')")
     @GetMapping("/list")
     public TableData list(SysDictType dictType) {
         startPage();
@@ -40,6 +42,7 @@ public class SysDictTypeController extends BaseController {
     }
 
     //查询字典类型详细信息
+    @PreAuthorize("@pm.hasPerms('sys:dict:query')")
     @GetMapping("{dictTypeId}")
     public AjaxResult getById(@PathVariable Long dictTypeId) {
         return AjaxResult.success(dictTypeService.selectDictTypeById(dictTypeId));
@@ -61,6 +64,7 @@ public class SysDictTypeController extends BaseController {
     }
 
     //创建字典类型
+    @PreAuthorize("@pm.hasPerms('sys:dict:create')")
     @PostMapping
     public AjaxResult create(@RequestBody SysDictType sysDictType) {
         //检查类型是否唯一
@@ -70,6 +74,7 @@ public class SysDictTypeController extends BaseController {
     }
 
     //修改字典类型
+    @PreAuthorize("@pm.hasPerms('sys:dict:update')")
     @PutMapping
     public AjaxResult update(@RequestBody SysDictType sysDictType) {
         //检查类型是否唯一
@@ -79,11 +84,14 @@ public class SysDictTypeController extends BaseController {
     }
 
     //删除字典类型
+    @PreAuthorize("@pm.hasPerms('sys:dict:delete')")
     @DeleteMapping("/{dictTypeIds}")
     public AjaxResult delete(@PathVariable Long[] dictTypeIds) {
         return toAjax(dictTypeService.deleteBatchSysDictType(dictTypeIds));
     }
 
+    //刷新缓存
+    @PreAuthorize("@pm.hasPerms('sys:dict:refresh')")
     @PostMapping("/refresh")
     public AjaxResult refreshCache() {
         dictTypeService.resetDictCache();

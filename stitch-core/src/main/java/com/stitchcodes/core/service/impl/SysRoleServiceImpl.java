@@ -83,6 +83,7 @@ public class SysRoleServiceImpl implements SysRoleService {
     }
 
     @Override
+    @Transactional
     public int saveRoleMenu(SysRole role) {
         int result = 1;
         List<SysRoleMenu> sysRoleMenus = new ArrayList<>();
@@ -145,6 +146,7 @@ public class SysRoleServiceImpl implements SysRoleService {
     }
 
     @Override
+    @Transactional
     public int updateSysRole(SysRole role) {
         roleMapper.updateRole(role);
         roleMenuMapper.deleteAuthorizedMenu(role.getRoleId());

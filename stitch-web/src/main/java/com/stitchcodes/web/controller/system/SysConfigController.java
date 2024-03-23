@@ -4,7 +4,6 @@ import com.stitchcodes.common.api.AjaxResult;
 import com.stitchcodes.common.api.TableData;
 import com.stitchcodes.common.controller.BaseController;
 import com.stitchcodes.common.excel.ExcelUtil;
-import com.stitchcodes.common.utils.ConvertUtils;
 import com.stitchcodes.core.domain.SysConfig;
 import com.stitchcodes.core.service.SysConfigService;
 import com.stitchcodes.core.utils.AuthUtils;
@@ -30,7 +29,7 @@ public class SysConfigController extends BaseController {
     private SysConfigService configService;
 
     //获取系统参数配置信息
-    @PreAuthorize("@permissionManager.hasPermission('system:config:list')")
+    @PreAuthorize("@pm.hasPerms('system:config:list')")
     @GetMapping("/list")
     public TableData list(SysConfig sysConfig) {
         //开启分页插件
@@ -40,12 +39,14 @@ public class SysConfigController extends BaseController {
     }
 
     //通过Id获取系统参数
+    @PreAuthorize("@pm.hasPerms('system:config:query')")
     @GetMapping("/{configId}")
     public AjaxResult getById(@PathVariable Long configId) {
         return success(configService.getConfigValueById(configId));
     }
 
     //导出参数列表
+    @PreAuthorize("@pm.hasPerms('system:config:export')")
     @PostMapping("/export")
     public void export(HttpServletResponse response, SysConfig config) throws IOException {
         List<SysConfig> sysConfigList = configService.getSysConfigList(config);
@@ -54,6 +55,7 @@ public class SysConfigController extends BaseController {
     }
 
     //新增系统参数信息
+    @PreAuthorize("@pm.hasPerms('system:config:create')")
     @PostMapping
     public AjaxResult create(@Valid @RequestBody SysConfig sysConfig) {
         //检查参数键是否唯一
@@ -63,6 +65,7 @@ public class SysConfigController extends BaseController {
     }
 
     //修改系统参数
+    @PreAuthorize("@pm.hasPerms('system:config:update')")
     @PutMapping
     public AjaxResult update(@Valid @RequestBody SysConfig sysConfig) {
         //检查参数键是否唯一
@@ -73,12 +76,14 @@ public class SysConfigController extends BaseController {
 
 
     //删除参数配置
+    @PreAuthorize("@pm.hasPerms('system:config:delete')")
     @DeleteMapping("/{configIds}")
     public AjaxResult deleteConfig(@PathVariable Long[] configIds) {
         return toAjax(configService.deleteSysConfig(configIds));
     }
 
     //刷新参数缓存
+    @PreAuthorize("@pm.hasPerms('system:config:refresh')")
     @PostMapping("/refresh")
     public AjaxResult refreshCache() {
         configService.resetConfigCache();

@@ -16,7 +16,7 @@ import java.util.Set;
  * @Date: 2023/5/8 23:09
  * @Description: 权限管理
  */
-@Component
+@Component("pm")
 public class PermissionManager {
 
     /**
@@ -25,7 +25,7 @@ public class PermissionManager {
      * @param permission 权限字符串
      * @return 是有拥有该权限
      */
-    public boolean hasPermission(String permission) {
+    public boolean hasPerms(String permission) {
         if (StringUtils.isEmpty(permission)) {
             return false;
         }
@@ -34,7 +34,7 @@ public class PermissionManager {
             return false;
         }
         PermissionContextHolder.setContext(permission);
-        return hasPermission(loginUser.getPermissions(), permission);
+        return hasPerms(loginUser.getPermissions(), permission);
     }
 
 
@@ -45,7 +45,7 @@ public class PermissionManager {
      * @param permission  权限字符串
      * @return 是否包含权限字符串
      */
-    public boolean hasPermission(Set<String> permissions, String permission) {
+    public boolean hasPerms(Set<String> permissions, String permission) {
         return permissions.contains(PermissionConstants.ALL_MENU_PERMISSION) || permissions.contains(permission.trim());
     }
 

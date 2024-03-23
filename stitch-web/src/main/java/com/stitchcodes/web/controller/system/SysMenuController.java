@@ -5,6 +5,7 @@ import com.stitchcodes.common.controller.BaseController;
 import com.stitchcodes.core.domain.SysMenu;
 import com.stitchcodes.core.service.SysMenuService;
 import com.stitchcodes.core.utils.AuthUtils;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -22,6 +23,7 @@ public class SysMenuController extends BaseController {
     private SysMenuService menuService;
 
     //查询菜单列表
+    @PreAuthorize("@pm.hasPerms('sys:menu:list')")
     @GetMapping("/list")
     public AjaxResult list(SysMenu menu) {
         Long loginUserId = AuthUtils.getLoginUserId();
@@ -29,12 +31,14 @@ public class SysMenuController extends BaseController {
     }
 
     //获取菜单信息
+    @PreAuthorize("@pm.hasPerms('sys:menu:query')")
     @GetMapping("/{menuId}")
     public AjaxResult getById(@PathVariable Long menuId) {
         return AjaxResult.success(menuService.selectSysMenuById(menuId));
     }
 
     //创建菜单
+    @PreAuthorize("@pm.hasPerms('sys:menu:create')")
     @PostMapping
     public AjaxResult create(@RequestBody SysMenu menu) {
         //检查菜单名称是否唯一
@@ -49,6 +53,7 @@ public class SysMenuController extends BaseController {
     }
 
     //删除菜单
+    @PreAuthorize("@pm.hasPerms('sys:menu:delete')")
     @DeleteMapping("/{menuId}")
     public AjaxResult delete(@PathVariable Long menuId) {
         SysMenu sysMenu = new SysMenu();
@@ -60,6 +65,7 @@ public class SysMenuController extends BaseController {
     }
 
     //更新菜单信息
+    @PreAuthorize("@pm.hasPerms('sys:menu:update')")
     @PutMapping
     public AjaxResult update(@RequestBody SysMenu menu) {
         //检查菜单名称是否唯一

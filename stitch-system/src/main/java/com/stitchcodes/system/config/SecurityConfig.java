@@ -3,11 +3,13 @@ package com.stitchcodes.system.config;
 import com.stitchcodes.common.utils.encode.StitchPasswordEncoder;
 import com.stitchcodes.system.security.filter.JwtAuthenticationFilter;
 import com.stitchcodes.system.security.handler.AuthenticationEntryPointHandler;
+import com.stitchcodes.system.security.handler.StitchAccessDeniedHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -24,10 +26,13 @@ import javax.annotation.Resource;
  * @Description:
  */
 @Configuration
+@EnableGlobalMethodSecurity(prePostEnabled = true,securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Resource
     private AuthenticationEntryPointHandler entryPointHandler;
+    @Resource
+    private StitchAccessDeniedHandler accessDeniedHandler;
     @Resource
     private JwtAuthenticationFilter authenticationFilter;
     @Resource
@@ -52,7 +57,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 禁用HTTP响应标头
                 .headers().cacheControl().disable().and()
                 // 认证失败处理类
-                .exceptionHandling().authenticationEntryPoint(entryPointHandler).and()
+                .exceptionHandling().authenticationEntryPoint(entryPointHandler)
+                .accessDeniedHandler(accessDeniedHandler).and()
                 // 基于token，所以不需要session
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 // 过滤请求
