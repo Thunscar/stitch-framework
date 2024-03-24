@@ -1,6 +1,7 @@
 package com.stitchcodes.web.controller.system;
 
 import com.stitchcodes.common.api.AjaxResult;
+import com.stitchcodes.common.constant.UserConstants;
 import com.stitchcodes.common.controller.BaseController;
 import com.stitchcodes.core.domain.SysMenu;
 import com.stitchcodes.core.service.SysMenuService;
@@ -46,7 +47,9 @@ public class SysMenuController extends BaseController {
         //检查父级ID合法性
         menuService.checkParentIdValid(menu);
         //检查菜单路径唯一性
-        menuService.checkSysMenuPathUnique(menu);
+        if(UserConstants.MENU_TYPE.equals(menu.getMenuType())){
+            menuService.checkSysMenuPathUnique(menu);
+        }
 
         menu.setCreateUser(AuthUtils.getLoginUserName());
         return toAjax(menuService.createSysMenu(menu));
