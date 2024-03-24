@@ -3,6 +3,7 @@ package com.stitchcodes.core.service.impl;
 import com.stitchcodes.common.annotation.DataScope;
 import com.stitchcodes.common.constant.UserConstants;
 import com.stitchcodes.common.exception.StitchException;
+import com.stitchcodes.common.redis.RedisCache;
 import com.stitchcodes.common.utils.CollectionUtils;
 import com.stitchcodes.common.utils.ObjectUtils;
 import com.stitchcodes.common.utils.SpringUtils;
@@ -18,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
+
+import static com.stitchcodes.common.utils.RedisKeyUtil.getLoginCacheKey;
 
 /**
  * @author stitch
@@ -36,6 +39,8 @@ public class SysUserServiceImpl implements SysUserService {
     private SysUserPostMapper userPostMapper;
     @Resource
     private StitchPasswordEncoder passwordEncoder;
+    @Resource
+    private RedisCache redisCache;
 
     @Override
     @DataScope
@@ -211,6 +216,14 @@ public class SysUserServiceImpl implements SysUserService {
     @Override
     public int cancelAllocateRoles(Long userId, Long[] roleIds) {
         return userRoleMapper.removeUserRoles(userId, roleIds);
+    }
+
+    @Override
+    public void clearUserLoginCache(String userName) {
+        String userLoginCacheKey = getLoginCacheKey(userName);
+        if (redisCache.hasKey(userLoginCacheKey)) {
+            redisCache.deleteObject(userLoginCacheKey);
+        }
     }
 }
 

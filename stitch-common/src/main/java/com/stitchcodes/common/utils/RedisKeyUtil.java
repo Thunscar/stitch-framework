@@ -18,4 +18,13 @@ public class RedisKeyUtil {
     public static String getDictCacheKey(String dictType) {
         return CacheConstants.DICT_KEY + dictType;
     }
+
+    /**
+     * 获取密码错误次数缓存键
+     * @param userName 用户账号
+     * @return
+     */
+    public static String getLoginCacheKey(String userName){
+        return CacheConstants.PASS_ERROR_COUNT_KEY + userName;
+    }
 }

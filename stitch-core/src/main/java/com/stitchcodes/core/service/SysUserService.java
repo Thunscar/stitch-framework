@@ -212,4 +212,12 @@ public interface SysUserService {
     int cancelAllocateRoles(Long userId, Long[] roleIds);
 
 
+    /**
+     * 清除用户登录缓存
+     * @param userName 用户名
+     */
+    void clearUserLoginCache(String userName);
+
+
+
 }

@@ -189,4 +189,14 @@ public class SysUserController extends BaseController {
         return toAjax(userService.cancelAllocateRoles(userId, roleIds));
     }
 
+    @PreAuthorize("@pm.hasPerms('sys:user:unlock')")
+    @PostMapping("/unlock/{userId}")
+    public AjaxResult unlockUserAccount(@PathVariable Long userId) {
+        //检查用户数据权限
+        userService.checkUserDataScope(userId);
+        //解锁用户
+        SysUser sysUser = userService.selectUserById(userId);
+        userService.clearUserLoginCache(sysUser.getUserName());
+        return success();
+    }
 }
