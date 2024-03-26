@@ -8,6 +8,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -84,7 +86,26 @@ public class ServletUtils {
         }
     }
 
+    /**
+     * 将指定数据渲染到前端
+     *
+     * @param response 响应数据
+     * @param str      字符串
+     */
     public static void sendString(HttpServletResponse response, String str) {
         sendString(response, str, HttpStatus.SUCCESS);
+    }
+
+    /**
+     * 获取请求参数
+     */
+    public static Map<String, String> getRequestParam() {
+        Map<String, String> params = new HashMap<>();
+        HttpServletRequest request = getRequest();
+        Map<String, String[]> parameterMap = request.getParameterMap();
+        for (Map.Entry<String, String[]> entry : parameterMap.entrySet()) {
+            params.put(entry.getKey(), StringUtils.join(entry.getValue(), ","));
+        }
+        return params;
     }
 }

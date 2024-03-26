@@ -23,6 +23,11 @@ public class AddressUtils {
     /*未知区域*/
     private static final String UNKNOWN = "UnKnown";
 
+    /**
+     * 获取IP地址位置
+     * @param ip ip地址
+     * @return
+     */
     public static String getRealAddressByIp(String ip) {
         if (IpUtils.internalIp(ip)) {
             return "内网IP";

@@ -3,7 +3,6 @@ package com.stitchcodes.core.domain;
 import com.stitchcodes.common.domain.BaseEntity;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * 系统操作日志表
@@ -88,7 +87,7 @@ public class SysOperateLog extends BaseEntity implements Serializable {
     /**
      * 操作时间
      */
-    private Date operateTime;
+    private Long operateTime;
 
     private static final long serialVersionUID = 1L;
 
@@ -305,14 +304,14 @@ public class SysOperateLog extends BaseEntity implements Serializable {
     /**
      * 操作时间
      */
-    public Date getOperateTime() {
+    public Long getOperateTime() {
         return operateTime;
     }
 
     /**
      * 操作时间
      */
-    public void setOperateTime(Date operateTime) {
+    public void setOperateTime(Long operateTime) {
         this.operateTime = operateTime;
     }
 

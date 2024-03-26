@@ -1,8 +1,10 @@
 package com.stitchcodes.web.controller.system;
 
+import com.stitchcodes.common.annotation.Log;
 import com.stitchcodes.common.api.AjaxResult;
 import com.stitchcodes.common.api.TableData;
 import com.stitchcodes.common.controller.BaseController;
+import com.stitchcodes.common.enums.BusinessType;
 import com.stitchcodes.common.excel.ExcelUtil;
 import com.stitchcodes.core.domain.SysPost;
 import com.stitchcodes.core.service.SysPostService;
@@ -44,6 +46,7 @@ public class SysPostController extends BaseController {
     }
 
     //批量删除岗位
+    @Log(title = "删除岗位",BusinessType = BusinessType.DELETE)
     @PreAuthorize("@pm.hasPerms('sys:post:delete')")
     @DeleteMapping("{postIds}")
     public AjaxResult delete(@PathVariable Long[] postIds) {
@@ -51,6 +54,7 @@ public class SysPostController extends BaseController {
     }
 
     //创建岗位
+    @Log(title = "创建岗位",BusinessType = BusinessType.INSERT)
     @PreAuthorize("@pm.hasPerms('sys:post:create')")
     @PostMapping
     public AjaxResult create(@RequestBody SysPost sysPost) {
@@ -62,6 +66,7 @@ public class SysPostController extends BaseController {
     }
 
     //更新岗位信息
+    @Log(title = "更新岗位",BusinessType = BusinessType.UPDATE)
     @PreAuthorize("@pm.hasPerms('sys:post:update')")
     @PutMapping
     public AjaxResult update(@RequestBody SysPost sysPost) {
@@ -73,6 +78,7 @@ public class SysPostController extends BaseController {
     }
 
     //导出岗位列表到excel
+    @Log(title = "导出岗位",BusinessType = BusinessType.EXPORT)
     @PreAuthorize("@pm.hasPerms('sys:post:export')")
     @PostMapping("/export")
     public void export(HttpServletResponse response, SysPost sysPost) throws IOException {

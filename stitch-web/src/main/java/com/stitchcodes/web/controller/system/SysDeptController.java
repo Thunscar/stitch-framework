@@ -1,7 +1,9 @@
 package com.stitchcodes.web.controller.system;
 
+import com.stitchcodes.common.annotation.Log;
 import com.stitchcodes.common.api.AjaxResult;
 import com.stitchcodes.common.controller.BaseController;
+import com.stitchcodes.common.enums.BusinessType;
 import com.stitchcodes.common.exception.StitchException;
 import com.stitchcodes.core.domain.SysDept;
 import com.stitchcodes.core.service.SysDeptService;
@@ -40,6 +42,7 @@ public class SysDeptController extends BaseController {
     }
 
     //创建机构
+    @Log(title = "创建机构",BusinessType = BusinessType.INSERT)
     @PreAuthorize("@pm.hasPerms('sys:dept:create')")
     @PostMapping
     public AjaxResult create(@RequestBody SysDept dept) {
@@ -52,6 +55,7 @@ public class SysDeptController extends BaseController {
     }
 
     //更新机构
+    @Log(title = "更新机构",BusinessType = BusinessType.UPDATE)
     @PreAuthorize("@pm.hasPerms('sys:dept:update')")
     @PutMapping
     public AjaxResult update(@RequestBody SysDept dept) {
@@ -64,6 +68,7 @@ public class SysDeptController extends BaseController {
     }
 
     //删除机构
+    @Log(title = "删除机构",BusinessType = BusinessType.DELETE)
     @PreAuthorize("@pm.hasPerms('sys:dept:delete')")
     @DeleteMapping("{deptId}")
     public AjaxResult delete(@PathVariable Long deptId) {

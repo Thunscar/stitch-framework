@@ -1,8 +1,10 @@
 package com.stitchcodes.web.controller.system;
 
+import com.stitchcodes.common.annotation.Log;
 import com.stitchcodes.common.api.AjaxResult;
 import com.stitchcodes.common.api.TableData;
 import com.stitchcodes.common.controller.BaseController;
+import com.stitchcodes.common.enums.BusinessType;
 import com.stitchcodes.common.excel.ExcelUtil;
 import com.stitchcodes.common.utils.ObjectUtils;
 import com.stitchcodes.common.utils.StringUtils;
@@ -85,6 +87,7 @@ public class SysUserController extends BaseController {
     }
 
     //创建用户
+    @Log(title = "创建用户", BusinessType = BusinessType.INSERT)
     @PreAuthorize("@pm.hasPerms('sys:user:create')")
     @PostMapping
     public AjaxResult create(@RequestBody SysUser user) {
@@ -100,6 +103,7 @@ public class SysUserController extends BaseController {
     }
 
     //更新用户信息
+    @Log(title = "更新用户信息", BusinessType = BusinessType.UPDATE)
     @PreAuthorize("@pm.hasPerms('sys:user:update')")
     @PutMapping
     public AjaxResult update(@RequestBody SysUser user) {
@@ -116,6 +120,7 @@ public class SysUserController extends BaseController {
     }
 
     //批量删除用户
+    @Log(title = "删除用户", BusinessType = BusinessType.DELETE)
     @PreAuthorize("@pm.hasPerms('sys:user:delete')")
     @DeleteMapping("{userIds}")
     public AjaxResult delete(@PathVariable Long[] userIds) {
@@ -127,6 +132,7 @@ public class SysUserController extends BaseController {
     }
 
     //导出用户信息到excel
+    @Log(title = "导出用户信息", BusinessType = BusinessType.EXPORT)
     @PreAuthorize("@pm.hasPerms('sys:user:export')")
     @PostMapping("export")
     public void export(HttpServletResponse response, SysUser user) throws IOException {
@@ -136,6 +142,7 @@ public class SysUserController extends BaseController {
     }
 
     //重置用户密码(重置后的密码在参数管理中设置)
+    @Log(title = "重置用户密码", BusinessType = BusinessType.OTHER)
     @PreAuthorize("@pm.hasPerms('sys:user:resetPassword')")
     @PostMapping("/reset/{userId}")
     public AjaxResult resetPassword(@PathVariable Long userId) {
@@ -172,6 +179,7 @@ public class SysUserController extends BaseController {
     }
 
     //批量分配给用户角色
+    @Log(title = "用户分配多个角色", BusinessType = BusinessType.OTHER)
     @PreAuthorize("@pm.hasPerms('sys:user:allocatedRole')")
     @PostMapping("/allocate")
     public AjaxResult allocateRoles(Long userId, Long[] roleIds) {
@@ -181,6 +189,7 @@ public class SysUserController extends BaseController {
     }
 
     //批量取消分配给用户的角色
+    @Log(title = "取消用户分配的角色", BusinessType = BusinessType.OTHER)
     @PreAuthorize("@pm.hasPerms('sys:user:allocatedRole')")
     @PostMapping("/allocate/cancel")
     public AjaxResult cancelAllocateRoles(Long userId, Long[] roleIds) {
@@ -189,6 +198,8 @@ public class SysUserController extends BaseController {
         return toAjax(userService.cancelAllocateRoles(userId, roleIds));
     }
 
+    //解锁用户
+    @Log(title = "解锁用户", BusinessType = BusinessType.OTHER)
     @PreAuthorize("@pm.hasPerms('sys:user:unlock')")
     @PostMapping("/unlock/{userId}")
     public AjaxResult unlockUserAccount(@PathVariable Long userId) {

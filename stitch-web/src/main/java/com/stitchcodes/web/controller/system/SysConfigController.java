@@ -1,8 +1,10 @@
 package com.stitchcodes.web.controller.system;
 
+import com.stitchcodes.common.annotation.Log;
 import com.stitchcodes.common.api.AjaxResult;
 import com.stitchcodes.common.api.TableData;
 import com.stitchcodes.common.controller.BaseController;
+import com.stitchcodes.common.enums.BusinessType;
 import com.stitchcodes.common.excel.ExcelUtil;
 import com.stitchcodes.core.domain.SysConfig;
 import com.stitchcodes.core.service.SysConfigService;
@@ -46,6 +48,7 @@ public class SysConfigController extends BaseController {
     }
 
     //导出参数列表
+    @Log(title = "导出参数",BusinessType = BusinessType.EXPORT)
     @PreAuthorize("@pm.hasPerms('system:config:export')")
     @PostMapping("/export")
     public void export(HttpServletResponse response, SysConfig config) throws IOException {
@@ -55,6 +58,7 @@ public class SysConfigController extends BaseController {
     }
 
     //新增系统参数信息
+    @Log(title = "新增参数",BusinessType = BusinessType.INSERT)
     @PreAuthorize("@pm.hasPerms('system:config:create')")
     @PostMapping
     public AjaxResult create(@Valid @RequestBody SysConfig sysConfig) {
@@ -65,6 +69,7 @@ public class SysConfigController extends BaseController {
     }
 
     //修改系统参数
+    @Log(title = "修改参数",BusinessType = BusinessType.UPDATE)
     @PreAuthorize("@pm.hasPerms('system:config:update')")
     @PutMapping
     public AjaxResult update(@Valid @RequestBody SysConfig sysConfig) {
@@ -74,8 +79,8 @@ public class SysConfigController extends BaseController {
         return toAjax(configService.updateSysConfig(sysConfig));
     }
 
-
     //删除参数配置
+    @Log(title = "删除参数",BusinessType = BusinessType.DELETE)
     @PreAuthorize("@pm.hasPerms('system:config:delete')")
     @DeleteMapping("/{configIds}")
     public AjaxResult deleteConfig(@PathVariable Long[] configIds) {

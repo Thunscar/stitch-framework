@@ -138,7 +138,7 @@ create table sys_operate_log
     log_id           bigint auto_increment comment '日志主键'
         primary key,
     title            varchar(100)                       null comment '模块标题',
-    business_type    char     default '0'               null comment '业务类型(0其他1新增2修改3删除)',
+    business_type    char     default '0'               null comment '业务类型(0其他1新增2修改3删除4导入5导出)',
     method           varchar(50)                        null comment '方法名称',
     request_method   varchar(10)                        null comment '请求方式',
     operate_type     char     default '0'               null comment '操作类型(0其他1后台用户2手机端用户)',
@@ -147,8 +147,8 @@ create table sys_operate_log
     operate_url      varchar(100)                       null comment '操作URL',
     operate_ip       varchar(128)                       null comment '操作IP',
     operate_location varchar(300)                       null comment '操作位置',
-    operate_param    varchar(200)                       null comment '操作参数',
-    json_result      varchar(300)                       null comment '返回结果',
+    operate_param    varchar(2000)                       null comment '操作参数',
+    json_result      varchar(2000)                       null comment '返回结果',
     status           char     default '0'               null comment '状态(0正常1异常)',
     error_msg        varchar(300)                       null comment '错误消息',
     operate_time     datetime default CURRENT_TIMESTAMP null comment '操作时间'

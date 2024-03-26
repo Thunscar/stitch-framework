@@ -1,8 +1,10 @@
 package com.stitchcodes.web.controller.system;
 
+import com.stitchcodes.common.annotation.Log;
 import com.stitchcodes.common.api.AjaxResult;
 import com.stitchcodes.common.api.TableData;
 import com.stitchcodes.common.controller.BaseController;
+import com.stitchcodes.common.enums.BusinessType;
 import com.stitchcodes.common.utils.ObjectUtils;
 import com.stitchcodes.core.domain.SysDictData;
 import com.stitchcodes.core.service.SysDictDataService;
@@ -45,11 +47,14 @@ public class SysDictDataController extends BaseController {
         return getTableData(dictDataList);
     }
 
+    //通过字典Code查询指点数据
     @GetMapping("/code/{dictCode}")
     public AjaxResult getByCode(@PathVariable Long dictCode) {
         return AjaxResult.success(dictDataService.selectDictDataByCode(dictCode));
     }
 
+    //创建字典数据
+    @Log(title = "新增字典数据",BusinessType = BusinessType.INSERT)
     @PreAuthorize("@pm.hasPerms('sys:dict:create')")
     @PostMapping()
     public AjaxResult create(@RequestBody SysDictData dictData) {
@@ -59,6 +64,8 @@ public class SysDictDataController extends BaseController {
         return toAjax(dictDataService.createDictData(dictData));
     }
 
+    //更新字典数据
+    @Log(title = "修改字典数据",BusinessType = BusinessType.UPDATE)
     @PreAuthorize("@pm.hasPerms('sys:dict:update')")
     @PutMapping
     public AjaxResult update(@RequestBody SysDictData dictData) {
@@ -68,6 +75,8 @@ public class SysDictDataController extends BaseController {
         return toAjax(dictDataService.updateDictData(dictData));
     }
 
+    //删除字典数据
+    @Log(title = "删除字典数据",BusinessType = BusinessType.DELETE)
     @PreAuthorize("@pm.hasPerms('sys:dict:delete')")
     @DeleteMapping("/{dictType}/{dictCodes}")
     public AjaxResult delete(@PathVariable String dictType, @PathVariable Long[] dictCodes) {

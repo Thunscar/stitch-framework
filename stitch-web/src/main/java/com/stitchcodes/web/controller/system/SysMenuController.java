@@ -1,8 +1,10 @@
 package com.stitchcodes.web.controller.system;
 
+import com.stitchcodes.common.annotation.Log;
 import com.stitchcodes.common.api.AjaxResult;
 import com.stitchcodes.common.constant.UserConstants;
 import com.stitchcodes.common.controller.BaseController;
+import com.stitchcodes.common.enums.BusinessType;
 import com.stitchcodes.core.domain.SysMenu;
 import com.stitchcodes.core.service.SysMenuService;
 import com.stitchcodes.core.utils.AuthUtils;
@@ -39,6 +41,7 @@ public class SysMenuController extends BaseController {
     }
 
     //创建菜单
+    @Log(title = "创建菜单",BusinessType = BusinessType.INSERT)
     @PreAuthorize("@pm.hasPerms('sys:menu:create')")
     @PostMapping
     public AjaxResult create(@RequestBody SysMenu menu) {
@@ -56,6 +59,7 @@ public class SysMenuController extends BaseController {
     }
 
     //删除菜单
+    @Log(title = "删除菜单",BusinessType = BusinessType.DELETE)
     @PreAuthorize("@pm.hasPerms('sys:menu:delete')")
     @DeleteMapping("/{menuId}")
     public AjaxResult delete(@PathVariable Long menuId) {
@@ -68,6 +72,7 @@ public class SysMenuController extends BaseController {
     }
 
     //更新菜单信息
+    @Log(title = "更新菜单",BusinessType = BusinessType.UPDATE)
     @PreAuthorize("@pm.hasPerms('sys:menu:update')")
     @PutMapping
     public AjaxResult update(@RequestBody SysMenu menu) {
