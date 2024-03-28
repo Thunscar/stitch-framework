@@ -1,6 +1,7 @@
 package com.stitchcodes.core.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.stitchcodes.common.annotation.Excel;
 import com.stitchcodes.common.domain.BaseEntity;
 
 import java.io.Serializable;
@@ -9,93 +10,111 @@ import java.util.Objects;
 
 /**
  * 系统操作日志表
+ *
  * @TableName sys_operate_log
  */
 public class SysOperateLog extends BaseEntity implements Serializable {
     /**
      * 日志主键
      */
+    @Excel(name = "日志ID")
     private Long logId;
 
     /**
      * 模块标题
      */
+    @Excel(name = "标题")
     private String title;
 
     /**
-     * 业务类型(0其他1新增2修改3删除)
+     * 业务类型(0其他1新增2修改3删除4导入5导出)
      */
+    @Excel(name = "业务类型(0其他1新增2修改3删除4导入5导出)")
     private String businessType;
 
     /**
      * 方法名称
      */
+    @Excel(name = "方法名称", width = 32)
     private String method;
 
     /**
      * 请求方式
      */
+    @Excel(name = "请求方式", width = 8)
     private String requestMethod;
 
     /**
      * 操作类型(0其他1后台用户2手机端用户)
      */
+    @Excel(name = "操作类型(0其他1后台用户2手机端用户)", width = 8)
     private String operateType;
 
     /**
      * 操作人
      */
+    @Excel(name = "操作人")
     private String operateUser;
 
     /**
      * 部门名称
      */
+    @Excel(name = "部门名称")
     private String deptName;
 
     /**
      * 操作URL
      */
+    @Excel(name = "操作URL")
     private String operateUrl;
 
     /**
      * 操作IP
      */
+    @Excel(name = "操作IP")
     private String operateIp;
 
     /**
      * 操作位置
      */
+    @Excel(name = "操作位置")
     private String operateLocation;
 
     /**
      * 操作参数
      */
+    @Excel(name = "操作参数")
     private String operateParam;
 
     /**
      * 返回结果
      */
+    @Excel(name = "返回结果")
     private String jsonResult;
 
     /**
      * 状态(0正常1异常)
      */
+    @Excel(name = "状态")
     private String status;
 
     /**
      * 错误消息
      */
+    @Excel(name = "错误信息")
     private String errorMsg;
 
     /**
      * 操作时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @Excel(name = "操作时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date operateTime;
 
     /**
      * 消耗时间
      */
+    @Excel(name = "执行耗时(ms)")
     private Long costTime;
 
     private static final long serialVersionUID = 1L;

@@ -83,7 +83,7 @@ public class SysPostController extends BaseController {
     @PostMapping("/export")
     public void export(HttpServletResponse response, SysPost sysPost) throws IOException {
         List<SysPost> sysPosts = postService.selectSysPostList(sysPost);
-        ExcelUtil<SysPost> excelUtil = new ExcelUtil<>();
+        ExcelUtil<SysPost> excelUtil = new ExcelUtil<>(SysPost.class);
         excelUtil.exportExcel("岗位数据", sysPosts, response);
     }
 

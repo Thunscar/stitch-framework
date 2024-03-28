@@ -42,7 +42,7 @@ public class SysOperateLogController extends BaseController {
     @PostMapping("/export")
     public void export(SysOperateLog operateLog, HttpServletResponse response) throws IOException {
         List<SysOperateLog> sysOperateLogList = operateLogService.selectOperateLogList(operateLog);
-        ExcelUtil<SysOperateLog> excelUtil = new ExcelUtil<>();
+        ExcelUtil<SysOperateLog> excelUtil = new ExcelUtil<>(SysOperateLog.class);
         excelUtil.exportExcel("系统操作日志", sysOperateLogList, response);
     }
 }

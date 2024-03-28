@@ -32,11 +32,16 @@ public class ExcelUtil<T> {
 
     private Class<T> clazz;
 
+    public ExcelUtil(Class<T> clazz) {
+        this.clazz = clazz;
+    }
+
     /**
      * 导出Excel
+     *
      * @param sheetName 工作薄名称
-     * @param data 数据列表
-     * @param response 响应
+     * @param data      数据列表
+     * @param response  响应
      * @throws IOException
      */
     public void exportExcel(String sheetName, List<T> data, HttpServletResponse response) throws IOException {
@@ -133,7 +138,6 @@ public class ExcelUtil<T> {
             //推送浏览器
             response.setHeader("Content-Disposition", "attachment;filename=" + filename);
             wb.write(response.getOutputStream());
-            wb.close();
         } catch (Exception e) {
             log.error(LogUtils.format(EXPORT_EXCEL, "sheetName:[{}],T:[{}]", ResultEnum.FAILED, "export excel data failed"), sheetName, clazz.getName(), e);
         } finally {

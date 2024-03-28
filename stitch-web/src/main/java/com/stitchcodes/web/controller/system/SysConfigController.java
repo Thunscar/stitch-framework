@@ -53,7 +53,7 @@ public class SysConfigController extends BaseController {
     @PostMapping("/export")
     public void export(HttpServletResponse response, SysConfig config) throws IOException {
         List<SysConfig> sysConfigList = configService.getSysConfigList(config);
-        ExcelUtil<SysConfig> util = new ExcelUtil<SysConfig>();
+        ExcelUtil<SysConfig> util = new ExcelUtil<SysConfig>(SysConfig.class);
         util.exportExcel("参数数据", sysConfigList, response);
     }
 
