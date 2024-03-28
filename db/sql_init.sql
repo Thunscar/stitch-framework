@@ -374,6 +374,7 @@ insert into sys_dict_type (dict_id, dict_name, dict_type, is_system, create_user
                            remark, is_delete)
 values (7, '岗位状态', 'post_status', '1', 'stitch', SYSDATE(), '', SYSDATE(), '岗位状态列表', '0');
 
+
 INSERT INTO sys_menu (menu_id, menu_name, parent_id, order_num, path, component, query, is_frame, is_cache, menu_type,
                       visible, status, perms, icon, is_delete, create_user, create_time, update_user, update_time,
                       remark)
@@ -655,6 +656,18 @@ INSERT INTO sys_menu (menu_id, menu_name, parent_id, order_num, path, component,
                       remark)
 VALUES (153, '导出', 109, 5, '', '', '', null, null, 'B', null, '0', 'sys:post:export', '', '0', 'stitch', SYSDATE(),
         'stitch', SYSDATE(), '导出按钮');
+INSERT INTO sys_menu (menu_id, menu_name, parent_id, order_num, path, component, query, is_frame, is_cache, menu_type,
+                      visible, status, perms, icon, is_delete, create_user, create_time, update_user, update_time,
+                      remark)
+VALUES (154, '导出', 111, 1, '', '', '', null, null, 'B', null, '0', 'sys:loginlog:export', '', '0', 'stitch',
+        SYSDATE(), 'stitch', SYSDATE(), '导出按钮');
+INSERT INTO sys_menu (menu_id, menu_name, parent_id, order_num, path, component, query, is_frame, is_cache, menu_type,
+                      visible, status, perms, icon, is_delete, create_user, create_time, update_user, update_time,
+                      remark)
+VALUES (155, '导出', 112, 1, '', '', '', null, null, 'B', null, '0', 'sys:operlog:export', '', '0', 'stitch', SYSDATE(),
+        'stitch', SYSDATE(), '导出按钮');
+
+
 insert into sys_post
 values (1, 'GM', '总经理', 1, '0', '0', 'stitch', SYSDATE(), '', SYSDATE(), '');
 insert into sys_post
