@@ -1,6 +1,7 @@
 package com.stitchcodes.core.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.stitchcodes.common.annotation.Excel;
 import com.stitchcodes.common.domain.BaseEntity;
 
 import java.io.Serializable;
@@ -14,46 +15,55 @@ public class SysLoginInfo extends BaseEntity implements Serializable {
     /**
      * 信息ID
      */
+    @Excel(name = "日志ID")
     private Long infoId;
 
     /**
      * 用户账号
      */
+    @Excel(name = "登录用户")
     private String userName;
 
     /**
      * 登录IP
      */
+    @Excel(name = "登录IP")
     private String ipaddr;
 
     /**
      * 登录地点
      */
+    @Excel(name = "登录地址")
     private String loginLocation;
 
     /**
      * 登录浏览器
      */
+    @Excel(name = "浏览器")
     private String browser;
 
     /**
      * 操作系统
      */
+    @Excel(name = "操作系统")
     private String os;
 
     /**
      * 操作类型
      */
+    @Excel(name = "操作类型")
     private String operation;
 
     /**
      * 状态(0正常1停用)
      */
+    @Excel(name = "状态(0成功1失败)")
     private String status;
 
     /**
      * 提示消息
      */
+    @Excel(name = "消息")
     private String msg;
 
     /**

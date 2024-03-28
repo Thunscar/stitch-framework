@@ -22,7 +22,7 @@ import java.util.List;
  * @Description: 登录日志控制器
  */
 @RestController
-@RequestMapping("/sys/log/login")
+@RequestMapping("/sys/loginlog")
 public class SysLoginLogController extends BaseController {
 
     @Resource
@@ -39,7 +39,7 @@ public class SysLoginLogController extends BaseController {
 
     //导出登录日志
     @PreAuthorize("@pm.hasPerms('sys:loginlog:export')")
-    @PostMapping("export")
+    @PostMapping("/export")
     public void export(SysLoginInfo loginInfo, HttpServletResponse response) throws IOException {
         List<SysLoginInfo> sysLoginInfoList = loginInfoService.getSysLoginInfoList(loginInfo);
         ExcelUtil<SysLoginInfo> excelUtil = new ExcelUtil<>(SysLoginInfo.class);
