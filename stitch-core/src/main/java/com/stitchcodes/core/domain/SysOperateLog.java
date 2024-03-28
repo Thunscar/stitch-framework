@@ -1,8 +1,11 @@
 package com.stitchcodes.core.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.stitchcodes.common.domain.BaseEntity;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.util.Objects;
 
 /**
  * 系统操作日志表
@@ -87,7 +90,13 @@ public class SysOperateLog extends BaseEntity implements Serializable {
     /**
      * 操作时间
      */
-    private Long operateTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    private Date operateTime;
+
+    /**
+     * 消耗时间
+     */
+    private Long costTime;
 
     private static final long serialVersionUID = 1L;
 
@@ -304,94 +313,35 @@ public class SysOperateLog extends BaseEntity implements Serializable {
     /**
      * 操作时间
      */
-    public Long getOperateTime() {
+    public Date getOperateTime() {
         return operateTime;
     }
 
     /**
      * 操作时间
      */
-    public void setOperateTime(Long operateTime) {
+    public void setOperateTime(Date operateTime) {
         this.operateTime = operateTime;
     }
 
+    public Long getCostTime() {
+        return costTime;
+    }
+
+    public void setCostTime(Long costTime) {
+        this.costTime = costTime;
+    }
+
     @Override
-    public boolean equals(Object that) {
-        if (this == that) {
-            return true;
-        }
-        if (that == null) {
-            return false;
-        }
-        if (getClass() != that.getClass()) {
-            return false;
-        }
-        SysOperateLog other = (SysOperateLog) that;
-        return (this.getLogId() == null ? other.getLogId() == null : this.getLogId().equals(other.getLogId()))
-            && (this.getTitle() == null ? other.getTitle() == null : this.getTitle().equals(other.getTitle()))
-            && (this.getBusinessType() == null ? other.getBusinessType() == null : this.getBusinessType().equals(other.getBusinessType()))
-            && (this.getMethod() == null ? other.getMethod() == null : this.getMethod().equals(other.getMethod()))
-            && (this.getRequestMethod() == null ? other.getRequestMethod() == null : this.getRequestMethod().equals(other.getRequestMethod()))
-            && (this.getOperateType() == null ? other.getOperateType() == null : this.getOperateType().equals(other.getOperateType()))
-            && (this.getOperateUser() == null ? other.getOperateUser() == null : this.getOperateUser().equals(other.getOperateUser()))
-            && (this.getDeptName() == null ? other.getDeptName() == null : this.getDeptName().equals(other.getDeptName()))
-            && (this.getOperateUrl() == null ? other.getOperateUrl() == null : this.getOperateUrl().equals(other.getOperateUrl()))
-            && (this.getOperateIp() == null ? other.getOperateIp() == null : this.getOperateIp().equals(other.getOperateIp()))
-            && (this.getOperateLocation() == null ? other.getOperateLocation() == null : this.getOperateLocation().equals(other.getOperateLocation()))
-            && (this.getOperateParam() == null ? other.getOperateParam() == null : this.getOperateParam().equals(other.getOperateParam()))
-            && (this.getJsonResult() == null ? other.getJsonResult() == null : this.getJsonResult().equals(other.getJsonResult()))
-            && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
-            && (this.getErrorMsg() == null ? other.getErrorMsg() == null : this.getErrorMsg().equals(other.getErrorMsg()))
-            && (this.getOperateTime() == null ? other.getOperateTime() == null : this.getOperateTime().equals(other.getOperateTime()));
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SysOperateLog that = (SysOperateLog) o;
+        return Objects.equals(logId, that.logId) && Objects.equals(title, that.title) && Objects.equals(businessType, that.businessType) && Objects.equals(method, that.method) && Objects.equals(requestMethod, that.requestMethod) && Objects.equals(operateType, that.operateType) && Objects.equals(operateUser, that.operateUser) && Objects.equals(deptName, that.deptName) && Objects.equals(operateUrl, that.operateUrl) && Objects.equals(operateIp, that.operateIp) && Objects.equals(operateLocation, that.operateLocation) && Objects.equals(operateParam, that.operateParam) && Objects.equals(jsonResult, that.jsonResult) && Objects.equals(status, that.status) && Objects.equals(errorMsg, that.errorMsg) && Objects.equals(operateTime, that.operateTime) && Objects.equals(costTime, that.costTime);
     }
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((getLogId() == null) ? 0 : getLogId().hashCode());
-        result = prime * result + ((getTitle() == null) ? 0 : getTitle().hashCode());
-        result = prime * result + ((getBusinessType() == null) ? 0 : getBusinessType().hashCode());
-        result = prime * result + ((getMethod() == null) ? 0 : getMethod().hashCode());
-        result = prime * result + ((getRequestMethod() == null) ? 0 : getRequestMethod().hashCode());
-        result = prime * result + ((getOperateType() == null) ? 0 : getOperateType().hashCode());
-        result = prime * result + ((getOperateUser() == null) ? 0 : getOperateUser().hashCode());
-        result = prime * result + ((getDeptName() == null) ? 0 : getDeptName().hashCode());
-        result = prime * result + ((getOperateUrl() == null) ? 0 : getOperateUrl().hashCode());
-        result = prime * result + ((getOperateIp() == null) ? 0 : getOperateIp().hashCode());
-        result = prime * result + ((getOperateLocation() == null) ? 0 : getOperateLocation().hashCode());
-        result = prime * result + ((getOperateParam() == null) ? 0 : getOperateParam().hashCode());
-        result = prime * result + ((getJsonResult() == null) ? 0 : getJsonResult().hashCode());
-        result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());
-        result = prime * result + ((getErrorMsg() == null) ? 0 : getErrorMsg().hashCode());
-        result = prime * result + ((getOperateTime() == null) ? 0 : getOperateTime().hashCode());
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", logId=").append(logId);
-        sb.append(", title=").append(title);
-        sb.append(", businessType=").append(businessType);
-        sb.append(", method=").append(method);
-        sb.append(", requestMethod=").append(requestMethod);
-        sb.append(", operateType=").append(operateType);
-        sb.append(", operateUser=").append(operateUser);
-        sb.append(", deptName=").append(deptName);
-        sb.append(", operateUrl=").append(operateUrl);
-        sb.append(", operateIp=").append(operateIp);
-        sb.append(", operateLocation=").append(operateLocation);
-        sb.append(", operateParam=").append(operateParam);
-        sb.append(", jsonResult=").append(jsonResult);
-        sb.append(", status=").append(status);
-        sb.append(", errorMsg=").append(errorMsg);
-        sb.append(", operateTime=").append(operateTime);
-        sb.append(", serialVersionUID=").append(serialVersionUID);
-        sb.append("]");
-        return sb.toString();
+        return Objects.hash(logId, title, businessType, method, requestMethod, operateType, operateUser, deptName, operateUrl, operateIp, operateLocation, operateParam, jsonResult, status, errorMsg, operateTime, costTime);
     }
 }

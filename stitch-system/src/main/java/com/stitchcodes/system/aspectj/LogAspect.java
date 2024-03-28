@@ -31,6 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -109,7 +110,7 @@ public class LogAspect {
             operateLog.setRequestMethod(request.getMethod());
             //请求方法
             String method = joinPoint.getTarget().getClass().getName() + "." + joinPoint.getSignature().getName();
-            operateLog.setMethod(method);
+            operateLog.setMethod(StringUtils.substring(method, 0, 200));
 
             //保存请求参数
             if (log.isSaveRequestParam()) {
@@ -131,7 +132,8 @@ public class LogAspect {
             }
 
             //记录操作时间
-            operateLog.setOperateTime(System.currentTimeMillis() - OPERATE_TIME.get());
+            operateLog.setOperateTime(new Date());
+            operateLog.setCostTime(System.currentTimeMillis() - OPERATE_TIME.get());
 
             //异步记录日志
             AsyncManager.me().execute(AsyncFactory.recordOperateLog(operateLog));

@@ -137,7 +137,7 @@ public class SysUserController extends BaseController {
     @PostMapping("export")
     public void export(HttpServletResponse response, SysUser user) throws IOException {
         List<SysUser> sysUsers = userService.selectUserList(user);
-        ExcelUtil<SysUser> excelUtil = new ExcelUtil<>(SysUser.class);
+        ExcelUtil<SysUser> excelUtil = new ExcelUtil<>();
         excelUtil.exportExcel("用户数据", sysUsers, response);
     }
 

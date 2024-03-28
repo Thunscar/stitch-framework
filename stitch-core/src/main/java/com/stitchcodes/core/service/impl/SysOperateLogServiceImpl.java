@@ -6,12 +6,13 @@ import com.stitchcodes.core.service.SysOperateLogService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
-* @author stitch
-* @description 针对表【sys_operate_log(系统操作日志表)】的数据库操作Service实现
-* @createDate 2023-04-28 13:20:02
-*/
+ * @author stitch
+ * @description 针对表【sys_operate_log(系统操作日志表)】的数据库操作Service实现
+ * @createDate 2023-04-28 13:20:02
+ */
 @Service
 public class SysOperateLogServiceImpl implements SysOperateLogService {
 
@@ -20,7 +21,12 @@ public class SysOperateLogServiceImpl implements SysOperateLogService {
 
     @Override
     public int insertOperateLog(SysOperateLog operateLog) {
-        return 0;
+        return operateLogMapper.insertOperateLog(operateLog);
+    }
+
+    @Override
+    public List<SysOperateLog> selectOperateLogList(SysOperateLog operateLog) {
+        return operateLogMapper.selectOperateLogList(operateLog);
     }
 }
 

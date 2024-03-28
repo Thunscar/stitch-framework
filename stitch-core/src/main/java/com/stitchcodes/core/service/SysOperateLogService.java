@@ -2,6 +2,8 @@ package com.stitchcodes.core.service;
 
 import com.stitchcodes.core.domain.SysOperateLog;
 
+import java.util.List;
+
 /**
  * @author stitch
  * @description 针对表【sys_operate_log(系统操作日志表)】的数据库操作Service
@@ -16,4 +18,11 @@ public interface SysOperateLogService {
      * @return 插入数据条数
      */
     int insertOperateLog(SysOperateLog operateLog);
+
+    /**
+     * 查询操作日志列表
+     * @param operateLog 操作日志信息
+     * @return
+     */
+    List<SysOperateLog> selectOperateLogList(SysOperateLog operateLog);
 }

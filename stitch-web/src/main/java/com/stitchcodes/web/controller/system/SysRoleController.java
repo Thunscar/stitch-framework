@@ -123,7 +123,7 @@ public class SysRoleController extends BaseController {
     @PostMapping("/export")
     public void export(SysRole role, HttpServletResponse response) throws IOException {
         List<SysRole> sysRoles = roleService.selectSysRoleList(role);
-        ExcelUtil<SysRole> excelUtil = new ExcelUtil<>(SysRole.class);
+        ExcelUtil<SysRole> excelUtil = new ExcelUtil<>();
         excelUtil.exportExcel("角色信息", sysRoles, response);
     }
 

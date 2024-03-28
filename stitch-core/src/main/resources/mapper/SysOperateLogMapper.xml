@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.stitchcodes.core.mapper.SysOperateLogMapper">
 
-    <resultMap id="BaseResultMap" type="com.stitchcodes.core.domain.SysOperateLog">
+    <resultMap id="OperateLogResultMap" type="com.stitchcodes.core.domain.SysOperateLog">
             <id property="logId" column="log_id" jdbcType="BIGINT"/>
             <result property="title" column="title" jdbcType="VARCHAR"/>
             <result property="businessType" column="business_type" jdbcType="CHAR"/>
@@ -21,14 +21,52 @@
             <result property="status" column="status" jdbcType="CHAR"/>
             <result property="errorMsg" column="error_msg" jdbcType="VARCHAR"/>
             <result property="operateTime" column="operate_time" jdbcType="TIMESTAMP"/>
+            <result property="costTime" column="cost_time" jdbcType="BIGINT"/>
     </resultMap>
 
-    <sql id="Base_Column_List">
-        log_id,title,business_type,
-        method,request_method,operate_type,
-        operate_user,dept_name,operate_url,
-        operate_ip,operate_location,operate_param,
-        json_result,status,error_msg,
-        operate_time
-    </sql>
+    <insert id="insertOperateLog">
+        insert into sys_operate_log (title, business_type, method, request_method, operate_type, operate_user,
+                                     dept_name, operate_url, operate_ip, operate_location, operate_param,
+                                     json_result, status, error_msg, operate_time, cost_time)
+        values (#{title}, #{businessType}, #{method}, #{requestMethod}, #{operateType}, #{operateUser},
+                #{deptName}, #{operateUrl}, #{operateIp}, #{operateLocation}, #{operateParam},
+                #{jsonResult}, #{status}, #{errorMsg}, #{operateTime}, #{costTime})
+    </insert>
+
+    <select id="selectOperateLogList" resultMap="OperateLogResultMap">
+        select * from sys_operate_log
+        <where>
+            <if test="title != null and title != ''">
+                and title like concat('%',#{title},'%')
+            </if>
+            <if test="businessType != null and businessType != ''">
+                and business_type like concat('%',#{businessType},'%')
+            </if>
+            <if test="method != null and method != ''">
+                and method like concat('%',#{method},'%')
+            </if>
+            <if test="operateUser != null and operateUser != ''">
+                and operate_user = #{operateUser}
+            </if>
+            <if test="operateUrl != null and operateUrl != ''">
+                and operate_url = #{operateUrl}
+            </if>
+            <if test="operateIp != null and operateIp != ''">
+                and operate_ip = #{operateIp}
+            </if>
+            <if test="operateParam != null and operateParam != ''">
+                and operate_param like concat('%',#{operateParam},'%')
+            </if>
+            <if test="status != null and status != ''">
+                and status = #{status}
+            </if>
+            <if test="params.startTime != null and params.startTime != ''">
+                and date_format(operate_time,'%y%m%d') &gt;= date_fromat(#{params.startTime},'%y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''">
+                and date_format(operate_time,'%y%m%d') &lt;= date_fromat(#{params.endTime},'%y%m%d')
+            </if>
+        </where>
+        order by log_id desc
+    </select>
 </mapper>

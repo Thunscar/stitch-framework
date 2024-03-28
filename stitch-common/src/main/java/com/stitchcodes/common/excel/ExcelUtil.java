@@ -32,10 +32,13 @@ public class ExcelUtil<T> {
 
     private Class<T> clazz;
 
-    public ExcelUtil(Class<T> clazz) {
-        this.clazz = clazz;
-    }
-
+    /**
+     * 导出Excel
+     * @param sheetName 工作薄名称
+     * @param data 数据列表
+     * @param response 响应
+     * @throws IOException
+     */
     public void exportExcel(String sheetName, List<T> data, HttpServletResponse response) throws IOException {
         List<Object[]> fields = new ArrayList<>();
         List<Field> tempFields = new ArrayList<>();
