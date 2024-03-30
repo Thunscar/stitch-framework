@@ -1,7 +1,9 @@
 package com.stitchcodes.web.controller.system;
 
+import com.stitchcodes.common.annotation.Log;
 import com.stitchcodes.common.api.TableData;
 import com.stitchcodes.common.controller.BaseController;
+import com.stitchcodes.common.enums.BusinessType;
 import com.stitchcodes.common.excel.ExcelUtil;
 import com.stitchcodes.core.domain.SysOperateLog;
 import com.stitchcodes.core.service.SysOperateLogService;
@@ -38,6 +40,7 @@ public class SysOperateLogController extends BaseController {
     }
 
     //导出操作日志
+    @Log(title = "导出操作日志",BusinessType = BusinessType.EXPORT)
     @PreAuthorize("@pm.hasPerms('sys:operlog:export')")
     @PostMapping("/export")
     public void export(SysOperateLog operateLog, HttpServletResponse response) throws IOException {

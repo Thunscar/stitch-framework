@@ -1,7 +1,9 @@
 package com.stitchcodes.web.controller.system;
 
+import com.stitchcodes.common.annotation.Log;
 import com.stitchcodes.common.api.TableData;
 import com.stitchcodes.common.controller.BaseController;
+import com.stitchcodes.common.enums.BusinessType;
 import com.stitchcodes.common.excel.ExcelUtil;
 import com.stitchcodes.core.domain.SysLoginInfo;
 import com.stitchcodes.core.service.SysLoginInfoService;
@@ -38,6 +40,7 @@ public class SysLoginLogController extends BaseController {
     }
 
     //导出登录日志
+    @Log(title = "导出登录日志",BusinessType = BusinessType.EXPORT)
     @PreAuthorize("@pm.hasPerms('sys:loginlog:export')")
     @PostMapping("/export")
     public void export(SysLoginInfo loginInfo, HttpServletResponse response) throws IOException {
