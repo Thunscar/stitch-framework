@@ -1,9 +1,6 @@
 package com.stitchcodes.system.service;
 
-import com.stitchcodes.common.constant.CacheConstants;
-import com.stitchcodes.common.constant.ConfigConstants;
-import com.stitchcodes.common.constant.OperateConstants;
-import com.stitchcodes.common.constant.UserConstants;
+import com.stitchcodes.common.constant.*;
 import com.stitchcodes.common.exception.StitchException;
 import com.stitchcodes.common.redis.RedisCache;
 import com.stitchcodes.common.utils.DateUtils;
@@ -110,8 +107,8 @@ public class SysLoginService {
         //IP黑名单检查
         String ipBlackList = configService.getConfigValueByKey(ConfigConstants.LOGIN_IP_BLACK_LIST);
         if (StringUtils.isNotEmpty(ipBlackList) && IpUtils.isMatch(ipBlackList, IpUtils.getIpAddr())) {
-            String message = "Your IP is Blocked";
-            AsyncManager.me().execute(AsyncFactory.recordLoginInfo(userName, UserConstants.LOGIN_FAIL, OperateConstants.LOGIN_OPERATION, message));
+            String message = "您已被纳入黑名单";
+            AsyncManager.me().execute(AsyncFactory.recordLoginInfo(userName, UserConstants.LOGIN_FAIL, OperateConstants.LOGIN_OPERATION, ErrorConstant.IP_BLOCKED));
             throw new StitchException(message);
         }
     }
@@ -156,12 +153,10 @@ public class SysLoginService {
             redisCache.deleteObject(verifyCodeKey);
             if (verifyCode == null) {
                 String message = "验证码已过期";
-                AsyncManager.me().execute(AsyncFactory.recordLoginInfo(userName, UserConstants.LOGIN_FAIL, OperateConstants.LOGIN_OPERATION, message));
                 throw new StitchException(message);
             }
             if (!StringUtils.nvl(code).equals(verifyCode)) {
                 String message = "验证码错误，请重新输入";
-                AsyncManager.me().execute(AsyncFactory.recordLoginInfo(userName, UserConstants.LOGIN_FAIL, OperateConstants.LOGIN_OPERATION, message));
                 throw new StitchException(message);
             }
         }

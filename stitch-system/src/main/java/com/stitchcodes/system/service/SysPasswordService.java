@@ -1,6 +1,7 @@
 package com.stitchcodes.system.service;
 
 import com.stitchcodes.common.constant.CacheConstants;
+import com.stitchcodes.common.constant.ErrorConstant;
 import com.stitchcodes.common.constant.OperateConstants;
 import com.stitchcodes.common.constant.UserConstants;
 import com.stitchcodes.common.exception.StitchException;
@@ -92,14 +93,14 @@ public class SysPasswordService {
         if (ObjectUtils.isNotNull(errCount) && errCount >= configService.selectPasswordErrorCountUpperLimit()) {
             //密码错误次数超出限制
             String message = "密码错误次数已达上限，账号锁定";
-            AsyncManager.me().execute(AsyncFactory.recordLoginInfo(username, UserConstants.LOGIN_FAIL, OperateConstants.LOGIN_OPERATION, message));
+            AsyncManager.me().execute(AsyncFactory.recordLoginInfo(username, UserConstants.LOGIN_FAIL, OperateConstants.LOGIN_OPERATION, ErrorConstant.ACCOUNT_LOCKED));
             throw new StitchException(message);
         }
         if (!matches(password, sysUser)) {
             //密码错误
             increasePasswordErrorCount(username, errCount);
             String message = "密码错误";
-            AsyncManager.me().execute(AsyncFactory.recordLoginInfo(username, UserConstants.LOGIN_FAIL, OperateConstants.LOGIN_OPERATION, message));
+            AsyncManager.me().execute(AsyncFactory.recordLoginInfo(username, UserConstants.LOGIN_FAIL, OperateConstants.LOGIN_OPERATION, ErrorConstant.PASSWORD_ERROR));
             throw new StitchException(message);
         }
         clearPasswordErrorCount(username);
