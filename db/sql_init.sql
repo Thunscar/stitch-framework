@@ -258,6 +258,77 @@ create table sys_user_role
 )
     comment '用户角色关联表';
 
+INSERT INTO sys_config (config_id, config_name, config_key, config_value, config_type, create_user, create_time,
+                        update_user, update_time, is_delete, remark)
+VALUES (1, '账号登录-验证码开关', 'sys.account.captchaEnabled', 'false', '1', 'stitch', SYSDATE(), 'stitch', SYSDATE(),
+        '0', '是否开启验证码功能（true开启，false关闭）');
+INSERT INTO sys_config (config_id, config_name, config_key, config_value, config_type, create_user, create_time,
+                        update_user, update_time, is_delete, remark)
+VALUES (2, '账号登录-IP黑名单', 'sys.login.IpBlackList', NULL, '1', 'stitch', SYSDATE(), '', SYSDATE(), '0',
+        '登录IP黑名单列表(多个IP通过\',\'分隔开)');
+INSERT INTO sys_config (config_id, config_name, config_key, config_value, config_type, create_user, create_time,
+                        update_user, update_time, is_delete, remark)
+VALUES (3, '账号登录-初始密码', 'sys.login.initPassword', '001010', '1', 'stitch', SYSDATE(), '', SYSDATE(), '0',
+        '新用户初始密码与重置密码');
+
+INSERT INTO sys_dept (dept_id, parent_id, ancestors, dept_name, order_num, leader, phone, email, status, is_delete,
+                      create_user, create_time, update_user, update_time)
+VALUES (100, 0, '0', '总公司', 0, 'stitch', '18888888888', '888888888@qq.com', '0', '0', 'stitch', SYSDATE(), 'stitch',
+        SYSDATE());
+INSERT INTO sys_dept (dept_id, parent_id, ancestors, dept_name, order_num, leader, phone, email, status, is_delete,
+                      create_user, create_time, update_user, update_time)
+VALUES (101, 100, '0,100', '深圳总公司', 1, 'stitch', '18888888888', '888888888@qq.com', '0', '0', 'stitch', SYSDATE(),
+        'stitch', SYSDATE());
+INSERT INTO sys_dept (dept_id, parent_id, ancestors, dept_name, order_num, leader, phone, email, status, is_delete,
+                      create_user, create_time, update_user, update_time)
+VALUES (102, 100, '0,100', '武汉分公司', 2, 'stitch', '18888888888', '888888888@qq.com', '0', '0', 'stitch', SYSDATE(),
+        'stitch', SYSDATE());
+INSERT INTO sys_dept (dept_id, parent_id, ancestors, dept_name, order_num, leader, phone, email, status, is_delete,
+                      create_user, create_time, update_user, update_time)
+VALUES (106, 101, '0,100,101', '销售部门', 1, 'stitch', '18888888888', '888888888@qq.com', '0', '0', 'stitch',
+        SYSDATE(), 'stitch', SYSDATE());
+INSERT INTO sys_dept (dept_id, parent_id, ancestors, dept_name, order_num, leader, phone, email, status, is_delete,
+                      create_user, create_time, update_user, update_time)
+VALUES (107, 101, '0,100,101', '财务部门', 2, 'stitch', '18888888888', '888888888@qq.com', '0', '0', 'stitch',
+        SYSDATE(), 'stitch', SYSDATE());
+INSERT INTO sys_dept (dept_id, parent_id, ancestors, dept_name, order_num, leader, phone, email, status, is_delete,
+                      create_user, create_time, update_user, update_time)
+VALUES (103, 102, '0,100,102', '研发部门', 1, 'stitch', '18888888888', '888888888@qq.com', '0', '0', 'stitch',
+        SYSDATE(), 'stitch', SYSDATE());
+INSERT INTO sys_dept (dept_id, parent_id, ancestors, dept_name, order_num, leader, phone, email, status, is_delete,
+                      create_user, create_time, update_user, update_time)
+VALUES (104, 102, '0,100,102', '测试部门', 2, 'stitch', '18888888888', '888888888@qq.com', '0', '0', 'stitch',
+        SYSDATE(), 'stitch', SYSDATE());
+INSERT INTO sys_dept (dept_id, parent_id, ancestors, dept_name, order_num, leader, phone, email, status, is_delete,
+                      create_user, create_time, update_user, update_time)
+VALUES (105, 102, '0,100,102', '运维部门', 3, 'stitch', '18888888888', '888888888@qq.com', '0', '0', 'stitch',
+        SYSDATE(), 'stitch', SYSDATE());
+
+
+insert into sys_dict_type (dict_id, dict_name, dict_type, is_system, create_user, create_time, update_user, update_time, remark, is_delete) values (1,'用户性别','user_gender','1','stitch',SYSDATE(),'',SYSDATE(),'用户性别列表','0');
+insert into sys_dict_type (dict_id, dict_name, dict_type, is_system, create_user, create_time, update_user, update_time, remark, is_delete) values (2,'用户状态','user_status','1','stitch',SYSDATE(),'',SYSDATE(),'用户状态列表','0');
+insert into sys_dict_type (dict_id, dict_name, dict_type, is_system, create_user, create_time, update_user, update_time, remark, is_delete) values (3,'菜单可用状态','menu_status','1','stitch',SYSDATE(),'',SYSDATE(),'菜单可用状态列表','0');
+insert into sys_dict_type (dict_id, dict_name, dict_type, is_system, create_user, create_time, update_user, update_time, remark, is_delete) values (4,'系统通用状态','normal_status','1','stitch',SYSDATE(),'',SYSDATE(),'系统通用状态列表','0');
+insert into sys_dict_type (dict_id, dict_name, dict_type, is_system, create_user, create_time, update_user, update_time, remark, is_delete) values (5,'字典是否内置','normal_system','1','stitch',SYSDATE(),'',SYSDATE(),'字典是否内置','0');
+insert into sys_dict_type (dict_id, dict_name, dict_type, is_system, create_user, create_time, update_user, update_time, remark, is_delete) values (6,'角色状态','role_status','1','stitch',SYSDATE(),'',SYSDATE(),'角色状态列表','0');
+insert into sys_dict_type (dict_id, dict_name, dict_type, is_system, create_user, create_time, update_user, update_time, remark, is_delete) values (7,'岗位状态','post_status','1','stitch',SYSDATE(),'',SYSDATE(),'岗位状态列表','0');
+
+insert into sys_dict_data (dict_code, dict_sort, dict_label, dict_value, dict_type, css_class, create_user, create_time, update_user, update_time, is_delete, remark)values (1,1,'正常','0','normal_status','primary','stitch',sysdate(),'',sysdate(),'0','系统默认状态:正常');
+insert into sys_dict_data (dict_code, dict_sort, dict_label, dict_value, dict_type, css_class, create_user, create_time, update_user, update_time, is_delete, remark) values (2,2,'停用','1','normal_status','warning','stitch',sysdate(),'',sysdate(),'0','系统默认状态:停用');
+insert into sys_dict_data (dict_code, dict_sort, dict_label, dict_value, dict_type, css_class, create_user, create_time, update_user, update_time, is_delete, remark) values (3,1,'内置','1','normal_system','primary','stitch',sysdate(),'',sysdate(),'0','字典是否内置:内置');
+insert into sys_dict_data (dict_code, dict_sort, dict_label, dict_value, dict_type, css_class, create_user, create_time, update_user, update_time, is_delete, remark) values (4,2,'非内置','0','normal_system','warning','stitch',sysdate(),'',sysdate(),'0','字典是否内置:非内置');
+insert into sys_dict_data (dict_code, dict_sort, dict_label, dict_value, dict_type, css_class, create_user, create_time, update_user, update_time, is_delete, remark) values (5,1,'正常','0','menu_status','primary','stitch',sysdate(),'',sysdate(),'0','菜单状态:正常');
+insert into sys_dict_data (dict_code, dict_sort, dict_label, dict_value, dict_type, css_class, create_user, create_time, update_user, update_time, is_delete, remark) values (6,2,'停用','1','menu_status','warning','stitch',sysdate(),'',sysdate(),'0','菜单状态:停用');
+insert into sys_dict_data (dict_code, dict_sort, dict_label, dict_value, dict_type, css_class, create_user, create_time, update_user, update_time, is_delete, remark) values (7,1,'男','0','user_gender','primary','stitch',sysdate(),'',sysdate(),'0','用户性别:男');
+insert into sys_dict_data (dict_code, dict_sort, dict_label, dict_value, dict_type, css_class, create_user, create_time, update_user, update_time, is_delete, remark) values (8,2,'女','1','user_gender','warning','stitch',sysdate(),'',sysdate(),'0','用户性别:女');
+insert into sys_dict_data (dict_code, dict_sort, dict_label, dict_value, dict_type, css_class, create_user, create_time, update_user, update_time, is_delete, remark) values (9,3,'未知','2','user_gender','danger','stitch',sysdate(),'',sysdate(),'0','用户性别:未知');
+insert into sys_dict_data (dict_code, dict_sort, dict_label, dict_value, dict_type, css_class, create_user, create_time, update_user, update_time, is_delete, remark) values (10,1,'正常','0','user_status','primary','stitch',sysdate(),'',sysdate(),'0','用户状态:正常');
+insert into sys_dict_data (dict_code, dict_sort, dict_label, dict_value, dict_type, css_class, create_user, create_time, update_user, update_time, is_delete, remark) values (11,2,'停用','1','user_status','warning','stitch',sysdate(),'',sysdate(),'0','用户状态:停用');
+insert into sys_dict_data (dict_code, dict_sort, dict_label, dict_value, dict_type, css_class, create_user, create_time, update_user, update_time, is_delete, remark) values (12,1,'正常','0','role_status','primary','stitch',sysdate(),'',sysdate(),'0','角色状态:正常');
+insert into sys_dict_data (dict_code, dict_sort, dict_label, dict_value, dict_type, css_class, create_user, create_time, update_user, update_time, is_delete, remark) values (13,2,'停用','1','role_status','warning','stitch',sysdate(),'',sysdate(),'0','角色状态:停用');
+insert into sys_dict_data (dict_code, dict_sort, dict_label, dict_value, dict_type, css_class, create_user, create_time, update_user, update_time, is_delete, remark) values (14,1,'正常','0','post_status','primary','stitch',sysdate(),'',sysdate(),'0','岗位状态:正常');
+insert into sys_dict_data (dict_code, dict_sort, dict_label, dict_value, dict_type, css_class, create_user, create_time, update_user, update_time, is_delete, remark) values (15,2,'停用','1','post_status','warning','stitch',sysdate(),'',sysdate(),'0','岗位状态:停用');
+
 
 INSERT INTO sys_menu (menu_id, menu_name, parent_id, order_num, path, component, query, is_frame, is_cache, menu_type, visible, status, perms, icon, is_delete, create_user, create_time, update_user, update_time, remark) VALUES (1, '系统管理', 0, 1, '/system', '', '', '0', '1', 'M', '1', '0', '', 'f-work', '0', '', SYSDATE(), 'stitch', SYSDATE(), '系统管理目录');
 INSERT INTO sys_menu (menu_id, menu_name, parent_id, order_num, path, component, query, is_frame, is_cache, menu_type, visible, status, perms, icon, is_delete, create_user, create_time, update_user, update_time, remark) VALUES (2, '权限管理', 0, 2, '/perms', '', '', '0', '1', 'M', '1', '0', '', 'f-library', '0', '', SYSDATE(), 'stitch', SYSDATE(), '权限管理目录');
