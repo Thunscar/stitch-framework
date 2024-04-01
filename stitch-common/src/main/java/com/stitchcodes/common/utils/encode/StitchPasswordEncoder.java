@@ -54,4 +54,5 @@ public class StitchPasswordEncoder implements PasswordEncoder {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         return passwordEncoder.matches(FIX_SALT + rawPassword + generateSalt(rawPassword), encodedPassword);
     }
+
 }

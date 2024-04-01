@@ -7,11 +7,12 @@ import com.stitchcodes.common.redis.RedisCache;
 import com.stitchcodes.common.utils.CollectionUtils;
 import com.stitchcodes.common.utils.ObjectUtils;
 import com.stitchcodes.common.utils.SpringUtils;
+import com.stitchcodes.common.utils.StringUtils;
 import com.stitchcodes.common.utils.encode.StitchPasswordEncoder;
+import com.stitchcodes.core.domain.SysPost;
+import com.stitchcodes.core.domain.SysRole;
 import com.stitchcodes.core.domain.SysUser;
-import com.stitchcodes.core.mapper.SysUserMapper;
-import com.stitchcodes.core.mapper.SysUserPostMapper;
-import com.stitchcodes.core.mapper.SysUserRoleMapper;
+import com.stitchcodes.core.mapper.*;
 import com.stitchcodes.core.service.SysUserService;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.stitchcodes.common.utils.RedisKeyUtil.getLoginCacheKey;
 
@@ -33,6 +35,10 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Resource
     private SysUserMapper userMapper;
+    @Resource
+    private SysPostMapper postMapper;
+    @Resource
+    private SysRoleMapper roleMapper;
     @Resource
     private SysUserRoleMapper userRoleMapper;
     @Resource
@@ -71,13 +77,21 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     @Override
-    public String selectUserRoleGroup(String userName) {
-        return null;
+    public String selectUserRoleGroup(Long userId) {
+        List<SysRole> sysRoles = roleMapper.selectRoleByUserId(userId);
+        if (CollectionUtils.isEmpty(sysRoles)) {
+            return StringUtils.EMPTY;
+        }
+        return sysRoles.stream().map(SysRole::getRoleName).collect(Collectors.joining(","));
     }
 
     @Override
-    public String selectUserPostGroup(String userName) {
-        return null;
+    public String selectUserPostGroup(Long userId) {
+        List<SysPost> sysPosts = postMapper.selectSysPostByUserId(userId);
+        if (CollectionUtils.isEmpty(sysPosts)) {
+            return StringUtils.EMPTY;
+        }
+        return sysPosts.stream().map(SysPost::getPostName).collect(Collectors.joining(","));
     }
 
     @Override

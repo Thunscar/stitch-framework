@@ -54,18 +54,18 @@ public interface SysUserService {
     /**
      * 通过用户名查询用户所属角色组
      *
-     * @param userName 用户名
+     * @param userId 用户ID
      * @return 结果
      */
-    String selectUserRoleGroup(String userName);
+    String selectUserRoleGroup(Long userId);
 
     /**
      * 通过用户名搜索用户岗位组
      *
-     * @param userName 用户名
+     * @param userId 用户ID
      * @return 结果
      */
-    String selectUserPostGroup(String userName);
+    String selectUserPostGroup(Long userId);
 
     /**
      * 检查用户名唯一性
@@ -217,6 +217,7 @@ public interface SysUserService {
      * @param userName 用户名
      */
     void clearUserLoginCache(String userName);
+
 
 
 
