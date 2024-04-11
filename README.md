@@ -5,4 +5,4 @@
 * 项目演示地址:https://admin.stitchcodes.com
 * 前端Github地址:https://github.com/Thunscar/stitch-ui
 * 后端Github地址:https://github.com/Thunscar/stitch-framework
-* 作者博客地址:https://blogs.stitchcodes.com
+* 作者博客地址:https://blog.stitchcodes.com
